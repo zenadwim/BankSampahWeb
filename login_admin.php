@@ -29,16 +29,14 @@
   <link href="assets/css/style.css" rel="stylesheet">
 </head>
 <style>
+  .alert{
+    color: red;
+    text-align: center;
+    font-weight: bold;
+  }
 </style>
 
 <body>
-	<?php 
-		if(isset($_GET['pesan'])){
-			if($_GET['pesan']=="gagal"){
-				echo "<div class='alert'>Username dan Password tidak sesuai !</div>";
-			}
-		}
-	?>
 
 <section class="vh-100" style="background-color: rgba(40, 58, 90, 0.9);">
   <div class="container py-5 h-100">
@@ -59,6 +57,14 @@
                     <h3 class="h3 fw-bold mb-0">Silahkan Login Sebagai Admin</h3>
                   </div>
 
+                  <?php 
+                    if(isset($_GET['pesan'])){
+                      if($_GET['pesan']=="gagal"){
+                        echo "<p class='alert'>Username dan Password tidak sesuai!</p>";
+                      }
+                    }
+                  ?>
+
                   <div class="form-outline mb-4">
                     <input style="font-size:12pt;" type="text" name="id_admin" id="form2Example17" placeholder="Masukkan username..." required="required" class="form-control form-control-lg" />
                     <label class="form-label" for="form2Example17">Username</label>
@@ -73,10 +79,12 @@
                     <input class="btnRegister w-75 mt-4 py-3 border-0 border-radius-lg" style="color:white; background-color:rgba(40, 58, 90, 0.9); max-width: 200px; max-height: 54px; border-radius: 1.5rem; cursor: pointer;" type="submit" value="LOGIN">
                   </div>
 
-                  <a class="small text-muted" href="#!">Lupa password?</a>
-                  <p class="mb-5 pb-lg-2" style="color: #393f81;">Belum punya akun? <a href="#!"
-                      style="color: #393f81;">Daftar disini!</a></p>
-                  <a href="index.html" class="small text-muted">Kembali</a>
+                  <div class="text-center">
+                    <a class="small text-muted" href="#!">Lupa password?</a>
+                    <p class="mb-5 pb-lg-2" style="color: #393f81;">Belum punya akun? <a href="#!"
+                        style="color: #393f81;">Daftar disini!</a></p>
+                    <a href="index.html" class="small text-muted">Kembali</a>
+                  </div>
                 </form>
 
               </div>

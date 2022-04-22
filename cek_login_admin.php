@@ -29,7 +29,7 @@ if($cek > 0){
 	
 		
 }else{
-	header("location:login.php?pesan=gagal");
+	header("location:login_admin.php?pesan=gagal");
 }
  
 ?>
