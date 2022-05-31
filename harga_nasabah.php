@@ -19,7 +19,7 @@ require_once "config.php";
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Detil Harga Nasabah</title>
+    <title>Admin | Detil Harga Nasabah</title>
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">

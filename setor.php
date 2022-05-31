@@ -25,7 +25,7 @@ $row        = mysqli_fetch_array($tabungan);
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Setor Sampah</title>
+    <title>Admin | Setor Sampah</title>
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
