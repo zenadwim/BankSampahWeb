@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Login (Admin)</title>
+  <title>Admin | Login</title>
   <meta content="" name="description">
   <meta content="" name="keywords">
 
@@ -54,7 +54,7 @@
 
                   <div class="d-flex justify-content-center align-items-center mb-3 pb-1">
                     <!-- <i class="fas fa-cubes fa-2x me-3" style="color: #ff6219;"></i> -->
-                    <h3 class="h3 fw-bold mb-0">Silahkan Login Sebagai Admin</h3>
+                    <h3 class="h3 fw-bold mb-0">Silahkan Masuk Sebagai Admin</h3>
                   </div>
 
                   <?php 
