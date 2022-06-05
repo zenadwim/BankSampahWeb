@@ -288,7 +288,14 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                             <td><?php echo $row['harga_pengepul']?></td>
                                             <td><?php echo $row['harga_nasabah']?></td>
                                             <td class='d-flex justify-content-around'>
-                                                <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_sampah']; ?>"><span class='fas fa-pencil-alt'></span></a>
+                                                <div class="dropdown">
+                                                    <a href="#" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='fas fa-pencil-alt'></span></a>
+                                                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="border: 3px outset blue; background-color: lightblue;">
+                                                        <a style="text-align: center;" class="dropdown-item" href="#" >Edit Sampah</a>
+                                                        <a style="text-align: center;" class="dropdown-item" href="#" data-toggle="modal" data-target="#editHrgPengepulModal<?php echo $row['id_sampah']; ?>">Edit Harga Pengepul</a>
+                                                        <a style="text-align: center;" class="dropdown-item" href="#" data-toggle="modal" data-target="#editHrgNasabahModal<?php echo $row['id_sampah']; ?>">Edit Harga Nasabah</a>
+                                                    </div>
+                                                </div>
                                                 <a href="#" data-toggle="modal" data-target="#deleteModal<?php echo $row['id_sampah']; ?>"><span class='fas fa-trash-alt'></span></a>
                                             </td>
                                         </tr>
@@ -320,6 +327,92 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                                             <div class="form-group">
                                                                 <label class="control-label" for="harga_nasabah">harga nasabah : </label>
                                                                 <input type="number" name="harga_nasabah" class="form-control" id="harga_nasabah" value="<?php echo $data['harga_nasabah']; ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="tanggal">tanggal : </label>
+                                                                <input type="date" name="tanggal" class="form-control" id="tanggal" value="<?php echo date('Y-m-d'); ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="id_admin">admin yang mengubah : </label>
+                                                                <input type="text" name="id_admin" class="form-control" id="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" disabled/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Simpan" name="simpan" class="btn btn-success"/>
+                                                        </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- MODAL edit Harga Sampah (Pengepul) -->
+                                        <div id="editHrgPengepulModal<?php echo $row['id_sampah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah Harga Sampah (Pengepul)</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <form action="ubah_hargaPengepul.php" method="get">
+                                                        <?php
+                                                        include 'config.php';
+                                                        $id_sampah = $row['id_sampah'];
+                                                        $query_edit  = mysqli_query($db, "select * from sampah where id_sampah='$id_sampah'");
+                                                        while($data = mysqli_fetch_array($query_edit)){
+                                                        ?>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id_sampah" id="id_sampah" value="<?php echo $data['id_sampah']; ?>"/>
+                                                            <input type="hidden" name="harga_pengepul_lama" value="<?php echo $data['harga_pengepul'] ?>" />
+                                                            <input type="hidden" name="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" />
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="harga_pengepul">harga baru: </label>
+                                                                <input type="text" name="harga_pengepul" class="form-control" id="harga_pengepul" placeholder="harga saat ini --> <?php echo $data['harga_pengepul']; ?>" required/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="tanggal">tanggal : </label>
+                                                                <input type="date" name="tanggal" class="form-control" id="tanggal" value="<?php echo date('Y-m-d'); ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="id_admin">admin yang mengubah : </label>
+                                                                <input type="text" name="id_admin" class="form-control" id="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" disabled/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Simpan" name="simpan" class="btn btn-success"/>
+                                                        </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- MODAL edit Harga Sampah (Nasabah) -->
+                                        <div id="editHrgNasabahModal<?php echo $row['id_sampah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah Harga Sampah (Nasabah)</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <form action="ubah_hargaNasabah.php" method="get">
+                                                        <?php
+                                                        include 'config.php';
+                                                        $id_sampah = $row['id_sampah'];
+                                                        $query_edit  = mysqli_query($db, "select * from sampah where id_sampah='$id_sampah'");
+                                                        while($data = mysqli_fetch_array($query_edit)){
+                                                        ?>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id_sampah" id="id_sampah" value="<?php echo $data['id_sampah']; ?>"/>
+                                                            <input type="hidden" name="harga_nasabah_lama" value="<?php echo $data['harga_nasabah'] ?>" />
+                                                            <input type="hidden" name="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" />
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="harga_nasabah">harga baru: </label>
+                                                                <input type="text" name="harga_nasabah" class="form-control" id="harga_nasabah" placeholder="harga saat ini --> <?php echo $data['harga_nasabah']; ?>" required/>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="tanggal">tanggal : </label>
