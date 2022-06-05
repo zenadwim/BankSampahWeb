@@ -43,11 +43,6 @@ $query = mysqli_query($db, "SELECT max(id_admin) as idTerbesar FROM admin");
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
 </head>
 
 <body id="page-top">
@@ -194,6 +189,7 @@ $query = mysqli_query($db, "SELECT max(id_admin) as idTerbesar FROM admin");
                         <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#tambahAdmin">Tambah Baru</button>
                     </div>
 
+                    <!-- MODAL tambah admin -->
                     <div id="tambahAdmin" class="modal fade" role="dialog">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -210,6 +206,10 @@ $query = mysqli_query($db, "SELECT max(id_admin) as idTerbesar FROM admin");
                                         <div class="form-group">
                                             <label class="control-label" for="nama">Nama : </label>
                                             <input type="text" name="nama" class="form-control" id="nama" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="no_hp">No Handphone : </label>
+                                            <input type="number" name="no_hp" class="form-control" id="nohp" required/>
                                         </div>
                                         <div class="form-group">
                                             <label class="control-label" for="alamat">Alamat : </label>
@@ -238,28 +238,105 @@ $query = mysqli_query($db, "SELECT max(id_admin) as idTerbesar FROM admin");
                         $sql = "SELECT * FROM admin";
                         if($result = mysqli_query($db, $sql)){
                             if(mysqli_num_rows($result) > 0){
-                                
                                 echo "<table class='table table-bordered table-striped' >";
                                     echo "<thead>";
                                         echo "<tr>";
                                             echo "<th>id</th>";
                                             echo "<th>nama</th>";
+                                            echo "<th>no handphone</th>";
                                             echo "<th>alamat</th>";
                                             echo "<th>Opsi</th>";
                                         echo "</tr>";
                                     echo "</thead>";
                                     echo "<tbody>";
                                     while($row = mysqli_fetch_array($result)){
-                                        echo "<tr>";
-                                            echo "<td>" . $row['id_admin'] . "</td>";
-                                            echo "<td>" . $row['nama'] . "</td>";
-                                            echo "<td>" . $row['alamat'] . "</td>";
-                                            echo "<td class='d-flex justify-content-around'>";
-                                                echo "<a href='read.php?id=". $row['id_admin'] ."' title='View Record' data-toggle='tooltip'><span class='fas fa-eye'></span></a>";
-                                                echo "<a href='ubah_admin.php?id_admin=".$row['id_admin']."' title='Update Record' data-toggle='tooltip'><span class='fas fa-pencil-alt'></span></a>";
-                                                echo "<a href='delete.php?id=". $row['id_admin'] ."' title='Delete Record' data-toggle='tooltip'><span class='fas fa-trash-alt'></span></a>";
-                                            echo "</td>";
-                                        echo "</tr>";
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row['id_admin']; ?></td>
+                                            <td><?php echo $row['nama']; ?></td>
+                                            <td><?php echo $row['no_hp']; ?></td>
+                                            <td><?php echo $row['alamat']; ?></td>
+                                            <td class='d-flex justify-content-around'>
+                                                <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_admin']; ?>"><span class='fas fa-pencil-alt'></span></a>
+                                                <a href="#" data-toggle="modal" data-target="#deleteModal<?php echo $row['id_admin']; ?>"><span class='fas fa-trash-alt'></span></a>
+                                            </td>
+                                        </tr>
+                                        
+                                        <!-- MODAL edit admin -->
+                                        <div id="editModal<?php echo $row['id_admin']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah Admin</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <form action="ubah_admin.php" method="get">
+                                                        <?php
+                                                        include 'config.php';
+                                                        $id_admin = $row['id_admin'];
+                                                        $query_edit  = mysqli_query($db, "select * from admin where id_admin='$id_admin'");
+                                                        while($data = mysqli_fetch_array($query_edit)){
+                                                        ?>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id_admin" id="id_admin" value="<?php echo $data['id_admin']; ?>"/>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="nama">Nama : </label>
+                                                                <input type="text" name="nama" class="form-control" id="nama" value="<?php echo $data['nama']; ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="no_hp">No Handphone : </label>
+                                                                <input type="number" name="no_hp" class="form-control" id="nohp" value="<?php echo $data['no_hp']; ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="alamat">Alamat : </label>
+                                                                <input type="text" name="alamat" class="form-control" id="alamat" value="<?php echo $data['alamat']; ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="password">Password: </label>
+                                                                <input type="text" name="password" class="form-control" id="password" value="<?php echo $data['password']; ?>"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Simpan" name="Simpan" class="btn btn-success"/>
+                                                        </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- MODAL delete admin -->
+                                        <div id="deleteModal<?php echo $row['id_admin']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="exampleModalLabel">Hapus Admin</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <form action="hapus_admin.php" method="get">
+                                                        <?php
+                                                        include 'config.php';
+                                                        $id_admin = $row['id_admin'];
+                                                        $query_delete  = mysqli_query($db, "select * from admin where id_admin='$id_admin'");
+                                                        while($data = mysqli_fetch_array($query_delete)){
+                                                        ?>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id_admin" id="id_admin" value="<?php echo $data['id_admin']; ?>"/>
+                                                            <p> Apakah kamu yakin ingin menghapus data ini ??</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Ya" name="HapusData" class="btn btn-primary"/>
+                                                        </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
                                     }
                                     echo "</tbody>";
                                 echo "</table>";

@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 15, 2022 at 06:06 AM
--- Server version: 10.4.20-MariaDB
--- PHP Version: 8.0.8
+-- Generation Time: Jun 05, 2022 at 11:30 AM
+-- Server version: 10.4.19-MariaDB
+-- PHP Version: 8.0.7
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -29,17 +29,20 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `admin` (
   `id_admin` varchar(20) NOT NULL,
-  `alama` text NOT NULL,
+  `alamat` text NOT NULL,
   `password` varchar(20) NOT NULL,
-  `nama` varchar(40) NOT NULL
+  `nama` varchar(40) NOT NULL,
+  `no_hp` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `admin`
 --
 
-INSERT INTO `admin` (`id_admin`, `alama`, `password`, `nama`) VALUES
-('a001', 'perum', '1234', 'Arya');
+INSERT INTO `admin` (`id_admin`, `alamat`, `password`, `nama`, `no_hp`) VALUES
+('a001', 'Jakarta Selatan', '1535', 'Fatimah', '089933886617'),
+('a002', 'Aceh', '1004', 'Wahyu', '089677565735'),
+('a004', 'kota tangerang', '112233', 'Zena', '089978987650');
 
 -- --------------------------------------------------------
 
@@ -50,7 +53,9 @@ INSERT INTO `admin` (`id_admin`, `alama`, `password`, `nama`) VALUES
 CREATE TABLE `detil_setor` (
   `id_setor` varchar(30) NOT NULL,
   `id_sampah` varchar(10) DEFAULT NULL,
-  `total` int(3) DEFAULT NULL
+  `total` int(3) NOT NULL,
+  `harga_nasabah` int(7) NOT NULL,
+  `harga_pengepul` int(7) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 -- --------------------------------------------------------
@@ -73,7 +78,11 @@ CREATE TABLE `harga_nasabah` (
 --
 
 INSERT INTO `harga_nasabah` (`id_hrgnasabah`, `id_sampah`, `harga_lama`, `harga_baru`, `tanggal`, `id_admin`) VALUES
-(2, 'SMP001', 0, 2000, '2022-04-15 00:00:00', 'a001');
+(2, 'SMP001', 0, 2000, '2022-04-15 00:00:00', 'a001'),
+(3, 'SMP002', 0, 2000, '2022-04-19 00:00:00', 'a001'),
+(4, 'SMP001', 2000, 3000, '2022-04-23 00:00:00', 'a001'),
+(7, 'SMP002', 1500, 2000, '2022-06-05 00:00:00', 'a001'),
+(8, 'SMP002', 2000, 2200, '2022-06-05 00:00:00', 'a004');
 
 -- --------------------------------------------------------
 
@@ -95,7 +104,11 @@ CREATE TABLE `harga_pengepul` (
 --
 
 INSERT INTO `harga_pengepul` (`id_hrgpengepul`, `id_sampah`, `harga_lama`, `harga_baru`, `tanggal`, `id_admin`) VALUES
-(6, 'SMP001', 0, 1500, '2022-04-15 00:00:00', 'a001');
+(6, 'SMP001', 0, 1500, '2022-04-15 00:00:00', 'a001'),
+(7, 'SMP002', 0, 1500, '2022-04-19 00:00:00', 'a001'),
+(8, 'SMP001', 1500, 2000, '2022-04-23 00:00:00', 'a001'),
+(11, 'SMP002', 2000, 2500, '2022-06-05 00:00:00', 'a001'),
+(12, 'SMP002', 2500, 2700, '2022-06-05 00:00:00', 'a004');
 
 -- --------------------------------------------------------
 
@@ -124,14 +137,14 @@ INSERT INTO `kategori` (`id_kategori`, `deskripsi`) VALUES
 
 CREATE TABLE `min_saldo` (
   `data` int(10) DEFAULT NULL,
-  `sadlo` int(8) DEFAULT NULL
+  `saldo` int(8) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `min_saldo`
 --
 
-INSERT INTO `min_saldo` (`data`, `sadlo`) VALUES
+INSERT INTO `min_saldo` (`data`, `saldo`) VALUES
 (10, 5000);
 
 -- --------------------------------------------------------
@@ -144,16 +157,16 @@ CREATE TABLE `nasabah` (
   `id_nasabah` varchar(20) NOT NULL,
   `alamat` text DEFAULT NULL,
   `password` varchar(20) DEFAULT NULL,
-  `nama` varchar(40) DEFAULT NULL
+  `nama` varchar(40) DEFAULT NULL,
+  `no_hp` varchar(15) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `nasabah`
 --
 
-INSERT INTO `nasabah` (`id_nasabah`, `alamat`, `password`, `nama`) VALUES
-('123', 'perum', '123', 'arya'),
-('321', 'Budi Luhur', '321', 'Phaksi Bangun Asmoro');
+INSERT INTO `nasabah` (`id_nasabah`, `alamat`, `password`, `nama`, `no_hp`) VALUES
+('007', 'Jakarta', '007', 'wahyu', '081677565735');
 
 -- --------------------------------------------------------
 
@@ -180,15 +193,17 @@ CREATE TABLE `sampah` (
   `nama_sampah` varchar(30) NOT NULL,
   `harga_nasabah` int(7) NOT NULL,
   `harga_pengepul` int(7) NOT NULL,
-  `id_kategori` int(3) NOT NULL
+  `id_kategori` int(3) NOT NULL,
+  `satuan` varchar(10) DEFAULT 'kg'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
 --
 -- Dumping data for table `sampah`
 --
 
-INSERT INTO `sampah` (`id_sampah`, `nama_sampah`, `harga_nasabah`, `harga_pengepul`, `id_kategori`) VALUES
-('SMP001', 'koran', 2000, 1500, 2);
+INSERT INTO `sampah` (`id_sampah`, `nama_sampah`, `harga_nasabah`, `harga_pengepul`, `id_kategori`, `satuan`) VALUES
+('SMP001', 'koran', 3000, 2000, 2, 'kg'),
+('SMP002', 'seng', 2200, 2700, 1, 'kg');
 
 -- --------------------------------------------------------
 
@@ -203,13 +218,6 @@ CREATE TABLE `setoran` (
   `id_admin` varchar(20) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
---
--- Dumping data for table `setoran`
---
-
-INSERT INTO `setoran` (`id_setor`, `tgl_setor`, `id_nasabah`, `id_admin`) VALUES
-('321202203', '2022-03-08', '321', 'a001');
-
 -- --------------------------------------------------------
 
 --
@@ -221,13 +229,28 @@ CREATE TABLE `tabungan` (
   `saldo` int(7) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
+-- --------------------------------------------------------
+
 --
--- Dumping data for table `tabungan`
+-- Table structure for table `test`
 --
 
-INSERT INTO `tabungan` (`id_nasabah`, `saldo`) VALUES
-('123', 2000),
-('321', 200000);
+CREATE TABLE `test` (
+  `id_setor` varchar(20) NOT NULL,
+  `id_sampah` varchar(30) NOT NULL,
+  `total` int(3) NOT NULL,
+  `harga` int(10) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+--
+-- Dumping data for table `test`
+--
+
+INSERT INTO `test` (`id_setor`, `id_sampah`, `total`, `harga`) VALUES
+('00842022', 'SMP001', 3, 5000),
+('00842022', 'SMP002', 4, 2000),
+('12352022', 'SMP001', 2, 4000),
+('12352022', 'SMP001', 2, 300);
 
 --
 -- Indexes for dumped tables
@@ -287,7 +310,7 @@ ALTER TABLE `penarikan`
 --
 ALTER TABLE `sampah`
   ADD PRIMARY KEY (`id_sampah`),
-  ADD KEY `id_kategori` (`id_kategori`);
+  ADD KEY `FK_ID_KATEGORI` (`id_kategori`);
 
 --
 -- Indexes for table `setoran`
@@ -312,13 +335,13 @@ ALTER TABLE `tabungan`
 -- AUTO_INCREMENT for table `harga_nasabah`
 --
 ALTER TABLE `harga_nasabah`
-  MODIFY `id_hrgnasabah` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_hrgnasabah` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `harga_pengepul`
 --
 ALTER TABLE `harga_pengepul`
-  MODIFY `id_hrgpengepul` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id_hrgpengepul` int(10) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `kategori`

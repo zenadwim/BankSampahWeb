@@ -13,7 +13,7 @@
            <table class="table table-bordered">  
                  <tr>  
                                <th>ID</th>  
-                               <th >tanggal setor</th>  
+                               <th>tanggal setor</th>  
                                <th>Admin</th>
                                <th>Aksi</th>  
 

@@ -11,9 +11,10 @@ if(isset($_POST['Input'])){
     $alamat = $_POST['alamat'];
     $password = $_POST['password'];
     $nama = $_POST['nama'];
+    $no_hp = $_POST['no_hp'];
    
     // buat query
-    $sql = "INSERT INTO admin (id_admin, alamat, password, nama) VALUE ('$id_admin','$alamat','$password','$nama')";
+    $sql = "INSERT INTO admin (id_admin, alamat, password, nama, no_hp) VALUE ('$id_admin','$alamat','$password','$nama', '$no_hp')";
     $query = mysqli_query($db, $sql);
 
 

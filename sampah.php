@@ -271,27 +271,76 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                     echo "<thead>";
                                         echo "<tr>";
                                             echo "<th>id</th>";
-                                            echo "<th>nama_sampah</th>";
+                                            echo "<th>nama sampah</th>";
                                             echo "<th>kategori</th>";
-                                            echo "<th>harga_pengepul</th>";
-                                            echo "<th>harga_nasabah</th>";
+                                            echo "<th>harga pengepul</th>";
+                                            echo "<th>harga nasabah</th>";
                                             echo "<th>Opsi</th>";
                                         echo "</tr>";
                                     echo "</thead>";
                                     echo "<tbody>";
                                     while($row = mysqli_fetch_array($result)){
-                                        echo "<tr>";
-                                            echo "<td>" . $row['id_sampah'] . "</td>";
-                                            echo "<td>" . $row['nama_sampah'] . "</td>";
-                                            echo "<td>" . $row['deskripsi'] . "</td>";
-                                            echo "<td>" . $row['harga_pengepul'] . "</td>";
-                                            echo "<td>" . $row['harga_nasabah'] . "</td>";
-                                            echo "<td class='d-flex justify-content-around'>";
-                                                echo "<a href='read.php?id=". $row['id_sampah'] ."' title='View Record' data-toggle='tooltip'><span class='fas fa-eye'></span></a>";
-                                                echo "<a href='ubah_harga.php?id_sampah=".$row['id_sampah']."' title='Update Record' data-toggle='tooltip'><span class='fas fa-pencil-alt'></span></a>";
-                                                echo "<a href='delete.php?id=". $row['id_sampah'] ."' title='Delete Record' data-toggle='tooltip'><span class='fas fa-trash-alt'></span></a>";
-                                            echo "</td>";
-                                        echo "</tr>";
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row['id_sampah']?></td>
+                                            <td><?php echo $row['nama_sampah']?> (<?php echo $row['satuan']?>) </td>
+                                            <td><?php echo $row['deskripsi']?></td>
+                                            <td><?php echo $row['harga_pengepul']?></td>
+                                            <td><?php echo $row['harga_nasabah']?></td>
+                                            <td class='d-flex justify-content-around'>
+                                                <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_sampah']; ?>"><span class='fas fa-pencil-alt'></span></a>
+                                                <a href="#" data-toggle="modal" data-target="#deleteModal<?php echo $row['id_sampah']; ?>"><span class='fas fa-trash-alt'></span></a>
+                                            </td>
+                                        </tr>
+
+                                        <!-- MODAL edit Sampah -->
+                                        <div id="editModal<?php echo $row['id_sampah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah Harga Sampah</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <form action="ubah_harga.php" method="get">
+                                                        <?php
+                                                        include 'config.php';
+                                                        $id_sampah = $row['id_sampah'];
+                                                        $query_edit  = mysqli_query($db, "select * from sampah where id_sampah='$id_sampah'");
+                                                        while($data = mysqli_fetch_array($query_edit)){
+                                                        ?>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id_sampah" id="id_sampah" value="<?php echo $data['id_sampah']; ?>"/>
+                                                            <input type="hidden" name="harga_pengepul_lama" value="<?php echo $data['harga_pengepul'] ?>" />
+                                                            <input type="hidden" name="harga_nasabah_lama" value="<?php echo $data['harga_nasabah'] ?>" />
+                                                            <input type="hidden" name="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" />
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="harga_pengepul">harga pengepul : </label>
+                                                                <input type="text" name="harga_pengepul" class="form-control" id="harga_pengepul" value="<?php echo $data['harga_pengepul']; ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="harga_nasabah">harga nasabah : </label>
+                                                                <input type="number" name="harga_nasabah" class="form-control" id="harga_nasabah" value="<?php echo $data['harga_nasabah']; ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="tanggal">tanggal : </label>
+                                                                <input type="date" name="tanggal" class="form-control" id="tanggal" value="<?php echo date('Y-m-d'); ?>"/>
+                                                            </div>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="id_admin">admin yang mengubah : </label>
+                                                                <input type="text" name="id_admin" class="form-control" id="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" disabled/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Simpan" name="simpan" class="btn btn-success"/>
+                                                        </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
                                     }
                                     echo "</tbody>";
                                 echo "</table>";
