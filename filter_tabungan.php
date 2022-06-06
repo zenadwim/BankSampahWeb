@@ -14,9 +14,10 @@ die("Anda belum login");//jika belum login jangan lanjut..
  {  
      $id_nasabah= $_SESSION['id_nasabah'];
     require_once "config.php";
+    setlocale(LC_ALL, 'id-ID', 'id_ID');
       $output = '';  
       $query = "  
-      SELECT setoran.id_setor , setoran.tgl_setor,setoran.id_nasabah,setoran.id_admin ,SUM(detil_setor.harga_nasabah) as harga FROM setoran RIGHT JOIN detil_setor ON setoran.id_setor = detil_setor.id_setor where id_nasabah='$id_nasabah' AND tgl_setor BETWEEN '".$_POST["from_date"]."' AND '".$_POST["to_date"]."' GROUP BY setoran.id_setor ORDER BY tgl_setor desc  
+      SELECT setoran.id_setor , setoran.tgl_setor,setoran.id_nasabah,setoran.id_admin, admin.nama,SUM(detil_setor.harga_nasabah) as harga FROM setoran RIGHT JOIN detil_setor ON setoran.id_setor = detil_setor.id_setor RIGHT JOIN admin ON setoran.id_admin = admin.id_admin  where id_nasabah='$id_nasabah' AND tgl_setor BETWEEN '".$_POST["from_date"]."' AND '".$_POST["to_date"]."' GROUP BY setoran.id_setor ORDER BY tgl_setor desc  
       ";  
       $result = mysqli_query($db, $query);  
       $output .= '  
@@ -34,11 +35,14 @@ die("Anda belum login");//jika belum login jangan lanjut..
       {  
            while($row = mysqli_fetch_array($result))  
            {  
+               $cr_date=date_create($row['tgl_setor']);
+                         
+               $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
                 $output .= '  
                      <tr>  
                           <td>'. $row["id_setor"] .'</td>  
-                          <td>'. $row["tgl_setor"] .'</td>  
-                          <td>'. $row["id_admin"] .'</td>
+                          <td>'. $for_date .'</td>  
+                          <td>'. $row["nama"] .'</td>
                           <td>'. $row["harga"] .'</td>  
                           <td><a href="detil_setor.php?id_setor='.$row['id_setor'].'" >Detil</a></td>
                      </tr>  

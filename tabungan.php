@@ -19,14 +19,12 @@ include 'config.php';
     <meta name="author" content="">
 
     <title>Nasabah | Tabungan</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
+          
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
     <!-- Favicons -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" />  
-    <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
-    <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+    
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
@@ -210,7 +208,7 @@ include 'config.php';
                      {  
                          $cr_date=date_create($row['tgl_setor']);
                          
-                         $for_date=strftime('%B-%Y', $cr_date->getTimestamp())
+                         $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
                          
                      ?>  
                           <tr>
