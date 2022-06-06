@@ -181,10 +181,10 @@ include 'config.php';
                     <div class="container" style="width:100%;"> 
                          <div class="d-flex justify-content-around"> 
                               <div class="col-md-3">  
-                              <input type="date" name="from_date" id="from_date" class="form-control" placeholder="From Date" />  
+                              <input type="text" name="from_date" id="from_date" class="form-control" placeholder="From Date" />  
                               </div>  
                               <div class="col-md-3">  
-                                   <input type="date" name="to_date" id="to_date" class="form-control" placeholder="To Date" />  
+                                   <input type="text" name="to_date" id="to_date" class="form-control" placeholder="To Date" />  
                               </div>  
                               <div class="col-md-5">  
                                    <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  
@@ -277,7 +277,7 @@ include 'config.php';
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
+    
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
