@@ -291,7 +291,7 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                                 <div class="dropdown">
                                                     <a href="#" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class='fas fa-pencil-alt'></span></a>
                                                     <div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="border: 3px outset blue; background-color: lightblue;">
-                                                        <a style="text-align: center;" class="dropdown-item" href="#" >Edit Sampah</a>
+                                                        <a style="text-align: center;" class="dropdown-item" href="#" data-toggle="modal" data-target="#editSampahModal<?php echo $row['id_sampah']; ?>">Edit Sampah</a>
                                                         <a style="text-align: center;" class="dropdown-item" href="#" data-toggle="modal" data-target="#editHrgPengepulModal<?php echo $row['id_sampah']; ?>">Edit Harga Pengepul</a>
                                                         <a style="text-align: center;" class="dropdown-item" href="#" data-toggle="modal" data-target="#editHrgNasabahModal<?php echo $row['id_sampah']; ?>">Edit Harga Nasabah</a>
                                                     </div>
@@ -301,14 +301,14 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                         </tr>
 
                                         <!-- MODAL edit Sampah -->
-                                        <div id="editModal<?php echo $row['id_sampah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div id="editSampahModal<?php echo $row['id_sampah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                             <div class="modal-dialog" role="document">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah Harga Sampah</h4>
+                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah Sampah</h4>
                                                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                                                     </div>
-                                                    <form action="ubah_harga.php" method="get">
+                                                    <form action="ubah_sampah.php" method="get">
                                                         <?php
                                                         include 'config.php';
                                                         $id_sampah = $row['id_sampah'];
@@ -317,24 +317,13 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                                         ?>
                                                         <div class="modal-body">
                                                             <input type="hidden" name="id_sampah" id="id_sampah" value="<?php echo $data['id_sampah']; ?>"/>
-                                                            <input type="hidden" name="harga_pengepul_lama" value="<?php echo $data['harga_pengepul'] ?>" />
-                                                            <input type="hidden" name="harga_nasabah_lama" value="<?php echo $data['harga_nasabah'] ?>" />
-                                                            <input type="hidden" name="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" />
                                                             <div class="form-group">
-                                                                <label class="control-label" for="harga_pengepul">harga pengepul : </label>
-                                                                <input type="text" name="harga_pengepul" class="form-control" id="harga_pengepul" value="<?php echo $data['harga_pengepul']; ?>"/>
+                                                                <label class="control-label" for="nama_sampah">Nama Sampah : </label>
+                                                                <input type="text" name="nama_sampah" class="form-control" id="nama_sampah" placeholder="saat ini --> <?php echo $data['nama_sampah']; ?>" required/>
                                                             </div>
                                                             <div class="form-group">
-                                                                <label class="control-label" for="harga_nasabah">harga nasabah : </label>
-                                                                <input type="number" name="harga_nasabah" class="form-control" id="harga_nasabah" value="<?php echo $data['harga_nasabah']; ?>"/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="tanggal">tanggal : </label>
-                                                                <input type="date" name="tanggal" class="form-control" id="tanggal" value="<?php echo date('Y-m-d'); ?>"/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="id_admin">admin yang mengubah : </label>
-                                                                <input type="text" name="id_admin" class="form-control" id="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" disabled/>
+                                                                <label class="control-label" for="satuan">Satuan : </label>
+                                                                <input type="text" name="satuan" class="form-control" id="satuan" placeholder="saat ini --> <?php echo $data['satuan']; ?>" required/>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">

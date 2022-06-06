@@ -192,32 +192,32 @@ $row        = mysqli_fetch_array($tabungan);
                                    <table>
                                         <tr>
                                              <td>
-                                                  <label for="id_setoran">id_setoran: </label>
+                                                  <label for="id_setoran">ID Setoran: </label>
                                                   <input type="text" name="id_setoran" id="id_setoran" value="<?php echo $row['id_nasabah'].date('nY'); ?>" />
                                              </td>
                                         </tr>
 
                                         <tr>
                                              <td>
-                                                  <label for="tgl_setor">tgl_setor: </label>
+                                                  <label for="tgl_setor">Tanggal Setor: </label>
                                                   <input type="date" name="tgl_setor" id="tgl_setor" value="<?php echo date('Y-m-d'); ?>" />
                                              </td>
                                         </tr>
                                         <tr>
                                              <td>
-                                             <label for="id_nasabah">id_nasabah: </label>
+                                             <label for="id_nasabah">ID Nasabah: </label>
                                              <input type="text" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
                                              </td>
                                         </tr>
                                         <tr>
                                              <td>
-                                             <label for="id_admin">id_admin: </label>
+                                             <label for="id_admin">ID Admin: </label>
                                              <input type="text" name="id_admin" id="id_admin" value="<?php echo $_SESSION['id_admin'] ?>"  />
                                              </td>
                                         </tr>
                                         <tr>
                                              <td>
-                                             <label for="saldo">saldo: </label>
+                                             <label for="saldo">Saldo: </label>
                                              <input type="text" name="saldo" id="saldo" value="<?php echo $row['saldo'] ?>"  />
                                              </td>
                                         </tr>
@@ -225,19 +225,52 @@ $row        = mysqli_fetch_array($tabungan);
                                    </table>
                               </div>
                               <div class="table-responsive">
-                                   <button type="button" name="add" id="add" class="btn btn-success">Add More</button>
-                                   <table class="table table-bordered" id="dynamic_field">
-                                        <!--<tr>
-                                             <td><select class="form-control" name="kategori" id="kategori">
-                                                       <option value=""> Pilih kategori</option>
-                                                  </select></td>
-                                             <td><select class="form-control" name="sampah" id="sampah">
-                                                       <option value=""></option>
-                                                  </select></td>
-                                             <td><input type="text" name="harga_nasabah" id="harga_nasabah" class="form-control" /></td>
-                                             <td></td>
-                                        </tr>-->
-                                   </table>
+                              <?php
+                                   // Include config file
+                                   require_once "config.php";
+
+                                   $i=0;
+                                   $sql = "SELECT * FROM sampah INNER JOIN kategori ON sampah.id_kategori=kategori.id_kategori;";
+                                   if($result = mysqli_query($db, $sql)){
+                                   if(mysqli_num_rows($result) > 0){
+                                        
+                                        echo "<table class='table table-bordered' id='dynamic_field'>";
+                                        echo "<thead>";
+                                             echo "<tr>";
+                                                  echo "<th>Nama Sampah</th>";
+                                                  echo "<th>Bobot</th>";
+                                                  echo "<th>Satuan</th>";
+                                             echo "</tr>";
+                                        echo "</thead>";  
+                                        echo "<tbody>";
+                                        while($row = mysqli_fetch_array($result)){
+                                             $i++;
+                                             echo "<tr id='row-$i'>";
+                                             echo "<td style='display: none;'><input type='text' name='sampah' class='form-control' value=". $row['id_sampah'] ."  /></td>";
+                                             echo "<td><input type='text' name='nama_sampah' class='form-control' value=". $row['nama_sampah'] ." readonly /></td>";
+                                             echo "<td style='display: none;'><input type='text' name='harga_nasabah' class='form-control' value=". $row['harga_nasabah'] ."  /></td>";
+                                             echo "<td style='display: none;'><input type='text' name='harga_pengepul' class='form-control' value=". $row['harga_pengepul'] ."  /></td>";
+                                             echo "<td><input type='number' name='jumlah' class='form-control' value='0'/></td>";
+                                             echo "<td style='display: none;'><input type='text' name='hrg_nasabah' class='form-control' value='0'/></td>";
+                                             echo "<td style='display: none;'><input type='text' name='hrg_pengepul' class='form-control' value='0'/></td>";
+                                             echo "<td><input type='text' name='satuan' class='form-control' value=". $row['satuan'] ." readonly /></td>";
+                                             echo "</tr>";
+                                        }
+                                        echo "</tbody>";
+                                        echo "</table>";
+                                        // Free result set
+                                        mysqli_free_result($result);
+                                        } else{
+                                             echo "<p class='lead'><em>No records were found.</em></p>";
+                                        }
+                                   } else{
+                                   echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+                                   }
+
+                                   // Close connection
+                                   mysqli_close($db);
+                                   ?>
+                                        
                                    <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
                               </div>
                          </form>
@@ -308,139 +341,27 @@ $row        = mysqli_fetch_array($tabungan);
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
           $(document).ready(function() {
-               var i = 1;
-               var kategoriDropdown = "";
-               $('#add').click(function() {
-                    var html = '';
-                    html += '<tr id="row' + i + '">';
-               
-                    html += '<td width="20%"><select class="form-control" name="kategori" data-kategori-id="' + i + '">' + kategoriDropdown + '</select></td>';
-                    html += '<td width="20%"><select class="form-control" name="sampah" data-sampah-id="' + i + '"></select></td>';
-                    html += '<td style="display: none;"><input type="text" name="harga_nasabah" data-harga-nasabah-id="' + i + '" class="form-control" readonly /></td>';
-                    html += '<td style="display: none;"><input type="text" name="harga_pengepul" data-harga-pengepul-id="' + i + '" class="form-control" readonly /></td>';
-                    html += '<td width="10%"><input type="text" name="jumlah" data-jumlah-id="' + i + '" class="form-control"  /></td>';
-                    html += '<td style="display: none;"><input type="text" name="hrg_nasabah" data-hrg-nasabah-id="' + i + '" class="form-control"  /></td>';
-                    html += '<td style="display: none;"><input type="text" name="hrg_pengepul" data-hrg-pengepul-id="' + i + '" class="form-control"  /></td>';
-                    html += '<td width="10%"><input type="text" name="satuan" data-satuan-id="' + i + '" class="form-control" readonly /></td>';
-                    html += '<td width="5%"><button type="button" name="remove" id="' + i + '" class="btn btn-danger btn_remove">X</button></td>';
-                    html += '</tr>';
-                    $('#dynamic_field').append(html);
-                    i = i + 1;
-               });
-
-               $('#add').click();
-
-               $.ajax({
-                    type: 'POST',
-                    url: "get_kategori.php",
-                    cache: false,
-                    success: function(response) {
-                         var data = JSON.parse(response);
-                         var select = $('select[data-kategori-id="1"]');
-                         data.forEach(function(val) {
-                              kategoriDropdown += '<option value="'+val.id+'">'+val.value+'</option>';
-                         });
-                         select.append(kategoriDropdown);
-                    }
-               });
-
-               $(document).on('change', 'select[name="kategori"]', function() {
-                    var kategori = $(this).val();
-                    var id = $(this).data("kategoriId");
-                    $.ajax({
-                         type: 'POST',
-                         url: "get_sampah.php",
-                         data: JSON.stringify({
-                              kategori: kategori
-                         }),
-                         cache: false,
-                         success: function(response) {
-                              var select = $('select[data-sampah-id="' + id + '"]');
-                              select.empty();
-                              var data = JSON.parse(response);
-                              data.forEach(function(val) {
-                                   select.append($("<option>").val(val.id).text(val.value));
-                              });
-                         }
-                    });
-               });
-
-               $(document).on('change', 'select[name="sampah"]', function() {
-                    var sampah = $(this).val();
-                    var id = $(this).data("sampahId");
-                    var kategori =  $('select[data-kategori-id="' + id + '"]').val();
-                    $.ajax({
-                         type: 'POST',
-                         url: 'get_harga_nasabah.php',
-                         data: JSON.stringify({
-                              sampah: sampah,
-                              kategori: kategori
-                         }),
-                         success: function(response) { 
-                              var data = JSON.parse(response);
-                              var select = $('input[data-harga-nasabah-id="' + id + '"]');
-                              $(select).val(data.data);
-                              
-                         }
-                    });
-               });
-               $(document).on('change', 'select[name="sampah"]', function() {
-                    var sampah = $(this).val();
-                    var id = $(this).data("sampahId");
-                    var kategori =  $('select[data-kategori-id="' + id + '"]').val();
-                    $.ajax({
-                         type: 'POST',
-                         url: 'get_harga_pengepul.php',
-                         data: JSON.stringify({
-                              sampah: sampah,
-                              kategori: kategori
-                         }),
-                         success: function(response) { 
-                              var data = JSON.parse(response);
-                              var select = $('input[data-harga-pengepul-id="' + id + '"]');
-                              $(select).val(data.data);
-                              
-                         }
-                    });
-               });
-
-               $(document).on('change', 'select[name="sampah"]', function() {
-                    var sampah = $(this).val();
-                    var id = $(this).data("sampahId");
-                    var kategori =  $('select[data-kategori-id="' + id + '"]').val();
-                    $.ajax({
-                         type: 'POST',
-                         url: 'get_satuan.php',
-                         data: JSON.stringify({
-                              sampah: sampah,
-                              kategori: kategori
-                         }),
-                         success: function(response) { 
-                              var data = JSON.parse(response);
-                              var select = $('input[data-satuan-id="' + id + '"]');
-                              $(select).val(data.data);
-                         }
-                    });
-               });
                $(document).on('change', 'input[name="jumlah"]', function() {
-                    var jumlah = $(this).val();
-                    var id = $(this).data("jumlahId");
-                    var harga_nasabah = $('input[data-harga-nasabah-id="' + id + '"]').val();
-                    var harga_pengepul = $('input[data-harga-pengepul-id="' + id + '"]').val();
+                    //Get parent row
+                    var parent = $(this).parent().parent();
+                    //get row ID
+                    var id = $(parent).attr("id").replace("row-", "");
+                    //Get amount
+                    var jumlah = $(parent).find('input[name="jumlah"]').val();
+                    //Get Price value
+                    var harga_nasabah = $(parent).find('input[name="harga_nasabah"]').val();
+                    var harga_pengepul = $(parent).find('input[name="harga_pengepul"]').val();
+                    //Calculate
                     var credit = jumlah * harga_nasabah;
                     var credit2 = jumlah * harga_pengepul;
-                    var coba =$('input[data-hrg-nasabah-id="' + id + '"]');
-                    var coba2 =$('input[data-hrg-pengepul-id="' + id + '"]');
-                    $(coba).val(credit);
-                    $(coba2).val(credit2);
-                    
+                    //Set into Total
+                    var hrg_nasabah = $(parent).find('input[name="hrg_nasabah"]');
+                    $(hrg_nasabah).val(credit);
+                    var hrg_pengepul = $(parent).find('input[name="hrg_pengepul"]');
+                    $(hrg_pengepul).val(credit);
                });
 
-               $(document).on('click', '.btn_remove', function() {
-                    var button_id = $(this).attr("id");
-                    $('#row' + button_id + '').remove();
-               });
-
+               
                $('#submit').click(function() {
 
                     var json = Object();
@@ -452,17 +373,21 @@ $row        = mysqli_fetch_array($tabungan);
                     json["id_admin"] = $("#id_admin").val();
                     json["saldo"] = $("#saldo").val();
 
-                    var row = $('#dynamic_field > tr');
-                    $.each(row, function(index, value) {
-                         var sampah = $(value).find('select[name="sampah"]').val();
-                         var total = $(value).find('input[name="jumlah"]').val();
+                    
+                    var row = $('#dynamic_field > tbody > tr');
+                    $.each(row, function(index, value) {  
+                         
+                         var id = $(value).attr("id").replace("row-", "");
+                         var sampah = $(value).find('input[name="sampah"]').val();
                          var harga_nasabah = $(value).find('input[name="hrg_nasabah"]').val();
                          var harga_pengepul = $(value).find('input[name="hrg_pengepul"]').val();
+                         var total = $(value).find('input[name="jumlah"]').val();
                          var data = {
+                              id: id,
                               sampah: sampah,
-                              total: total,
                               harga_nasabah: harga_nasabah,
-                              harga_pengepul: harga_pengepul
+                              harga_pengepul: harga_pengepul,
+                              total: total
                          };
                          rowData.push(data);
                     });

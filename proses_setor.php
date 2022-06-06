@@ -1,9 +1,6 @@
-
-
 <?php
 include("config.php");
 $data = json_decode(file_get_contents('php://input'), true);
-
 
 $number = 1;
 // ini number harusnya dapet dari count id_setornya, tapi di akalin dulu , coba masuk atau enggak, yang di luar data bisa masuk, yang didalem ga bisa
@@ -23,9 +20,11 @@ if ($number > 0) {
           $harga_nasabah = $row['harga_nasabah'];
           $jumlah=$jumlah+$row['harga_nasabah'];
           $harga_pengepul = $row['harga_pengepul'];
+          if($total != "0"){
           $sql2 = "INSERT INTO detil_setor(id_setor, id_sampah, total, harga_nasabah, harga_pengepul)
              VALUES('$id_setoran', '$id_sampah', '$total', '$harga_nasabah', '$harga_pengepul')";
           mysqli_query($db, $sql2);
+          }
      }
      $jml = $jumlah+$data['saldo'];
      $sql3 = "UPDATE tabungan SET saldo='$jml' WHERE id_nasabah='$id_nasabah'";
