@@ -18,11 +18,8 @@ include 'config.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Nasabah | Tabungan</title>
+    <title>Nasabah | Pengajuan</title>
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
-          
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
     <!-- Favicons -->
     
     <link href="assets/img/favicon.png" rel="icon">
@@ -89,7 +86,7 @@ include 'config.php';
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Pengajuan:</h6>
-                        <a class="collapse-item" href="pengajuan.php">Pengajuan</a>
+                        <a class="collapse-item" href="#">Pengajuan</a>
                         <a class="collapse-item" href="#">Riwayat Pengajuan</a>
                     </div>
                 </div>
@@ -170,64 +167,51 @@ include 'config.php';
                     $id_nasabah= $_SESSION['id_nasabah'];
                     $rekening  = mysqli_query($db, "select * from tabungan where id_nasabah='$id_nasabah'");
                     $row        = mysqli_fetch_array($rekening);
+                    $min  = mysqli_query($db, "select * from min_saldo ");
+                    $row_min        = mysqli_fetch_array($min);
+
                     ?>
                     <input type="hidden" value="<?php echo $row['saldo']; ?>" name="money" id="money" />
-                    <p style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p>
+                    <input type="hidden" value="<?php echo $row_min['saldo']; ?>" name="minsaldo" id="minsaldo" />
                     
-                    <div>
-                    <br/>
-                    <div class="container" style="width:100%;"> 
-                         <div class="d-flex justify-content-around"> 
-                              <div class="col-md-8">
-                                    <table>
+                    <p style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p>
+                    <p style="text-align: center;">Jumlah Uang Yang Bisa Ditarik Direkening Anda Sebesar : <span id="bisaditarik"></span></p>
+                    
+                        <div>
+                        <br/>
+                        <form name="pengajuan" id="pengajuan">
+                                   <div class="table-responsive">
+                                   <table>
+                                        
+
                                         <tr>
-                                        <td>  <input type="text" name="from_date" id="from_date" class="form-control"  />  </td>
-                                        <td> <input type="text" name="to_date" id="to_date" class="form-control"  />  </td>
-                                        <td> <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  </td>
-                                        <td> <input type="button" name="reset" id="reset" value="reset" class="btn btn-info" />  </td>
+                                             <td>
+                                                  <label for="tanggal_pengajuan">Tanggal Setor: </label>
+                                                  <input type="date" name="tanggal_pengajuan" id="tanggal_pengajuan" value="<?php echo date('Y-m-d'); ?>" />
+                                             </td>
+                                        </tr>
+                                        <input type="hidden"  name="min" id="min" />
+                                             <input type="hidden" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
+                                        <tr>
+                                             <td>
+                                             <label for="jumlah">Nominal yang ingin diajukan: </label>
+                                             <input type="text" name="jumlah" id="jumlah"   />
+                                             </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
+                                            </td>
                                         </tr>
                                     </table>
-                                </div>  
+                              </div>
+                              <div class="table-responsive">
                               
-                         </div> 
-                    <div style="clear:both"></div>                 
-                    <br />  
-                    <div id="order_table">  
-                     <table class="table table-bordered">  
-                          <tr>  
-                               <th>ID</th>  
-                               <th >tanggal setor</th>  
-                               <th>Admin</th>
-                               <th>Setor</th>
-                               <th>Aksi</th>  
-
-                          </tr>  
-                     <?php
-                     setlocale(LC_ALL, 'id-ID', 'id_ID');
-                     $query = "SELECT setoran.id_setor , setoran.tgl_setor,setoran.id_nasabah,setoran.id_admin, admin.nama,SUM(detil_setor.harga_nasabah) as harga FROM setoran RIGHT JOIN detil_setor ON setoran.id_setor = detil_setor.id_setor RIGHT JOIN admin ON setoran.id_admin = admin.id_admin  where id_nasabah='$id_nasabah' GROUP BY setoran.id_setor ORDER BY tgl_setor desc";  
-                     $result = mysqli_query($db, $query);  
-                     while($row = mysqli_fetch_array($result))  
-                     {  
-                         $cr_date=date_create($row['tgl_setor']);
-                         
-                         $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
-                         
-                     ?>  
-                          <tr>
-                                 
-                               <td><?php echo $row["id_setor"]; ?></td>  
-                               <td><?php echo $for_date; ?></td>  
-                               <td><?php echo $row["nama"]; ?></td>
-                               <td><?php echo $row["harga"]; ?></td>
-                              <?php echo " <td><a href='detil_setor.php?id_setor=".$row['id_setor']."' >Detil</a></td>";?>   
-                          </tr>  
-                     <?php  
-                     }  
-                     ?>  
-                     </table>  
-                    </div>  
-                    </div>  
-                    </div>
+                                        
+                                   
+                              </div>
+                         </form>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -293,57 +277,53 @@ include 'config.php';
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
-          var calculation = document.getElementById('money').value;
-
+            var uang = document.getElementById('money').value;
+            var min_saldo = document.getElementById('minsaldo').value;
+            var coba_saldo=uang-min_saldo
           //1st way
           var moneyFormatter = new Intl.NumberFormat('id-ID', {
           style: 'currency',
           currency: 'IDR',
           minimumFractionDigits: 2
           });
-          document.getElementById('formattedMoney').innerText = moneyFormatter.format(calculation);
+          document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
+          document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
+          document.getElementById('min').value=coba_saldo ;
      </script>
 
-     <script>  
-          $(document).ready(function(){  
-               
-                var d = new Date();
-                var currMonth = d.getMonth();
-                var currYear = d.getFullYear();
-                var startDate = new Date(currYear, currMonth, 1);
-                var lastDate=new Date(currYear, currMonth + 1,0);
-                  
+<script>
+          $(document).ready(function() {
+               $('#submit').click(function() {
+                    
+                    
+                        var json = Object();
 
-                $('#from_date').datepicker({ dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true }); // format to show
-                $('#from_date').datepicker('setDate', startDate);
-                $('#to_date').datepicker({ dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true }); // format to show
-                $('#to_date').datepicker('setDate', lastDate); 
-                 
-               $('#filter').click(function(){  
-                    var from_date = $('#from_date').val();  
-                    var to_date = $('#to_date').val();  
-                    if(from_date != '' && to_date != '')  
-                    {  
-                         $.ajax({  
-                              url:"filter_tabungan.php",  
-                              method:"POST",  
-                              data:{from_date:from_date, to_date:to_date},  
-                              success:function(data)  
-                              {  
-                                   $('#order_table').html(data);  
-                              }  
-                         });  
-                    }  
-                    else  
-                    {  
-                         alert("Please Select Date");  
-                    }  
-               }); 
-                $('#reset').click(function() {
-                location.reload();
-                }); 
-          });  
+                        var rowData = [];
+                        json["id_nasabah"] = $("#id_nasabah").val();
+                        json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
+                        json["jumlah"] = $("#jumlah").val();
+                        json["min"] = $("#min").val();
+                        json["data"] = rowData;
+
+                        console.log(JSON.stringify(json));
+                        
+                        $.ajax({  
+                        url:"proses_pengajuan.php",  
+                        method:"POST",  
+                        data:JSON.stringify(json),  
+                        success:function(data)  
+                        {  
+                            alert(data);  
+                            window.location.assign("pengajuan.php") 
+                        }  
+                        });
+                    
+                        
+                    
+               });
+          });
      </script>
+       
 
 </body>
 </html>
