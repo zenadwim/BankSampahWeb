@@ -8,5 +8,5 @@ unset($_SESSION['nama']);
 unset($_SESSION['id_nasabah']);
 unset($_SESSION['id_admin']);
 // mengalihkan halaman ke halaman login
-header("location:index.html");
+header("location:index.php");
 ?>

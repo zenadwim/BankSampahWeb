@@ -217,12 +217,12 @@ $query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
                                             <input type="number" name="no_hp" class="form-control" id="no_hp" required/>
                                         </div>
                                         <div class="form-group">
-                                            <label class="control-label" for="password">Password: </label>
-                                            <input type="text" name="password" class="form-control" id="password" required/>
-                                        </div>
-                                        <div class="form-group">
                                             <label class="control-label" for="alamat">Alamat: </label>
                                             <input type="text" name="alamat" class="form-control" id="alamat" required/>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="control-label" for="password">Password: </label>
+                                            <input type="text" name="password" class="form-control" id="password" required/>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

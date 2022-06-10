@@ -181,10 +181,6 @@ die("Anda belum login");//jika belum login jangan lanjut..
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div>
 
-                    <div class="mb-4">
-                        <p>Halo <b><?php echo $_SESSION['id_admin']; ?></b> Anda telah login sebagai <b>Admin</b>.</p>
-                    </div>
-
                 </div>
                 <!-- /.container-fluid -->
 

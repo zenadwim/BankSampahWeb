@@ -25,8 +25,46 @@
   <link href="assets/vendor/remixicon/remixicon.css" rel="stylesheet">
   <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
+  <!-- Counter -->
+  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <!------ Include the above in your HEAD tag ---------->
+  <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css">
+
   <!-- Template Main CSS File -->
   <link href="assets/css/style.css" rel="stylesheet">
+  <style>
+    .counter {
+      background-color: #37517e;
+      padding: 20px 0;
+      border-radius: 5px;
+    }
+
+    .count-title {
+        color: white;
+        font-weight: normal;
+        margin-top: 10px;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .count-text {
+        color: white;
+        font-weight: normal;
+        margin-top: 10px;
+        margin-bottom: 0;
+        text-align: center;
+    }
+
+    .fa-2x {
+        margin: 0 auto;
+        float: none;
+        display: table;
+        color: #4ad1e5;
+    }
+  </style>
+  
 </head>
 
 <body>
@@ -35,9 +73,9 @@
   <header id="header" class="fixed-top ">
     <div class="container d-flex align-items-center">
 
-      <h1 class="logo me-auto"><a href="index.html">Bank Sampah</a></h1>
+      <h1 class="logo me-auto"><a href="index.php">Bank Sampah</a></h1>
       <!-- Uncomment below if you prefer to use an image logo -->
-      <!-- <a href="index.html" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
+      <!-- <a href="index.php" class="logo me-auto"><img src="assets/img/logo.png" alt="" class="img-fluid"></a>-->
 
       <nav id="navbar" class="navbar">
         <ul>
@@ -75,6 +113,58 @@
   </section><!-- End Hero -->
 
   <main id="main">
+    <section id="services" class="services section-bg">
+      <div class="container" data-aos="fade-up">
+
+        <div class="section-title">
+          <h2>Data Sampah</h2>
+        </div>
+        <div class="container">
+          <div class="row text-center">
+        <?php
+        // Include config file
+        require_once "config.php";
+        $i=0;
+
+        // $sql = "SELECT * FROM detil_setor INNER JOIN sampah ON detil_setor.id_sampah=sampah.id_sampah;";
+        $sql = "SELECT * FROM sampah;";
+        
+        if($result = mysqli_query($db, $sql)){
+            if(mysqli_num_rows($result) > 0){
+                while($row = mysqli_fetch_array($result)){                                
+                      $i++;
+                      $id_sampah = $row['id_sampah'];
+                      $satuan = $row['satuan'];
+                      
+                      $query = "SELECT * FROM detil_setor where id_sampah='$id_sampah'";
+                      $hasil = mysqli_query($db, $query);
+                      $x=0;  
+                      while($data = mysqli_fetch_array($hasil))  
+                      { 
+                          $x= $x + $data['total'];
+                      }
+                      echo "<div class='col' id='row-$i'>";
+                        echo "<div class='counter'>
+                          <i class='fa fa-code fa-2x'></i>
+                          <div class='d-sm-flex align-items-center justify-content-center'>
+                            <h1 class='timer count-title count-number' data-to='$x' data-speed='1500'></h1>
+                            <h3 class='count-title count-number'>$satuan</h3>
+                          </div>
+                          <h4 class='count-text '>". $row['nama_sampah'] ."</h4>
+                        </div>";
+                      echo "</div>";
+                }
+                // Free result set
+                mysqli_free_result($result);
+            }
+        }
+        // Close connection
+        mysqli_close($db);
+        ?>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <!-- ======= About Us Section ======= -->
     <!-- <section id="about" class="about">
@@ -746,7 +836,106 @@
 
   <!-- Template Main JS File -->
   <script src="assets/js/main.js"></script>
+  <script>
+    (function ($) {
+      $.fn.countTo = function (options) {
+        options = options || {};
+        
+        return $(this).each(function () {
+          // set options for current element
+          var settings = $.extend({}, $.fn.countTo.defaults, {
+            from:            $(this).data('from'),
+            to:              $(this).data('to'),
+            speed:           $(this).data('speed'),
+            refreshInterval: $(this).data('refresh-interval'),
+            decimals:        $(this).data('decimals')
+          }, options);
+          
+          // how many times to update the value, and how much to increment the value on each update
+          var loops = Math.ceil(settings.speed / settings.refreshInterval),
+            increment = (settings.to - settings.from) / loops;
+          
+          // references & variables that will change with each update
+          var self = this,
+            $self = $(this),
+            loopCount = 0,
+            value = settings.from,
+            data = $self.data('countTo') || {};
+          
+          $self.data('countTo', data);
+          
+          // if an existing interval can be found, clear it first
+          if (data.interval) {
+            clearInterval(data.interval);
+          }
+          data.interval = setInterval(updateTimer, settings.refreshInterval);
+          
+          // initialize the element with the starting value
+          render(value);
+          
+          function updateTimer() {
+            value += increment;
+            loopCount++;
+            
+            render(value);
+            
+            if (typeof(settings.onUpdate) == 'function') {
+              settings.onUpdate.call(self, value);
+            }
+            
+            if (loopCount >= loops) {
+              // remove the interval
+              $self.removeData('countTo');
+              clearInterval(data.interval);
+              value = settings.to;
+              
+              if (typeof(settings.onComplete) == 'function') {
+                settings.onComplete.call(self, value);
+              }
+            }
+          }
+          
+          function render(value) {
+            var formattedValue = settings.formatter.call(self, value, settings);
+            $self.html(formattedValue);
+          }
+        });
+      };
+      
+      $.fn.countTo.defaults = {
+        from: 0,               // the number the element should start at
+        to: 0,                 // the number the element should end at
+        speed: 1000,           // how long it should take to count between the target numbers
+        refreshInterval: 100,  // how often the element should be updated
+        decimals: 0,           // the number of decimal places to show
+        formatter: formatter,  // handler for formatting the value before rendering
+        onUpdate: null,        // callback method for every time the element is updated
+        onComplete: null       // callback method for when the element finishes updating
+      };
+      
+      function formatter(value, settings) {
+        return value.toFixed(settings.decimals);
+      }
+    }(jQuery));
 
+    jQuery(function ($) {
+      // custom formatting example
+      $('.count-number').data('countToOptions', {
+      formatter: function (value, options) {
+        return value.toFixed(options.decimals).replace(/\B(?=(?:\d{3})+(?!\d))/g, ',');
+      }
+      });
+      
+      // start all the timers
+      $('.timer').each(count);  
+      
+      function count(options) {
+      var $this = $(this);
+      options = $.extend({}, options || {}, $this.data('countToOptions') || {});
+      $this.countTo(options);
+      }
+    });
+  </script>
 </body>
 
 </html>

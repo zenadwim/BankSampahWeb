@@ -162,10 +162,50 @@ die("Anda belum login");//jika belum login jangan lanjut..
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div>
 
-                    <div class="mb-4">
-                        <p>Halo <b><?php echo $_SESSION['id_nasabah']; ?></b> Anda telah login sebagai <b>Nasabah</b>.</p>
-                    </div>
+                    <!-- Content Row -->
+                    <div class="row">
+                        <?php
+                        // Include config file
+                        require_once "config.php";
+                        $i=0;
 
+                        // $sql = "SELECT * FROM detil_setor INNER JOIN sampah ON detil_setor.id_sampah=sampah.id_sampah;";
+                        $sql = "SELECT * FROM sampah;";
+                        
+                        if($result = mysqli_query($db, $sql)){
+                            if(mysqli_num_rows($result) > 0){
+                                while($row = mysqli_fetch_array($result)){                                
+                                      $i++;
+                                      $id_sampah = $row['id_sampah'];
+                                      echo "<div class='col-xl-3 col-md-6 mb-4' id='row-$i'>";
+                                        echo "<div class='card border-left-primary shadow h-100 py-2'>";
+                                            echo "<div class='card-body'>";
+                                                echo "<div class='row no-gutters align-items-center'>";
+                                                    echo "<div class='col mr-2'>";
+                                                        echo "<div class='h4 font-weight-bold text-primary text-uppercase mb-1'>". $row['nama_sampah'] ."</div>";
+                                                        $query = "SELECT * FROM detil_setor where id_sampah='$id_sampah'";
+                                                        $hasil = mysqli_query($db, $query);
+                                                        $x=0;  
+                                                        while($data = mysqli_fetch_array($hasil))  
+                                                        { 
+                                                            $x= $x + $data['total'];
+                                                        } 
+                                                        echo "<div class='h5 mb-0 font-weight-bold text-gray-800'>$x (". $row['satuan'].")</div>";
+                                                    echo '</div>';
+                                                    echo "<div class='col-auto'><i class='fas fa-shopping-basket fa-2x text-gray-300'></i></div>";
+                                                echo "</div>";
+                                            echo "</div>";
+                                        echo "</div>";
+                                      echo "</div>";
+                                }
+                                // Free result set
+                                mysqli_free_result($result);
+                            }
+                        }
+                        // Close connection
+                        mysqli_close($db);
+                        ?>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
