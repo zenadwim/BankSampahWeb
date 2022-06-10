@@ -19,8 +19,7 @@ include 'config.php';
     <meta name="author" content="">
 
     <title>Nasabah | Tabungan</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
-          
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
         <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
         <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
     <!-- Favicons -->
@@ -198,11 +197,10 @@ include 'config.php';
                      <table class="table table-bordered">  
                           <tr>  
                                <th>ID</th>  
-                               <th >tanggal setor</th>  
+                               <th>tanggal setor</th>  
                                <th>Admin</th>
                                <th>Setor</th>
-                               <th>Aksi</th>  
-
+                               <th>Aksi</th>
                           </tr>  
                      <?php
                      setlocale(LC_ALL, 'id-ID', 'id_ID');
@@ -279,7 +277,6 @@ include 'config.php';
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -308,7 +305,6 @@ include 'config.php';
 
      <script>  
           $(document).ready(function(){  
-               
                 var d = new Date();
                 var currMonth = d.getMonth();
                 var currYear = d.getFullYear();
@@ -391,6 +387,5 @@ include 'config.php';
                 }); 
           });  
      </script>
-
 </body>
 </html>
