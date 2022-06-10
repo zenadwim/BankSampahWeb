@@ -26,8 +26,6 @@ $row        = mysqli_fetch_array($tabungan);
     <meta name="author" content="">
 
     <title>Admin | Setor Sampah</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
-    
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -326,7 +324,7 @@ $row        = mysqli_fetch_array($tabungan);
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <!-- <script src="vendor/jquery/jquery.min.js"></script> -->
+    <script src="vendor/jquery/jquery.min.js"></script>
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->

@@ -84,7 +84,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Pengajuan:</h6>
-                        <a class="collapse-item" href="pengajuan.php">Pengajuan</a>
+                        <a class="collapse-item" href="#">Pengajuan</a>
                         <a class="collapse-item" href="#">Riwayat Pengajuan</a>
                     </div>
                 </div>

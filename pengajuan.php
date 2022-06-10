@@ -287,10 +287,12 @@ include 'config.php';
         //   document.getElementById('min').value=coba_saldo ;
      </script>
 
-    <script>
-        $(document).ready(function() {
-            $('#submit').click(function() {
-                    var json = Object();
+<script>
+          $(document).ready(function() {
+               $('#submit').click(function() {
+                    
+                    
+                        var json = Object();
 
                         var rowData = [];
                         json["id_nasabah"] = $("#id_nasabah").val();
@@ -299,20 +301,25 @@ include 'config.php';
                         json["min"] = $("#money").val();
                         
 
-                    console.log(JSON.stringify(json));
+                        console.log(JSON.stringify(json));
+                        
+                        $.ajax({  
+                        url:"proses_pengajuan.php",  
+                        method:"POST",  
+                        data:JSON.stringify(json),  
+                        success:function(data)  
+                        {  
+                            alert(data);  
+                            window.location.assign("pengajuan.php") 
+                        }  
+                        });
                     
-                    $.ajax({  
-                    url:"proses_pengajuan.php",  
-                    method:"POST",  
-                    data:JSON.stringify(json),  
-                    success:function(data)  
-                    {  
-                        alert(data);  
-                        window.location.assign("pengajuan.php") 
-                    }  
-                    });
-            });
-        });
-    </script>
+                        
+                    
+               });
+          });
+     </script>
+       
+
 </body>
 </html>
