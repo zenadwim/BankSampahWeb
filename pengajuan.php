@@ -277,53 +277,46 @@ include 'config.php';
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
-            var uang = document.getElementById('money').value;
-            var min_saldo = document.getElementById('minsaldo').value;
-            var coba_saldo=uang-min_saldo
-          //1st way
-          var moneyFormatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 2
-          });
-          document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
-          document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
-          document.getElementById('min').value=coba_saldo ;
-     </script>
+        var uang = document.getElementById('money').value;
+        var min_saldo = document.getElementById('minsaldo').value;
+        var coba_saldo=uang-min_saldo
+        //1st way
+        var moneyFormatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 2
+        });
+        document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
+        document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
+        document.getElementById('min').value=coba_saldo ;
+    </script>
 
-<script>
-          $(document).ready(function() {
-               $('#submit').click(function() {
-                    
-                    
-                        var json = Object();
+    <script>
+        $(document).ready(function() {
+            $('#submit').click(function() {
+                    var json = Object();
 
-                        var rowData = [];
-                        json["id_nasabah"] = $("#id_nasabah").val();
-                        json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
-                        json["jumlah"] = $("#jumlah").val();
-                        json["min"] = $("#min").val();
-                        json["data"] = rowData;
+                    var rowData = [];
+                    json["id_nasabah"] = $("#id_nasabah").val();
+                    json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
+                    json["jumlah"] = $("#jumlah").val();
+                    json["min"] = $("#min").val();
+                    json["data"] = rowData;
 
-                        console.log(JSON.stringify(json));
-                        
-                        $.ajax({  
-                        url:"proses_pengajuan.php",  
-                        method:"POST",  
-                        data:JSON.stringify(json),  
-                        success:function(data)  
-                        {  
-                            alert(data);  
-                            window.location.assign("pengajuan.php") 
-                        }  
-                        });
+                    console.log(JSON.stringify(json));
                     
-                        
-                    
-               });
-          });
-     </script>
-       
-
+                    $.ajax({  
+                    url:"proses_pengajuan.php",  
+                    method:"POST",  
+                    data:JSON.stringify(json),  
+                    success:function(data)  
+                    {  
+                        alert(data);  
+                        window.location.assign("pengajuan.php") 
+                    }  
+                    });
+            });
+        });
+    </script>
 </body>
 </html>
