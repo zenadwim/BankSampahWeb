@@ -167,15 +167,15 @@ include 'config.php';
                     $id_nasabah= $_SESSION['id_nasabah'];
                     $rekening  = mysqli_query($db, "select * from tabungan where id_nasabah='$id_nasabah'");
                     $row        = mysqli_fetch_array($rekening);
-                    $min  = mysqli_query($db, "select * from min_saldo ");
-                    $row_min        = mysqli_fetch_array($min);
+                    // $min  = mysqli_query($db, "select * from min_saldo ");
+                    // $row_min        = mysqli_fetch_array($min);
 
                     ?>
                     <input type="hidden" value="<?php echo $row['saldo']; ?>" name="money" id="money" />
-                    <input type="hidden" value="<?php echo $row_min['saldo']; ?>" name="minsaldo" id="minsaldo" />
+                    <!-- <input type="text" value="<?php echo $row_min['saldo']; ?>" name="minsaldo" id="minsaldo" /> -->
                     
                     <p style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p>
-                    <p style="text-align: center;">Jumlah Uang Yang Bisa Ditarik Direkening Anda Sebesar : <span id="bisaditarik"></span></p>
+                    <!-- <p style="text-align: center;">Jumlah Uang Yang Bisa Ditarik Direkening Anda Sebesar : <span id="bisaditarik"></span></p> -->
                     
                         <div>
                         <br/>
@@ -184,13 +184,9 @@ include 'config.php';
                                    <table>
                                         
 
-                                        <tr>
-                                             <td>
-                                                  <label for="tanggal_pengajuan">Tanggal Setor: </label>
-                                                  <input type="date" name="tanggal_pengajuan" id="tanggal_pengajuan" value="<?php echo date('Y-m-d'); ?>" />
-                                             </td>
-                                        </tr>
-                                        <input type="hidden"  name="min" id="min" />
+                                                  <input type="hidden" name="tanggal_pengajuan" id="tanggal_pengajuan" value="<?php echo date('Y-m-d'); ?>" />
+                                             
+                                        <!-- <input type="hidden"  name="min" id="min" /> -->
                                              <input type="hidden" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
                                         <tr>
                                              <td>
@@ -278,8 +274,8 @@ include 'config.php';
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
             var uang = document.getElementById('money').value;
-            var min_saldo = document.getElementById('minsaldo').value;
-            var coba_saldo=uang-min_saldo
+            // var min_saldo = document.getElementById('minsaldo').value;
+            // var coba_saldo=uang-min_saldo
           //1st way
           var moneyFormatter = new Intl.NumberFormat('id-ID', {
           style: 'currency',
@@ -287,8 +283,8 @@ include 'config.php';
           minimumFractionDigits: 2
           });
           document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
-          document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
-          document.getElementById('min').value=coba_saldo ;
+        //   document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
+        //   document.getElementById('min').value=coba_saldo ;
      </script>
 
 <script>
@@ -302,8 +298,8 @@ include 'config.php';
                         json["id_nasabah"] = $("#id_nasabah").val();
                         json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
                         json["jumlah"] = $("#jumlah").val();
-                        json["min"] = $("#min").val();
-                        json["data"] = rowData;
+                        json["min"] = $("#money").val();
+                        
 
                         console.log(JSON.stringify(json));
                         

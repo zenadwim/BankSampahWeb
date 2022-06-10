@@ -131,7 +131,7 @@ else
     $page_array[] = $count;
   }
 }
-
+if($total_links!=0){
 for($count = 0; $count < count($page_array); $count++)
 {
   if($page == $page_array[$count])
@@ -196,5 +196,7 @@ $output .= '
 ';
 
 echo $output;
-
+}else{
+  echo "data tidak ada";
+}
 ?>

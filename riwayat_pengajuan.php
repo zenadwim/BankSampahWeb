@@ -182,9 +182,7 @@ include 'config.php';
                                     <table>
                                         <tr>
                                         <td>  <input type="text" name="from_date" id="from_date" class="form-control"  />  </td>
-
                                         <td>  <input type="text" name="testin" id="testin" class="form-control"  />  </td>
-                                        
                                         <td> <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  </td>
                                         <td> <input type="button" name="reset" id="reset" value="reset" class="btn btn-info" />  </td>
                                         </tr>
@@ -219,7 +217,6 @@ include 'config.php';
                                  
                                <td><?php echo $row["id_pengajuan"]; ?></td>  
                                <td><?php echo $for_date; ?></td>  
-                               
                                <td><?php echo $row["jumlah"]; ?></td>
                               <?php echo " <td><a href='detil_setor.php?id_pengajuan=".$row['id_pengajuan']."' >Detil</a></td>";?>   
                           </tr>  

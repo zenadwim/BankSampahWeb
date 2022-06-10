@@ -90,7 +90,7 @@ include 'config.php';
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Pengajuan:</h6>
                         <a class="collapse-item" href="pengajuan.php">Pengajuan</a>
-                        <a class="collapse-item" href="#">Riwayat Pengajuan</a>
+                        <a class="collapse-item" href="riwayat_pengajuan.php">Riwayat Pengajuan</a>
                     </div>
                 </div>
             </li>
@@ -182,7 +182,9 @@ include 'config.php';
                                     <table>
                                         <tr>
                                         <td>  <input type="text" name="from_date" id="from_date" class="form-control"  />  </td>
-                                        <td> <input type="text" name="to_date" id="to_date" class="form-control"  />  </td>
+
+                                        <td>  <input type="text" name="testin" id="testin" class="form-control"  />  </td>
+                                        
                                         <td> <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  </td>
                                         <td> <input type="button" name="reset" id="reset" value="reset" class="btn btn-info" />  </td>
                                         </tr>
@@ -310,24 +312,69 @@ include 'config.php';
                 var d = new Date();
                 var currMonth = d.getMonth();
                 var currYear = d.getFullYear();
-                var startDate = new Date(currYear, currMonth, 1);
+                var startDate = new Date(currYear, 0, 1);
                 var lastDate=new Date(currYear, currMonth + 1,0);
                   
 
-                $('#from_date').datepicker({ dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true }); // format to show
+                $('#from_date').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
                 $('#from_date').datepicker('setDate', startDate);
-                $('#to_date').datepicker({ dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true }); // format to show
-                $('#to_date').datepicker('setDate', lastDate); 
+                
+                // $('#dari').datepicker({ dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true }); // format to show
+                // $('#dari').datepicker('setDate', baru);
+                $('#testin').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
+                $('#testin').datepicker('setDate', lastDate); 
                  
                $('#filter').click(function(){  
-                    var from_date = $('#from_date').val();  
-                    var to_date = $('#to_date').val();  
-                    if(from_date != '' && to_date != '')  
+                    var from_date = $('#from_date').val();
+                    
+                    
+                    var from_date2 = new Date(from_date);
+                    var hari = from_date2.getDate();
+                    var bulan = from_date2.getMonth();
+                    var tahun = from_date2.getFullYear();
+                    function pad(n) {
+                    return n<10 ? '0'+n : n;
+                    }
+                    var baru = tahun + "-" + pad(hari) + "-" + pad(bulan + 1);
+                    var dari = baru;
+                    
+                      
+                    
+
+                    //
+                    var testin = $('#testin').val();
+                    
+                    var test = testin.split("-");
+                    var hari2= test[0];
+                    
+                    var bulan2= test[1];
+                    
+                    var tahun2= test[2];
+                    
+
+                    var ke=test[2] + "-" + test[1]+ "-" + test[0];
+                    
+                    // var from_date2 = new Date($('#from_date').val());
+                    // var hari = from_date2.getDate();
+                    // var bulan = from_date2.getMonth();
+                    // var tahun = from_date2.getFullYear();
+                    // function pad(n) {
+                    // return n<10 ? '0'+n : n;
+                    // }
+                    // var baru = tahun + "-" + pad(hari) + "-" + pad(bulan + 1);
+                    // var dari = baru;
+                    // console.log("dari2 = "+dari);
+                      
+                    
+                    
+                   
+                      
+                    if(dari != '' && ke != '')  
                     {  
                          $.ajax({  
                               url:"filter_tabungan.php",  
                               method:"POST",  
-                              data:{from_date:from_date, to_date:to_date},  
+                              data:{from_date:dari, to_date:ke},  
                               success:function(data)  
                               {  
                                    $('#order_table').html(data);  
