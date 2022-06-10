@@ -113,7 +113,7 @@
   </section><!-- End Hero -->
 
   <main id="main">
-    <section id="services" class="services section-bg">
+    <section id="#" class="services section-bg">
       <div class="container" data-aos="fade-up">
 
         <div class="section-title">
