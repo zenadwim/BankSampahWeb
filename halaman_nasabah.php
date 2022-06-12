@@ -30,6 +30,10 @@ die("Anda belum login");//jika belum login jangan lanjut..
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -202,9 +206,69 @@ die("Anda belum login");//jika belum login jangan lanjut..
                                 mysqli_free_result($result);
                             }
                         }
-                        // Close connection
-                        mysqli_close($db);
                         ?>
+                    </div>
+
+                    <!-- DataTales Sampah -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">Data Sampah</h4>
+                            <h7 class="m-0 font-weight-bold">data dapat berubah kapan saja</h7>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Kategori</th>
+                                            <th>Nama Sampah</th>
+                                            <th>Harga</th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Kategori</th>
+                                            <th>Nama Sampah</th>
+                                            <th>Harga</th>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        <?php
+                                        // Include config file
+                                        require_once "config.php";
+
+                                        // Attempt select query execution
+                                        $sql = "SELECT * FROM sampah INNER JOIN kategori ON sampah.id_kategori=kategori.id_kategori;";
+                                        if($result = mysqli_query($db, $sql)){
+                                            if(mysqli_num_rows($result) > 0){
+                                                    while($row = mysqli_fetch_array($result)){
+                                                        ?>
+                                                        <tr>
+                                                            <td><?php echo $row['id_sampah']?></td>
+                                                            <td><?php echo $row['deskripsi']?></td>
+                                                            <td><?php echo $row['nama_sampah']?> (<?php echo $row['satuan']?>) </td>
+                                                            <td><?php echo $row['harga_nasabah']?></td>    
+                                                        </tr>
+                                                        <?php
+                                                    }
+                                                // Free result set
+                                                mysqli_free_result($result);
+                                            } else{
+                                                echo "<p class='lead'><em>No records were found.</em></p>";
+                                            }
+                                        } else{
+                                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+                                        }
+
+                                        // Close connection
+                                        mysqli_close($db);
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -269,6 +333,13 @@ die("Anda belum login");//jika belum login jangan lanjut..
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
 
 </body>
 
