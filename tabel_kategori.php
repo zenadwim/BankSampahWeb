@@ -229,17 +229,48 @@ include 'config.php';
                                     echo "</thead>";
                                     echo "<tbody>";
                                     while($row = mysqli_fetch_array($result)){
-                                        echo "<tr>";
-                                            echo "<td>" . $row['id_kategori'] . "</td>";
-                                            
-                                            echo "<td>" . $row['deskripsi'] . "</td>";
-                                        
-                                            echo "<td class='d-flex justify-content-around'>";
-                                                
-                                                echo "<a href='update_kategori.php?id_kategori=".$row['id_kategori']."' title='Update Record' data-toggle='tooltip'><span class='fas fa-pencil-alt'></span></a>";
+                                        ?>
+                                        <tr>
+                                            <td><?php echo $row['id_kategori']; ?></td>
+                                            <td><?php echo $row['deskripsi']; ?></td>
+                                            <td class='d-flex justify-content-around'>
+                                                <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_kategori']; ?>"><span class='fas fa-pencil-alt'></span></a>
+                                            </td>
+                                        </tr>
 
-                                            echo "</td>";
-                                        echo "</tr>";
+                                        <!-- MODAL edit kategori -->
+                                        <div id="editModal<?php echo $row['id_kategori']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah kategori</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <form action="ubah_kategori.php" method="get">
+                                                        <?php
+                                                        include 'config.php';
+                                                        $id_kategori = $row['id_kategori'];
+                                                        $query_edit  = mysqli_query($db, "select * from kategori where id_kategori='$id_kategori'");
+                                                        while($data = mysqli_fetch_array($query_edit)){
+                                                        ?>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id_kategori" id="id_kategori" value="<?php echo $data['id_kategori']; ?>"/>
+                                                            <div class="form-group">
+                                                                <label class="control-label" for="deskripsi">deskripsi Kategori : </label>
+                                                                <input type="text" name="deskripsi" class="form-control" id="deskripsi" value="<?php echo $data['deskripsi']; ?>"/>
+                                                            </div>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Simpan" name="Simpan" class="btn btn-success"/>
+                                                        </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <?php
                                     }
                                     echo "</tbody>";
                                 echo "</table>";

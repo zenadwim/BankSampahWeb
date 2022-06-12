@@ -319,11 +319,11 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                                             <input type="hidden" name="id_sampah" id="id_sampah" value="<?php echo $data['id_sampah']; ?>"/>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="nama_sampah">Nama Sampah : </label>
-                                                                <input type="text" name="nama_sampah" class="form-control" id="nama_sampah" placeholder="saat ini --> <?php echo $data['nama_sampah']; ?>" required/>
+                                                                <input type="text" name="nama_sampah" class="form-control" id="nama_sampah" value="<?php echo $data['nama_sampah']; ?>" required/>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="satuan">Satuan : </label>
-                                                                <input type="text" name="satuan" class="form-control" id="satuan" placeholder="saat ini --> <?php echo $data['satuan']; ?>" required/>
+                                                                <input type="text" name="satuan" class="form-control" id="satuan" value="<?php echo $data['satuan']; ?>" required/>
                                                             </div>
                                                         </div>
                                                         <div class="modal-footer">
@@ -357,8 +357,8 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                                             <input type="hidden" name="harga_pengepul_lama" value="<?php echo $data['harga_pengepul'] ?>" />
                                                             <input type="hidden" name="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" />
                                                             <div class="form-group">
-                                                                <label class="control-label" for="harga_pengepul">harga baru: </label>
-                                                                <input type="text" name="harga_pengepul" class="form-control" id="harga_pengepul" placeholder="harga saat ini --> <?php echo $data['harga_pengepul']; ?>" required/>
+                                                                <label class="control-label" for="harga_pengepul">harga : </label>
+                                                                <input type="text" name="harga_pengepul" class="form-control" id="harga_pengepul" value="<?php echo $data['harga_pengepul']; ?>" required/>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="tanggal">tanggal : </label>
@@ -400,8 +400,8 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                                             <input type="hidden" name="harga_nasabah_lama" value="<?php echo $data['harga_nasabah'] ?>" />
                                                             <input type="hidden" name="id_admin" value="<?php echo $_SESSION['id_admin']; ?>" />
                                                             <div class="form-group">
-                                                                <label class="control-label" for="harga_nasabah">harga baru: </label>
-                                                                <input type="text" name="harga_nasabah" class="form-control" id="harga_nasabah" placeholder="harga saat ini --> <?php echo $data['harga_nasabah']; ?>" required/>
+                                                                <label class="control-label" for="harga_nasabah">harga : </label>
+                                                                <input type="text" name="harga_nasabah" class="form-control" id="harga_nasabah" value="<?php echo $data['harga_nasabah']; ?>" required/>
                                                             </div>
                                                             <div class="form-group">
                                                                 <label class="control-label" for="tanggal">tanggal : </label>
@@ -414,6 +414,36 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                                         </div>
                                                         <div class="modal-footer">
                                                             <input type="submit" value="Simpan" name="simpan" class="btn btn-success"/>
+                                                        </div>
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- MODAL delete sampah -->
+                                        <div id="deleteModal<?php echo $row['id_sampah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                            <div class="modal-dialog" role="document">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h4 class="modal-title" id="exampleModalLabel">Hapus Sampah</h4>
+                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                    </div>
+                                                    <form action="hapus_sampah.php" method="get">
+                                                        <?php
+                                                        include 'config.php';
+                                                        $id_nasabah = $row['id_sampah'];
+                                                        $query_delete  = mysqli_query($db, "select * from sampah where id_sampah='$id_sampah'");
+                                                        while($data = mysqli_fetch_array($query_delete)){
+                                                        ?>
+                                                        <div class="modal-body">
+                                                            <input type="hidden" name="id_sampah" id="id_sampah" value="<?php echo $data['id_sampah']; ?>"/>
+                                                            <p> Apakah kamu yakin ingin menghapus data ini ??</p>
+                                                        </div>
+                                                        <div class="modal-footer">
+                                                            <input type="submit" value="Ya" name="HapusData" class="btn btn-primary"/>
                                                         </div>
                                                         <?php
                                                         }
