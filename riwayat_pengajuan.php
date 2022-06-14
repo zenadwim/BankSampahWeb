@@ -196,15 +196,16 @@ include 'config.php';
                      <table class="table table-bordered">  
                           <tr>  
                                <th>ID</th>  
-                               <th >tanggal setor</th>  
+                               <th>tanggal Pengajuan</th>  
                                <th>Admin</th>
-                               <th>Setor</th>
+                               <th>Jumlah</th>
+                               <th>Status</th>
                                <th>Aksi</th>  
 
                           </tr>  
                      <?php
                      setlocale(LC_ALL, 'id-ID', 'id_ID');
-                     $query = "SELECT pengajuan.id_pengajuan , pengajuan.tanggal_pengajuan,pengajuan.id_nasabah, pengajuan.status,pengajuan.jumlah FROM pengajuan  where id_nasabah='$id_nasabah' GROUP BY pengajuan.id_pengajuan ORDER BY tanggal_pengajuan desc";  
+                     $query = "SELECT pengajuan.id_pengajuan , pengajuan.tanggal_pengajuan,pengajuan.id_nasabah,pengajuan.id_admin, pengajuan.status,pengajuan.jumlah , admin.nama FROM pengajuan LEFT JOIN admin ON pengajuan.id_admin = admin.id_admin where id_nasabah='$id_nasabah' GROUP BY pengajuan.id_pengajuan ORDER BY tanggal_pengajuan desc";  
                      $result = mysqli_query($db, $query);  
                      while($row = mysqli_fetch_array($result))  
                      {  
@@ -216,9 +217,11 @@ include 'config.php';
                           <tr>
                                  
                                <td><?php echo $row["id_pengajuan"]; ?></td>  
-                               <td><?php echo $for_date; ?></td>  
+                               <td><?php echo $for_date; ?></td>
+                               <td><?php echo $row["nama"]; ?></td>  
                                <td><?php echo $row["jumlah"]; ?></td>
-                              <?php echo " <td><a href='detil_setor.php?id_pengajuan=".$row['id_pengajuan']."' >Detil</a></td>";?>   
+                               <td><?php echo $row["status"]; ?></td>
+                              <?php echo " <td><a href='detil_pengajuan.php?id_pengajuan=".$row['id_pengajuan']."' >Detil</a></td>";?>   
                           </tr>  
                      <?php  
                      }  
@@ -306,10 +309,11 @@ include 'config.php';
      <script>  
           $(document).ready(function(){  
                
-                var d = new Date();
+               
+            var d = new Date();
                 var currMonth = d.getMonth();
                 var currYear = d.getFullYear();
-                var startDate = new Date(currYear, currMonth, 1);
+                var startDate = new Date(currYear, 0, 1);
                 var lastDate=new Date(currYear, currMonth + 1,0);
                   
 

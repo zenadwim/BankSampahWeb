@@ -17,7 +17,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
     setlocale(LC_ALL, 'id-ID', 'id_ID');
       $output = '';  
       $query = "  
-      SELECT pengajuan.id_pengajuan , pengajuan.tanggal_pengajuan,pengajuan.id_nasabah , pengajuan.status,pengajuan.jumlah FROM pengajuan  where id_nasabah='$id_nasabah' AND tanggal_pengajuan BETWEEN '".$_POST["from_date"]."' AND '".$_POST["to_date"]."' GROUP BY pengajuan.id_pengajuan ORDER BY tanggal_pengajuan desc  
+      SELECT pengajuan.id_pengajuan , pengajuan.tanggal_pengajuan,pengajuan.id_nasabah,pengajuan.id_admin, pengajuan.status,pengajuan.jumlah , admin.nama FROM pengajuan LEFT JOIN admin ON pengajuan.id_admin = admin.id_admin where id_nasabah='$id_nasabah' AND tanggal_pengajuan BETWEEN '".$_POST["from_date"]."' AND '".$_POST["to_date"]."' GROUP BY pengajuan.id_pengajuan ORDER BY tanggal_pengajuan desc  
       ";  
       $result = mysqli_query($db, $query);  
       $output .= '  
@@ -26,7 +26,8 @@ die("Anda belum login");//jika belum login jangan lanjut..
                                <th>ID</th>  
                                <th >tanggal setor</th>  
                                <th>Admin</th>
-                               <th>Setor</th>
+                               <th>Jumlah</th>
+                               <th>Status</th>
                                <th>Aksi</th>  
 
                           </tr>  
@@ -42,8 +43,9 @@ die("Anda belum login");//jika belum login jangan lanjut..
                      <tr>  
                           <td>'. $row["id_pengajuan"] .'</td>  
                           <td>'. $for_date .'</td>  
-                          
-                          <td>'. $row["jumlah"] .'</td>  
+                          <td>'. $row["nama"] .'</td> 
+                          <td>'. $row["jumlah"] .'</td> 
+                          <td>'. $row["status"] .'</td>  
                           <td><a href="detil_setor.php?id_pengajuan='.$row['id_pengajuan'].'" >Detil</a></td>
                      </tr>  
                 ';  

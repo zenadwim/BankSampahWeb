@@ -22,7 +22,7 @@ SELECT * FROM nasabah INNER JOIN tabungan ON nasabah.id_nasabah = tabungan.id_na
 if($_POST['query'] != '')
 {
   $query .= '
-  WHERE nasabah.id_nasabah LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" 
+  WHERE nasabah.nama LIKE "%'.str_replace(' ', '%', $_POST['query']).'%" 
   ';
 }
 
@@ -59,7 +59,7 @@ if($total_data > 0)
       <td>'.$row["nama"].'</td>
       <td>'.$row["saldo"].'</td>
       <td>
-      <a href="setor.php?id_nasabah='.$row["id_nasabah"].'" >setor sampah</a>
+      <a href="info_penabung.php?id_nasabah='.$row["id_nasabah"].'" >lihat</a>
         </td>
     </tr>
     ';
