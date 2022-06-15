@@ -358,7 +358,7 @@ $row        = mysqli_fetch_array($tabungan);
                     var hrg_nasabah = $(parent).find('input[name="hrg_nasabah"]');
                     $(hrg_nasabah).val(credit);
                     var hrg_pengepul = $(parent).find('input[name="hrg_pengepul"]');
-                    $(hrg_pengepul).val(credit);
+                    $(hrg_pengepul).val(credit2);
                });
 
                

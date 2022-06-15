@@ -203,6 +203,7 @@ $id_setor = $_GET['id_setor'];
                                         echo "<tr>";
                                             echo "<th>id</th>";
                                             echo "<th>Sampah</th>";
+                                            echo "<th>Bobot/Jumlah</th>";
                                             echo "<th>harga_nasabah</th>";
                                             echo "<th>Opsi</th>";
                                         echo "</tr>";
