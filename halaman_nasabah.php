@@ -209,7 +209,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
                         ?>
                     </div>
 
-                    <!-- DataTales Sampah -->
+                    <!-- DataTables Sampah -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
                             <h4 class="m-0 font-weight-bold text-primary">Data Sampah</h4>

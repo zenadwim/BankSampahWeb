@@ -43,6 +43,10 @@ $query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -190,10 +194,7 @@ $query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi Nasabah</h1>
-                    <div class="mb-4">
-                        <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#tambahNasabah">Tambah Baru</button>
-                    </div>
+                    <h1 class="h3 mb-4 text-gray-800" align="center">Informasi Nasabah</h1>
 
                     <div id="tambahNasabah" class="modal fade" role="dialog">
                         <div class="modal-dialog">
@@ -234,131 +235,138 @@ $query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <?php
-                        // Include config file
-                        require_once "config.php";
-
-                        // Attempt select query execution
-                        $sql = "SELECT * FROM nasabah";
-                        if($result = mysqli_query($db, $sql)){
-                            if(mysqli_num_rows($result) > 0){
-                                echo "<table class='table table-bordered table-striped' >";
-                                    echo "<thead>";
-                                        echo "<tr>";
-                                            echo "<th>id</th>";
-                                            echo "<th>nama</th>";
-                                            echo "<th>no handphone</th>";
-                                            echo "<th>alamat</th>";
-                                            echo "<th>Opsi</th>";
-                                        echo "</tr>";
-                                    echo "</thead>";
-                                    echo "<tbody>";
-                                    while($row = mysqli_fetch_array($result)){
-                                        ?>
+                    <!-- DataTables Nasabah -->
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between">
+                            <h4 class="m-0 font-weight-bold text-primary">Data Nasabah</h4>
+                            <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#tambahNasabah">Tambah</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
                                         <tr>
-                                            <td><?php echo $row['id_nasabah']; ?></td>
-                                            <td><?php echo $row['nama']; ?></td>
-                                            <td><?php echo $row['no_hp']; ?></td>
-                                            <td><?php echo $row['alamat']; ?></td>
-                                            <td class='d-flex justify-content-around'>
-                                                <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_nasabah']; ?>"><span class='fas fa-pencil-alt'></span></a>
-                                                <a href="#" data-toggle="modal" data-target="#deleteModal<?php echo $row['id_nasabah']; ?>"><span class='fas fa-trash-alt'></span></a>
-                                            </td>
+                                            <th>ID</th>
+                                            <th>Nama</th>
+                                            <th>No Handphone</th>
+                                            <th>Alamat</th>
+                                            <th>Opsi</th>
                                         </tr>
-
-                                        <!-- MODAL edit nasabah -->
-                                        <div id="editModal<?php echo $row['id_nasabah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah Nasabah</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <form action="ubah_nasabah.php" method="get">
-                                                        <?php
-                                                        include 'config.php';
-                                                        $id_nasabah = $row['id_nasabah'];
-                                                        $query_edit  = mysqli_query($db, "select * from nasabah where id_nasabah='$id_nasabah'");
-                                                        while($data = mysqli_fetch_array($query_edit)){
-                                                        ?>
-                                                        <div class="modal-body">
-                                                            <input type="hidden" name="id_nasabah" id="id_nasabah" value="<?php echo $data['id_nasabah']; ?>"/>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="nama">Nama : </label>
-                                                                <input type="text" name="nama" class="form-control" id="nama" value="<?php echo $data['nama']; ?>"/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="no_hp">No Handphone : </label>
-                                                                <input type="number" name="no_hp" class="form-control" id="nohp" value="<?php echo $data['no_hp']; ?>"/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="alamat">Alamat : </label>
-                                                                <input type="text" name="alamat" class="form-control" id="alamat" value="<?php echo $data['alamat']; ?>"/>
-                                                            </div>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="password">Password: </label>
-                                                                <input type="text" name="password" class="form-control" id="password" value="<?php echo $data['password']; ?>"/>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <input type="submit" value="Simpan" name="Simpan" class="btn btn-success"/>
-                                                        </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        <!-- MODAL delete nasabah -->
-                                        <div id="deleteModal<?php echo $row['id_nasabah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="exampleModalLabel">Hapus Nasabah</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <form action="hapus_nasabah.php" method="get">
-                                                        <?php
-                                                        include 'config.php';
-                                                        $id_nasabah = $row['id_nasabah'];
-                                                        $query_delete  = mysqli_query($db, "select * from nasabah where id_nasabah='$id_nasabah'");
-                                                        while($data = mysqli_fetch_array($query_delete)){
-                                                        ?>
-                                                        <div class="modal-body">
-                                                            <input type="hidden" name="id_nasabah" id="id_nasabah" value="<?php echo $data['id_nasabah']; ?>"/>
-                                                            <p> Apakah kamu yakin ingin menghapus data ini ??</p>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <input type="submit" value="Ya" name="HapusData" class="btn btn-primary"/>
-                                                        </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </form>
-                                                </div>
-                                            </div>
-                                        </div>
+                                    </thead>
+                                    <tbody>
                                         <?php
-                                    }
-                                    echo "</tbody>";
-                                echo "</table>";
-                                // Free result set
-                                mysqli_free_result($result);
-                            } else{
-                                echo "<p class='lead'><em>No records were found.</em></p>";
-                            }
-                        } else{
-                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
-                        }
+                                        // Include config file
+                                        require_once "config.php";
 
-                        // Close connection
-                        mysqli_close($db);
-                        ?>
+                                        // Attempt select query execution
+                                        $sql = "SELECT * FROM nasabah";
+                                        if($result = mysqli_query($db, $sql)){
+                                            if(mysqli_num_rows($result) > 0){
+                                                while($row = mysqli_fetch_array($result)){
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $row['id_nasabah']; ?></td>
+                                                        <td><?php echo $row['nama']; ?></td>
+                                                        <td><?php echo $row['no_hp']; ?></td>
+                                                        <td><?php echo $row['alamat']; ?></td>
+                                                        <td class='d-flex justify-content-around'>
+                                                            <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_nasabah']; ?>"><span class='fas fa-pencil-alt'></span></a>
+                                                            <a href="#" data-toggle="modal" data-target="#deleteModal<?php echo $row['id_nasabah']; ?>"><span class='fas fa-trash-alt'></span></a>
+                                                        </td>  
+                                                    </tr>
+
+                                                    <!-- MODAL edit nasabah -->
+                                                    <div id="editModal<?php echo $row['id_nasabah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="exampleModalLabel">Ubah Nasabah</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                </div>
+                                                                <form action="ubah_nasabah.php" method="get">
+                                                                    <?php
+                                                                    include 'config.php';
+                                                                    $id_nasabah = $row['id_nasabah'];
+                                                                    $query_edit  = mysqli_query($db, "select * from nasabah where id_nasabah='$id_nasabah'");
+                                                                    while($data = mysqli_fetch_array($query_edit)){
+                                                                    ?>
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" name="id_nasabah" id="id_nasabah" value="<?php echo $data['id_nasabah']; ?>"/>
+                                                                        <div class="form-group">
+                                                                            <label class="control-label" for="nama">Nama : </label>
+                                                                            <input type="text" name="nama" class="form-control" id="nama" value="<?php echo $data['nama']; ?>"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="control-label" for="no_hp">No Handphone : </label>
+                                                                            <input type="number" name="no_hp" class="form-control" id="nohp" value="<?php echo $data['no_hp']; ?>"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="control-label" for="alamat">Alamat : </label>
+                                                                            <input type="text" name="alamat" class="form-control" id="alamat" value="<?php echo $data['alamat']; ?>"/>
+                                                                        </div>
+                                                                        <div class="form-group">
+                                                                            <label class="control-label" for="password">Password: </label>
+                                                                            <input type="text" name="password" class="form-control" id="password" value="<?php echo $data['password']; ?>"/>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <input type="submit" value="Simpan" name="Simpan" class="btn btn-success"/>
+                                                                    </div>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- MODAL delete nasabah -->
+                                                    <div id="deleteModal<?php echo $row['id_nasabah']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h4 class="modal-title" id="exampleModalLabel">Hapus Nasabah</h4>
+                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                </div>
+                                                                <form action="hapus_nasabah.php" method="get">
+                                                                    <?php
+                                                                    include 'config.php';
+                                                                    $id_nasabah = $row['id_nasabah'];
+                                                                    $query_delete  = mysqli_query($db, "select * from nasabah where id_nasabah='$id_nasabah'");
+                                                                    while($data = mysqli_fetch_array($query_delete)){
+                                                                    ?>
+                                                                    <div class="modal-body">
+                                                                        <input type="hidden" name="id_nasabah" id="id_nasabah" value="<?php echo $data['id_nasabah']; ?>"/>
+                                                                        <p> Apakah kamu yakin ingin menghapus data ini ??</p>
+                                                                    </div>
+                                                                    <div class="modal-footer">
+                                                                        <input type="submit" value="Ya" name="HapusData" class="btn btn-primary"/>
+                                                                    </div>
+                                                                    <?php
+                                                                    }
+                                                                    ?>
+                                                                </form>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <?php
+                                                }
+                                                // Free result set
+                                                mysqli_free_result($result);
+                                            } else{
+                                                echo "<p class='lead'><em>No records were found.</em></p>";
+                                            }
+                                        } else{
+                                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+                                        }
+                                        // Close connection
+                                        mysqli_close($db);
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -422,5 +430,12 @@ $query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
 
 </body>

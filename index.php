@@ -782,7 +782,7 @@
           <div class="col-lg-3 col-md-6 footer-links">
             <h4>Links</h4>
             <ul>
-              <li><i class="bx bx-chevron-right"></i> <a href="#">Home</a></li>
+              <li><i class="bx bx-chevron-right"></i> <a href="#hero">Home</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#about">Tentang</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#services">Layanan</a></li>
               <li><i class="bx bx-chevron-right"></i> <a href="#portfolio">Kegiatan</a></li>
