@@ -181,10 +181,8 @@ $id_setor = $_GET['id_setor'];
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi Nasabah</h1>
-                    <div class="mb-4">
-                        <button type="button" class="btn btn-success pull-right" onclick="window.location.href='setor.php?id_nasabah=<?="$id_nasabah" ?>'">Setor</button>
-                    </div>
+                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi Detil Penyetoran</h1>
+                    
 
                     
 

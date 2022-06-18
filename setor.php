@@ -9,9 +9,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
 
 <?php
 include 'config.php';
-$id_nasabah= $_GET['id_nasabah'];
-$tabungan  = mysqli_query($db, "select * from tabungan where id_nasabah='$id_nasabah'");
-$row        = mysqli_fetch_array($tabungan);
+
 ?>
 
 <!DOCTYPE html>
@@ -26,6 +24,10 @@ $row        = mysqli_fetch_array($tabungan);
     <meta name="author" content="">
 
     <title>Admin | Setor Sampah</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
+          
+        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
     <!-- Favicons -->
     <link href="assets/img/favicon.png" rel="icon">
     <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
@@ -192,23 +194,26 @@ $row        = mysqli_fetch_array($tabungan);
                                    <table>
                                         <tr>
                                              <td>
-                                                  <label for="id_setoran">ID Setoran: </label>
-                                                  <input type="text" name="id_setoran" id="id_setoran" value="<?php echo $row['id_nasabah'].date('nY'); ?>" />
+                                             <label for="id_nasabah">ID Nasabah: </label>
+                                             <input type="text" name="id_nasabah" id="id_nasabah"  />
+                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Pilih</button>
                                              </td>
                                         </tr>
+                                        <!-- <tr>
+                                             <td>
+                                                  <label for="id_setoran">ID Setoran: </label>
+                                                  <input type="text" name="id_setoran" id="id_setoran"  />
+                                             </td>
+                                        </tr> -->
 
                                         <tr>
                                              <td>
                                                   <label for="tgl_setor">Tanggal Setor: </label>
-                                                  <input type="date" name="tgl_setor" id="tgl_setor" value="<?php echo date('Y-m-d'); ?>" />
+                                                  
+                                                  <input type="text" name="tgl_setor" id="tgl_setor"  />
                                              </td>
                                         </tr>
-                                        <tr>
-                                             <td>
-                                             <label for="id_nasabah">ID Nasabah: </label>
-                                             <input type="text" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
-                                             </td>
-                                        </tr>
+                                        
                                         <tr>
                                              <td>
                                              <label for="id_admin">ID Admin: </label>
@@ -218,7 +223,7 @@ $row        = mysqli_fetch_array($tabungan);
                                         <tr>
                                              <td>
                                              <label for="saldo">Saldo: </label>
-                                             <input type="text" name="saldo" id="saldo" value="<?php echo $row['saldo'] ?>"  />
+                                             <input type="text" name="saldo" id="saldo"   />
                                              </td>
                                         </tr>
 
@@ -276,6 +281,68 @@ $row        = mysqli_fetch_array($tabungan);
                          </form>
                     </div>
 
+
+                    <div class="modal  fade" id="modal-item">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                <h4 class="modal-title">Pilih Penabung</h4>
+                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                    
+                                </div>
+                                <div>
+                                <input id="myInput" type="text" placeholder="Search.."> 
+                                </div>
+                                <div class="modal-body table-responsive">
+                                    
+                                    <table class="table table-bordered table-striped" id="table1">
+                                        <thead>
+                                            <tr>
+                                                <th>id nasabah</th>
+                                                <th>nama</th>
+                                                <th>Saldo</th>
+                                                <th>Opsi</th>
+                                            </tr>
+                                        </thead>
+
+                                        <?php
+                                        $connect = new PDO("mysql:host=localhost; dbname=ublmobil_bank_sampah", "root", "");
+                                        $query = "
+                                        SELECT * FROM nasabah INNER JOIN tabungan ON nasabah.id_nasabah = tabungan.id_nasabah
+                                        ";
+                                        
+                                        
+                                        
+                                        $statement = $connect->prepare($query);
+                                        $statement->execute();
+                                        $total_data = $statement->rowCount();
+                                        
+                                        
+                                        $result = $statement->fetchAll();
+                                        
+                                        ?>
+
+
+                                        <tbody id="myTable">
+                                            <?php foreach ($result as $dt) : ?>                                            
+                                                <tr role="row" class="odd" >
+                                                    <td><?= $dt['id_nasabah']; ?></td>
+                                                    <td><?= $dt['nama']; ?></td>
+                                                    <td><?= $dt['saldo']; ?></td>
+                                                    <td>
+                                                        <button id="pilihMuzakki" type="button" data-id="<?= $dt['id_nasabah']; ?>" data-nama="<?= $dt['nama']; ?>" data-saldo="<?= $dt['saldo']; ?>"  class="btnSelectMuzakki btn btn-primary btn-sm">Pilih</button>
+                                                    </td>
+                                                    
+                                                </tr>
+                                            <?php endforeach; ?>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
                 <!-- /.container-fluid -->
 
@@ -324,7 +391,7 @@ $row        = mysqli_fetch_array($tabungan);
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
+    
     <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
@@ -339,6 +406,7 @@ $row        = mysqli_fetch_array($tabungan);
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+    
     <script>
           $(document).ready(function() {
                $(document).on('change', 'input[name="jumlah"]', function() {
@@ -363,11 +431,22 @@ $row        = mysqli_fetch_array($tabungan);
 
                
                $('#submit').click(function() {
+                    var id_nasabah=$('#id_nasabah').val();
+                    var tgl_setor = $('#tgl_setor').val();
+                    
+                    var test = tgl_setor.split("-");
+                    var hari2= test[0];
+                    
+                    var bulan2= test[1];
+                    
+                    var tahun2= test[2];
+                    
 
+                    var ke=id_nasabah+test[2] + test[1] + test[0];
                     var json = Object();
 
                     var rowData = [];
-                    json["id_setoran"] = $("#id_setoran").val();
+                    json["id_setoran"] = ke;
                     json["tanggal_setor"] = $("#tgl_setor").val();
                     json["id_nasabah"] = $("#id_nasabah").val();
                     json["id_admin"] = $("#id_admin").val();
@@ -408,4 +487,54 @@ $row        = mysqli_fetch_array($tabungan);
                });
           });
      </script>
+     <script>
+$(document).ready(function(){
+                    
+
+    $('.btnSelectMuzakki').click(function() {
+        console.log('hello pilih')
+			var id = $(this).data('id');
+			var nama = $(this).data('nama');
+			var saldo = $(this).data('saldo');
+			
+
+			$('#id_nasabah').val(id);
+			$('#nama').val(nama);
+			$('#saldo').val(saldo);
+			
+
+			$('#modal-item').modal('toggle');
+		});
+    
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+                $('#tgl_setor').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
+                $('#tgl_setor').datepicker('setDate', 'today');
+                
+                 
+                $(document).on('change', 'input[name="jumlah"]', function() {
+                var id_nasabah=$('#id_nasabah').val();
+                var tgl_setor = $('#tgl_setor').val();
+                    
+                    var test = tgl_setor.split("-");
+                    var hari2= test[0];
+                    
+                    var bulan2= test[1];
+                    
+                    var tahun2= test[2];
+                    
+
+                    var ke=id_nasabah+test[2] + test[1] + test[0];
+                
+                
+                $('#id_setoran').val(ke);
+                
+                });
+
+});
+</script>
 </body>

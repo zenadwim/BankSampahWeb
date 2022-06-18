@@ -14,10 +14,10 @@ else
 {
   $start = 0;
 }
-
-$query = "
-SELECT * FROM nasabah INNER JOIN tabungan ON nasabah.id_nasabah = tabungan.id_nasabah
-";
+$a="Sedang diproses";
+$query = '
+SELECT pengajuan.id_pengajuan , pengajuan.tanggal_pengajuan,pengajuan.id_nasabah,pengajuan.id_admin, pengajuan.status,pengajuan.jumlah ,admin.nama AS name1 ,nasabah.id_nasabah ,nasabah.nama AS name2 FROM pengajuan LEFT JOIN admin ON pengajuan.id_admin = admin.id_admin RIGHT JOIN nasabah ON pengajuan.id_nasabah = nasabah.id_nasabah WHERE pengajuan.status="Sedang diproses"
+';
 
 if($_POST['query'] != '')
 {
@@ -26,7 +26,7 @@ if($_POST['query'] != '')
   ';
 }
 
-$query .= 'ORDER BY nasabah.id_nasabah ASC ';
+$query .= 'GROUP BY pengajuan.id_pengajuan ORDER BY tanggal_pengajuan desc ';
 
 $filter_query = $query . 'LIMIT '.$start.', '.$limit.'';
 
@@ -43,10 +43,12 @@ $output = '
 <label>Total Records - '.$total_data.'</label>
 <table class="table table-striped table-bordered">
   <tr>
-  <th>id nasabah</th>
-  <th>nama</th>
-  <th>Saldo</th>
-  <th>Opsi</th>
+    <th>ID</th>  
+    <th>tanggal Pengajuan</th>  
+    <th>Pengaju</th>
+    <th>Jumlah</th>
+    <th>Status</th>
+    <th>Aksi</th>
   </tr>
 ';
 if($total_data > 0)
@@ -55,11 +57,13 @@ if($total_data > 0)
   {
     $output .= '
     <tr>
-      <td>'.$row["id_nasabah"].'</td>
-      <td>'.$row["nama"].'</td>
-      <td>'.$row["saldo"].'</td>
+      <td>'.$row["id_pengajuan"].'</td>
+      <td>'.$row["tanggal_pengajuan"].'</td>
+      <td>'.$row["name2"].'</td>
+      <td>'.$row["jumlah"].'</td>
+      <td>'.$row["status"].'</td>
       <td>
-      <a href="info_penabung.php?id_nasabah='.$row["id_nasabah"].'" >Riwayat Setor</a>
+      <a href="info_penabung.php?id_nasabah='.$row["id_nasabah"].'" >lihat</a>
         </td>
     </tr>
     ';
