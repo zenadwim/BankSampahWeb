@@ -74,14 +74,14 @@ $id_nasabah = $_GET['id_nasabah'];
                     <i class="fas fa-user-cog"></i>
                     <span>Admin</span></a>
             </li>
-
+            <hr class="sidebar-divider my-0">
             <!-- Nav Item - Nasabah -->
             <li class="nav-item active">
                 <a class="nav-link" href="tabel_nasabah.php">
                     <i class="fas fa-users"></i>
                     <span>Nasabah</span></a>
             </li>
-
+            
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
@@ -89,7 +89,7 @@ $id_nasabah = $_GET['id_nasabah'];
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
                     aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-cart-plus"></i>
+                    <i class="fas fa-trash"></i>
                     <span>Sampah</span>
                 </a>
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
@@ -105,14 +105,26 @@ $id_nasabah = $_GET['id_nasabah'];
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
-
+            <!-- Nav Item - Setor -->
+            <li class="nav-item active">
+                <a class="nav-link" href="setor.php">
+                    <i class="fas fa-cart-plus"></i>
+                    <span>Setor</span></a>
+            </li>
+            <hr class="sidebar-divider my-0">
             <!-- Nav Item - Tabungan -->
             <li class="nav-item active">
                 <a class="nav-link" href="tabel_penabung.php">
                     <i class="fas fa-book"></i>
-                    <span>Tabungan</span></a>
+                    <span>Riwayat Setor</span></a>
             </li>
-
+            <hr class="sidebar-divider my-0">
+            <!-- Nav Item - Tabungan -->
+            <li class="nav-item active">
+                <a class="nav-link" href="validasi_pengajuan.php">
+                    <i class="fas fa-check"></i>
+                    <span>Validasi Pengajuan</span></a>
+            </li>
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
 

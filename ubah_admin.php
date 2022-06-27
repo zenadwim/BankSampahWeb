@@ -8,10 +8,10 @@ if(isset($_GET['Simpan'])){
     $alamat = $_GET['alamat'];
     $password = $_GET['password'];
     $nama = $_GET['nama'];
-    $no_hp = $_GET['no_hp'];
+    $no_telepon = $_GET['no_telepon'];
 
     // buat query update
-    $sql = "UPDATE admin SET alamat='$alamat', password='$password', nama='$nama', no_hp='$no_hp' WHERE id_admin='$id_admin'";
+    $sql = "UPDATE admin SET alamat='$alamat', password='$password', nama='$nama', no_telepon='$no_telepon' WHERE id_admin='$id_admin'";
     $query = mysqli_query($db, $sql);
 
     // apakah query update berhasil?
