@@ -7,16 +7,16 @@ die("Anda belum login");//jika belum login jangan lanjut..
 }
 require_once "config.php";
 
-$query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
-	$data = mysqli_fetch_array($query);
-	$idsampah = $data['idTerbesar'];
+// $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
+// 	$data = mysqli_fetch_array($query);
+// 	$idsampah = $data['idTerbesar'];
  
-	$urutan = (int) substr($idsampah, 3, 3);
+// 	$urutan = (int) substr($idsampah, 3, 3);
  
-	$urutan++;
+// 	$urutan++;
  
-	$huruf = "SMP";
-	$idsampah = $huruf . sprintf("%03s", $urutan);
+// 	$huruf = "SMP";
+// 	$idsampah = $huruf . sprintf("%03s", $urutan);
 ?>
 
 <!DOCTYPE html>
@@ -217,10 +217,10 @@ $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
                                 </div>
                                 <form action="proses-buatsampah.php" method="post" enctype="multipart/form-data">
                                     <div class="modal-body">
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label class="control-label" for="id_sampah">ID Sampah: </label>
                                             <input type="text" name="id_sampah" class="form-control" id="id_sampah" value="<?php echo $idsampah ?>" required/>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group">
                                             <label class="control-label" for="nama_sampah">Nama Sampah: </label>
                                             <input type="text" name="nama_sampah" class="form-control" id="nama_sampah" required/>

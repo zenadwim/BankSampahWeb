@@ -493,7 +493,8 @@ include 'config.php';
                     success:function(data)  
                     {  
                          alert(data);  
-                         window.location.assign("tabel_penabung.php") 
+                         window.location.assign("tabel_penabung.php")
+                         window.location.assign("ds.php?id_setor="+ke); 
                     }  
                });
                });

@@ -14,7 +14,7 @@ if(isset($_POST['Input'])){
     $no_telepon = $_POST['no_telepon'];
    
     // buat query
-    $sql = "INSERT INTO admin (id_admin, alamat, password, nama, no_telepon) VALUE ('$id_admin','$alamat','$password','$nama', '$no_telepon')";
+    $sql = "INSERT INTO admin (id_admin, alamat, password, nama, no_telepon) VALUE ('NULL','$alamat','$password','$nama', '$no_telepon')";
     $query = mysqli_query($db, $sql);
 
 

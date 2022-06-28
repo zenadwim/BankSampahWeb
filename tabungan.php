@@ -181,12 +181,16 @@ include 'config.php';
                               <div class="col-md-8">
                                     <table>
                                         <tr>
+                                        
                                         <td>  <input type="text" name="from_date" id="from_date" class="form-control"  />  </td>
 
                                         <td>  <input type="text" name="testin" id="testin" class="form-control"  />  </td>
                                         
                                         <td> <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  </td>
                                         <td> <input type="button" name="reset" id="reset" value="reset" class="btn btn-info" />  </td>
+                                        
+                                        <td> <button type="button" id="generate_pdf" name="generate_pdf" class="btn btn-primary"><i class="fa fa-pdf" aria-hidden="true"></i>Generate PDF</button>  </td>
+                                        
                                         </tr>
                                     </table>
                                 </div>  
@@ -385,10 +389,28 @@ include 'config.php';
                     {  
                          alert("Please Select Date");  
                     }  
-               }); 
+               });
+               //tombol reset 
                 $('#reset').click(function() {
                 location.reload();
-                }); 
+                });
+                //tombol pdf
+                $('#generate_pdf').click(function(){ 
+                var from_date = $('#from_date').val();
+        
+                var testin = $('#testin').val();
+               
+                
+                if(from_date != '' && testin != '')  
+                {    
+                    window.location.assign("generate_pdf.php?from_date="+from_date+"&testin="+testin);
+                    
+                }  
+                else{  
+                    alert("Please Select Date");  
+                }  
+            });
+
           });  
      </script>
 

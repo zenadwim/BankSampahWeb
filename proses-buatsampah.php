@@ -6,9 +6,21 @@ include("config.php");
 if(isset($_POST['Input'])){
 
     // ambil data dari formulir
-    $id_sampah = $_POST['id_sampah'];
-    $nama_sampah = $_POST['nama_sampah'];
     $id_kategori = $_POST['id_kategori'];
+    $query = mysqli_query($db, "SELECT max(id_sampah) as idTerbesar FROM sampah");
+	$data = mysqli_fetch_array($query);
+	$idsampah = $data['idTerbesar'];
+ 
+	$urutan = (int) substr($idsampah, 3, 3);
+ 
+	$urutan++;
+ 
+	$huruf = "SMP";
+	$id_sampah = $huruf . sprintf("%03s", $urutan) . $id_kategori;
+
+    
+    $nama_sampah = $_POST['nama_sampah'];
+    
     $satuan = $_POST['satuan'];
     $harga_pengepul = $_POST['harga_pengepul'];
     $harga_nasabah = $_POST['harga_nasabah'];

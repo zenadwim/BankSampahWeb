@@ -7,16 +7,16 @@ die("Anda belum login");//jika belum login jangan lanjut..
 }
 
 require_once "config.php";
-$query = mysqli_query($db, "SELECT max(id_admin) as idTerbesar FROM admin");
-	$data = mysqli_fetch_array($query);
-	$idadmin = $data['idTerbesar'];
+// $query = mysqli_query($db, "SELECT max(id_admin) as idTerbesar FROM admin");
+// 	$data = mysqli_fetch_array($query);
+// 	$idadmin = $data['idTerbesar'];
  
-	$urutan = (int) substr($idadmin, 3, 3);
+// 	$urutan = (int) substr($idadmin, 3, 3);
  
-	$urutan++;
+// 	$urutan++;
  
-	$huruf = "a";
-	$idadmin = $huruf . sprintf("%03s", $urutan);
+// 	$huruf = "a";
+// 	$idadmin = $huruf . sprintf("%03s", $urutan);
 ?>
 
 <!DOCTYPE html>
@@ -212,10 +212,10 @@ $query = mysqli_query($db, "SELECT max(id_admin) as idTerbesar FROM admin");
                                 </div>
                                 <form action="proses-buatadmin.php" method="post" enctype="multipart/form-data">
                                     <div class="modal-body">
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label class="control-label" for="id_admin">ID Admin : </label>
                                             <input type="text" name="id_admin" class="form-control" id="id_admin" value="<?php echo $idadmin ?>" required/>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group">
                                             <label class="control-label" for="nama">Nama : </label>
                                             <input type="text" name="nama" class="form-control" id="nama" required/>

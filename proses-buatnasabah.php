@@ -14,14 +14,15 @@ if(isset($_POST['Input'])){
     $no_telepon = $_POST['no_telepon'];
    
     // buat query
-    $sql = "INSERT INTO nasabah (id_nasabah, alamat, password, nama, no_telepon) VALUE ('$id_nasabah','$alamat','$password','$nama', '$no_telepon')";
-    $sql2 = "INSERT INTO tabungan (id_nasabah, saldo) VALUE ('$id_nasabah','0')";
-    $query = mysqli_query($db, $sql);
-    $query2 = mysqli_query($db, $sql2);
+        $query = mysqli_query($db , "INSERT INTO nasabah (nasabah.alamat,nasabah.nama,nasabah.password,nasabah.no_telepon) VALUES ('$alamat','$nama','$password','$no_telepon')");
+         $query2 = mysqli_query($db , "SELECT nasabah.id_nasabah FROM nasabah WHERE nasabah.no_telepon ='$no_telepon'");
+         $ajuan =mysqli_fetch_assoc($query2);
+         $id_nasabah =(int)$ajuan['id_nasabah'];
+         $query3 = mysqli_query($db , "INSERT INTO tabungan (tabungan.id_nasabah,tabungan.saldo) VALUES ('$id_nasabah','$saldoawal')");
 
 
     // apakah query simpan berhasil?
-    if( $query ) {
+    if( $query && $query3 ) {
         // kalau berhasil alihkan ke halaman index.php dengan status=sukses
         header('Location: tabel_nasabah.php?status=sukses');
     } else {

@@ -7,16 +7,16 @@ die("Anda belum login");//jika belum login jangan lanjut..
 }
 
 require_once "config.php";
-$query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
-	$data = mysqli_fetch_array($query);
-	$idnasabah = $data['idTerbesar'];
+// $query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
+// 	$data = mysqli_fetch_array($query);
+// 	$idnasabah = $data['idTerbesar'];
  
-	$urutan = (int) substr($idnasabah, 3, 3);
+// 	$urutan = (int) substr($idnasabah, 3, 3);
  
-	$urutan++;
+// 	$urutan++;
  
-	$huruf = "a";
-	$idnasabah = $huruf . sprintf("%03s", $urutan);
+// 	$huruf = "a";
+// 	$idnasabah = $huruf . sprintf("%03s", $urutan);
 ?>
 
 <!DOCTYPE html>
@@ -217,10 +217,10 @@ $query = mysqli_query($db, "SELECT max(id_nasabah) as idTerbesar FROM nasabah");
                                 </div>
                                 <form action="proses-buatnasabah.php" method="post" enctype="multipart/form-data">
                                     <div class="modal-body">
-                                        <div class="form-group">
+                                        <!-- <div class="form-group">
                                             <label class="control-label" for="id_nasabah">ID Nasabah : </label>
                                             <input type="text" name="id_nasabah" class="form-control" id="id_nasabah" value="<?php echo $idnasabah ?>" required/>
-                                        </div>
+                                        </div> -->
                                         <div class="form-group">
                                             <label class="control-label" for="nama">Nama: </label>
                                             <input type="text" name="nama" class="form-control" id="nama" required/>

@@ -60,14 +60,14 @@
                   <?php 
                     if(isset($_GET['pesan'])){
                       if($_GET['pesan']=="gagal"){
-                        echo "<p class='alert'>Username dan Password tidak sesuai!</p>";
+                        echo "<p class='alert'>Nomer Telephone dan Password tidak sesuai!</p>";
                       }
                     }
                   ?>
 
                   <div class="form-outline mb-4">
-                    <input style="font-size:12pt;" type="text" name="id_admin" id="form2Example17" placeholder="Masukkan username..." required="required" class="form-control form-control-lg" />
-                    <label class="form-label" for="form2Example17">Username</label>
+                    <input style="font-size:12pt;" type="text" name="no_telepon" id="form2Example17" placeholder="Masukkan Nomer Telephone..." required="required" class="form-control form-control-lg" />
+                    <label class="form-label" for="form2Example17">Nomer Telephone</label>
                   </div>
 
                   <div class="form-outline mb-4">
