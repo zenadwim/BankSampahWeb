@@ -198,7 +198,7 @@ require_once "config.php";
                     <h1 class="h3 mb-2 text-gray-800" align="center">Detail Harga Pengepul</h1>
                     
                     <div class="mb-4">
-                    <br/>
+                        <br/>
                         <div class="d-flex justify-content-around"> 
                             <div class="col-md-8">
                                 <table>
@@ -214,58 +214,61 @@ require_once "config.php";
                                     </tr>
                                 </table>
                             </div>
-                         </div>
-                         <br/>
-                        <?php
-                        // Include config file
-                        require_once "config.php";
-                        setlocale(LC_ALL, 'id-ID', 'id_ID');
-                        // Attempt select query execution
-                        $sql = "SELECT * FROM harga_pengepul INNER JOIN admin ON harga_pengepul.id_admin=admin.id_admin;";
-                        if($result = mysqli_query($db, $sql)){
-                            if(mysqli_num_rows($result) > 0){
-                                echo "<div id='order_table'>";
-                                echo "<table class='table table-bordered table-striped'>";
-                                    echo "<thead>";
-                                        echo "<tr>";
-                                            echo "<th>ID Harga Pengepul </th>";
-                                            echo "<th>ID Sampah</th>";
-                                            echo "<th>Harga Lama</th>";
-                                            echo "<th>Harga Baru</th>";
-                                            echo "<th>Tanggal</th>";
-                                            echo "<th>Admin</th>";
-                                            
-                                        echo "</tr>";
-                                    echo "</thead>";
-                                    echo "<tbody id='myTable'>";
-                                    while($row = mysqli_fetch_array($result)){
-                                        $cr_date=date_create($row['tanggal']);
-                                        $for_date=strftime('%e-%B-%Y', $cr_date->getTimestamp());
-                                        echo "<tr>";
-                                            echo "<td>" . $row['id_hrgpengepul'] . "</td>";
-                                            echo "<td>" . $row['id_sampah'] . "</td>";
-                                            echo "<td>" . $row['harga_lama'] . "</td>";
-                                            echo "<td>" . $row['harga_baru'] . "</td>";
-                                            echo "<td>" . $for_date . "</td>";
-                                            echo "<td>" . $row['nama'] . "</td>";
-                                            
-                                        echo "</tr>";
-                                    }
-                                    echo "</tbody>";
-                                echo "</table>";
-                                // Free result set
-                                mysqli_free_result($result);
+                        </div>
+                        <br/>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                            <?php
+                            // Include config file
+                            require_once "config.php";
+                            setlocale(LC_ALL, 'id-ID', 'id_ID');
+                            // Attempt select query execution
+                            $sql = "SELECT * FROM harga_pengepul INNER JOIN admin ON harga_pengepul.id_admin=admin.id_admin;";
+                            if($result = mysqli_query($db, $sql)){
+                                if(mysqli_num_rows($result) > 0){
+                                    echo "<div id='order_table'>";
+                                    echo "<table class='table table-bordered table-striped'>";
+                                        echo "<thead>";
+                                            echo "<tr>";
+                                                echo "<th>ID Harga Pengepul </th>";
+                                                echo "<th>ID Sampah</th>";
+                                                echo "<th>Harga Lama</th>";
+                                                echo "<th>Harga Baru</th>";
+                                                echo "<th>Tanggal</th>";
+                                                echo "<th>Admin</th>";
+                                                
+                                            echo "</tr>";
+                                        echo "</thead>";
+                                        echo "<tbody id='myTable'>";
+                                        while($row = mysqli_fetch_array($result)){
+                                            $cr_date=date_create($row['tanggal']);
+                                            $for_date=strftime('%e-%B-%Y', $cr_date->getTimestamp());
+                                            echo "<tr>";
+                                                echo "<td>" . $row['id_hrgpengepul'] . "</td>";
+                                                echo "<td>" . $row['id_sampah'] . "</td>";
+                                                echo "<td>" . $row['harga_lama'] . "</td>";
+                                                echo "<td>" . $row['harga_baru'] . "</td>";
+                                                echo "<td>" . $for_date . "</td>";
+                                                echo "<td>" . $row['nama'] . "</td>";
+                                                
+                                            echo "</tr>";
+                                        }
+                                        echo "</tbody>";
+                                    echo "</table>";
+                                    // Free result set
+                                    mysqli_free_result($result);
+                                } else{
+                                    echo "<p class='lead'><em>No records were found.</em></p>";
+                                }
                             } else{
-                                echo "<p class='lead'><em>No records were found.</em></p>";
+                                echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
                             }
-                        } else{
-                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
-                        }
 
-                        // Close connection
-                        mysqli_close($db);
-                        ?>
-                    </div>
+                            // Close connection
+                            mysqli_close($db);
+                            ?>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->

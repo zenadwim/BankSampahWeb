@@ -191,70 +191,58 @@ require_once "config.php";
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
-
-                    <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi Pengajuan</h1>
-                    <div class="mb-4">
-                    <?php
-                    include 'config.php';
-                    
-                    ?>
-                    
-                    
-                    <div>
-                    <br/>
-                    <div class="container" style="width:100%;"> 
-                         <div class="d-flex justify-content-around"> 
-                              <div class="col-md-8">
-                                    
-                                </div>  
-                              
-                         </div> 
-                    <div style="clear:both"></div>                 
-                    <br /> 
-                    <input id="myInput" type="text" placeholder="Search.."> 
-                    <div id="order_table">  
-                     <table class="table table-bordered">
-                     <thead>  
-                          <tr>  
-                               <th>ID</th>  
-                               <th>tanggal Pengajuan</th>  
-                               <th>Admin</th>
-                               <th>Jumlah</th>
-                               <th>Status</th>
-                               <th>Aksi</th>  
-
-                          </tr>
-                          </thead>
-                          <tbody id="myTable">  
-                     <?php
-                     setlocale(LC_ALL, 'id-ID', 'id_ID');
-                     $query = "SELECT pengajuan.id_pengajuan , pengajuan.tanggal_pengajuan,pengajuan.id_nasabah,pengajuan.id_admin, pengajuan.status,pengajuan.jumlah ,admin.nama AS name1 ,nasabah.id_nasabah ,nasabah.nama AS name2 FROM pengajuan LEFT JOIN admin ON pengajuan.id_admin = admin.id_admin RIGHT JOIN nasabah ON pengajuan.id_nasabah = nasabah.id_nasabah WHERE pengajuan.status='Sedang diproses'";  
-                     $result = mysqli_query($db, $query);  
-                     while($row = mysqli_fetch_array($result))  
-                     {  
-                         $cr_date=date_create($row['tanggal_pengajuan']);
-                         
-                         $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
-                         
-                     ?>  
-                          <tr>
-                                 
-                               <td><?php echo $row["id_pengajuan"]; ?></td>  
-                               <td><?php echo $for_date; ?></td>
-                               <td><?php echo $row["name2"]; ?></td>  
-                               <td><?php echo $row["jumlah"]; ?></td>
-                               <td><?php echo $row["status"]; ?></td>
-                              <?php echo " <td><a href='fvalidasi_pengajuan.php?id_pengajuan=".$row['id_pengajuan']."' >Validasi</a></td>";?>   
-                          </tr>  
-                     <?php  
-                     }  
-                     ?>
-                     </tbody>  
-                     </table>  
-                    </div>  
-                    </div>  
-                    </div>
+                    <div class="card shadow mb-4" style="margin-top:40px">
+                        <div class="card-header py-3 d-flex justify-content-between">
+                            <h4 class="m-0 font-weight-bold text-primary">Informasi Pengajuan</h4>
+                            <input id="myInput" type="text" placeholder="Search.."
+                                style="
+                                border: 1px solid grey;
+                                border-radius: 5px;
+                                height: 35px;
+                                padding: 2px 23px 2px 30px;
+                                outline: 0;
+                                background-color: #98AFC7;"
+                            >  
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <thead>  
+                                    <tr>  
+                                        <th>ID</th>  
+                                        <th>Tanggal Pengajuan</th>  
+                                        <th>Admin</th>
+                                        <th>Jumlah</th>
+                                        <th>Status</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody id="myTable">  
+                                    <?php
+                                    include 'config.php';
+                                    setlocale(LC_ALL, 'id-ID', 'id_ID');
+                                    $query = "SELECT pengajuan.id_pengajuan , pengajuan.tanggal_pengajuan,pengajuan.id_nasabah,pengajuan.id_admin, pengajuan.status,pengajuan.jumlah ,admin.nama AS name1 ,nasabah.id_nasabah ,nasabah.nama AS name2 FROM pengajuan LEFT JOIN admin ON pengajuan.id_admin = admin.id_admin RIGHT JOIN nasabah ON pengajuan.id_nasabah = nasabah.id_nasabah WHERE pengajuan.status='Sedang diproses'";  
+                                    $result = mysqli_query($db, $query);  
+                                    while($row = mysqli_fetch_array($result)){  
+                                        $cr_date=date_create($row['tanggal_pengajuan']);
+                                        $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
+                                    ?>  
+                                        <tr>
+                                                
+                                            <td><?php echo $row["id_pengajuan"]; ?></td>  
+                                            <td><?php echo $for_date; ?></td>
+                                            <td><?php echo $row["name2"]; ?></td>  
+                                            <td><?php echo $row["jumlah"]; ?></td>
+                                            <td><?php echo $row["status"]; ?></td>
+                                            <?php echo " <td><a href='fvalidasi_pengajuan.php?id_pengajuan=".$row['id_pengajuan']."' >Validasi</a></td>";?>   
+                                        </tr>  
+                                    <?php  
+                                    }  
+                                    ?>
+                                </tbody>  
+                                </table>  
+                            </div>  
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->

@@ -201,96 +201,81 @@ include 'config.php';
                     <h1 class="h3 mb-2 text-gray-800" align="center">Setor Sampah</h1>
 
                     <div class="mb-4">
-                         <form name="setor" id="setor">
-                                   <div class="table-responsive">
-                                   <table>
-                                        <tr>
-                                             <td>
-                                             <label for="id_nasabah">ID Nasabah: </label>
-                                             <input type="text" name="id_nasabah" id="id_nasabah"  />
-                                             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Pilih</button>
-                                             </td>
-                                        </tr>
-                                        <!-- <tr>
-                                             <td>
-                                                  <label for="id_setoran">ID Setoran: </label>
-                                                  <input type="text" name="id_setoran" id="id_setoran"  />
-                                             </td>
-                                        </tr> -->
+                        <form name="setor" id="setor">
+                        <div class="table-responsive" align="center" style="margin-top:30px;">
+                            <table>
+                                <tr>
+                                    <td>ID Nasabah</td>
+                                    <td>: <input type="text" name="id_nasabah" id="id_nasabah"/></td>
+                                    <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Pilih</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Tanggal Setor</td>
+                                    <td>: <input type="text" name="tgl_setor" id="tgl_setor"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>ID Admin</td>
+                                    <td>: <input type="text" name="id_admin" id="id_admin" value="<?php echo $_SESSION['id_admin'] ?>"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Saldo</td>
+                                    <td>: <input type="text" name="saldo" id="saldo"/></td>
+                                    <td></td>
+                                </tr>
+                            </table>
+                        </div>
+                        <div class="table-responsive" style="margin-top:30px">
+                        <?php
+                            // Include config file
+                            require_once "config.php";
 
-                                        <tr>
-                                             <td>
-                                                  <label for="tgl_setor">Tanggal Setor: </label>
-                                                  
-                                                  <input type="text" name="tgl_setor" id="tgl_setor"  />
-                                             </td>
-                                        </tr>
-                                        
-                                        <tr>
-                                             <td>
-                                             <label for="id_admin">ID Admin: </label>
-                                             <input type="text" name="id_admin" id="id_admin" value="<?php echo $_SESSION['id_admin'] ?>"  />
-                                             </td>
-                                        </tr>
-                                        <tr>
-                                             <td>
-                                             <label for="saldo">Saldo: </label>
-                                             <input type="text" name="saldo" id="saldo"   />
-                                             </td>
-                                        </tr>
+                            $i=0;
+                            $sql = "SELECT * FROM sampah INNER JOIN kategori ON sampah.id_kategori=kategori.id_kategori;";
+                            if($result = mysqli_query($db, $sql)){
+                            if(mysqli_num_rows($result) > 0){
+                                
+                                echo "<table class='table table-bordered' id='dynamic_field'>";
+                                echo "<thead>";
+                                        echo "<tr>";
+                                            echo "<th>Nama Sampah</th>";
+                                            echo "<th>Bobot</th>";
+                                            echo "<th>Satuan</th>";
+                                        echo "</tr>";
+                                echo "</thead>";  
+                                echo "<tbody>";
+                                while($row = mysqli_fetch_array($result)){
+                                        $i++;
+                                        echo "<tr id='row-$i'>";
+                                        echo "<td style='display: none;'><input type='text' name='sampah' class='form-control' value=". $row['id_sampah'] ."  /></td>";
+                                        echo "<td><input type='text' name='nama_sampah' class='form-control' value=". $row['nama_sampah'] ." readonly /></td>";
+                                        echo "<td style='display: none;'><input type='text' name='harga_nasabah' class='form-control' value=". $row['harga_nasabah'] ."  /></td>";
+                                        echo "<td style='display: none;'><input type='text' name='harga_pengepul' class='form-control' value=". $row['harga_pengepul'] ."  /></td>";
+                                        echo "<td><input type='number' name='jumlah' class='form-control' value='0'/></td>";
+                                        echo "<td style='display: none;'><input type='text' name='hrg_nasabah' class='form-control' value='0'/></td>";
+                                        echo "<td style='display: none;'><input type='text' name='hrg_pengepul' class='form-control' value='0'/></td>";
+                                        echo "<td><input type='text' name='satuan' class='form-control' value=". $row['satuan'] ." readonly /></td>";
+                                        echo "</tr>";
+                                }
+                                echo "</tbody>";
+                                echo "</table>";
+                                // Free result set
+                                mysqli_free_result($result);
+                                } else{
+                                        echo "<p class='lead'><em>No records were found.</em></p>";
+                                }
+                            } else{
+                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+                            }
 
-                                   </table>
-                              </div>
-                              <div class="table-responsive">
-                              <?php
-                                   // Include config file
-                                   require_once "config.php";
-
-                                   $i=0;
-                                   $sql = "SELECT * FROM sampah INNER JOIN kategori ON sampah.id_kategori=kategori.id_kategori;";
-                                   if($result = mysqli_query($db, $sql)){
-                                   if(mysqli_num_rows($result) > 0){
-                                        
-                                        echo "<table class='table table-bordered' id='dynamic_field'>";
-                                        echo "<thead>";
-                                             echo "<tr>";
-                                                  echo "<th>Nama Sampah</th>";
-                                                  echo "<th>Bobot</th>";
-                                                  echo "<th>Satuan</th>";
-                                             echo "</tr>";
-                                        echo "</thead>";  
-                                        echo "<tbody>";
-                                        while($row = mysqli_fetch_array($result)){
-                                             $i++;
-                                             echo "<tr id='row-$i'>";
-                                             echo "<td style='display: none;'><input type='text' name='sampah' class='form-control' value=". $row['id_sampah'] ."  /></td>";
-                                             echo "<td><input type='text' name='nama_sampah' class='form-control' value=". $row['nama_sampah'] ." readonly /></td>";
-                                             echo "<td style='display: none;'><input type='text' name='harga_nasabah' class='form-control' value=". $row['harga_nasabah'] ."  /></td>";
-                                             echo "<td style='display: none;'><input type='text' name='harga_pengepul' class='form-control' value=". $row['harga_pengepul'] ."  /></td>";
-                                             echo "<td><input type='number' name='jumlah' class='form-control' value='0'/></td>";
-                                             echo "<td style='display: none;'><input type='text' name='hrg_nasabah' class='form-control' value='0'/></td>";
-                                             echo "<td style='display: none;'><input type='text' name='hrg_pengepul' class='form-control' value='0'/></td>";
-                                             echo "<td><input type='text' name='satuan' class='form-control' value=". $row['satuan'] ." readonly /></td>";
-                                             echo "</tr>";
-                                        }
-                                        echo "</tbody>";
-                                        echo "</table>";
-                                        // Free result set
-                                        mysqli_free_result($result);
-                                        } else{
-                                             echo "<p class='lead'><em>No records were found.</em></p>";
-                                        }
-                                   } else{
-                                   echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
-                                   }
-
-                                   // Close connection
-                                   mysqli_close($db);
-                                   ?>
-                                        
-                                   <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
-                              </div>
-                         </form>
+                            // Close connection
+                            mysqli_close($db);
+                            ?>
+                                
+                            <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
+                        </div>
+                        </form>
                     </div>
 
 
