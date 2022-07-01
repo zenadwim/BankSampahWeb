@@ -5,6 +5,16 @@ if(!isset($_SESSION['id_nasabah'])){
 die("Anda belum login");//jika belum login jangan lanjut..
 }
 include 'config.php';
+$query = mysqli_query($db, "SELECT max(id_pengajuan) as idTerbesar FROM pengajuan");
+	$data = mysqli_fetch_array($query);
+	$idpengajuan = $data['idTerbesar'];
+ 
+	$urutan = (int) substr($idpengajuan, 3, 3);
+ 
+	$urutan++;
+ 
+	$huruf = "TRN";
+	$idpengajuan = $huruf . sprintf("%03s", $urutan);
 ?>
 
 <!DOCTYPE html>
@@ -180,33 +190,26 @@ include 'config.php';
                         <div>
                         <br/>
                         <form name="pengajuan" id="pengajuan">
-                                   <div class="table-responsive">
-                                   <table>
-                                        
-
-                                                  <input type="hidden" name="tanggal_pengajuan" id="tanggal_pengajuan" value="<?php echo date('Y-m-d'); ?>" />
-                                             
-                                        <!-- <input type="hidden"  name="min" id="min" /> -->
-                                             <input type="hidden" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
-                                        <tr>
-                                             <td>
-                                             <label for="jumlah">Nominal yang ingin diajukan: </label>
-                                             <input type="text" name="jumlah" id="jumlah"   />
-                                             </td>
-                                        </tr>
-                                        <tr>
-                                            <td>
-                                                <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
-                                            </td>
-                                        </tr>
-                                    </table>
-                              </div>
-                              <div class="table-responsive">
-                              
-                                        
-                                   
-                              </div>
-                         </form>
+                            <div class="table-responsive">
+                                <table>
+                                    <input type="hidden" name="id_pengajuan" id="id_pengajuan" value="<?php echo $idpengajuan ?>"/>
+                                    <input type="hidden" name="tanggal_pengajuan" id="tanggal_pengajuan" value="<?php echo date('Y-m-d'); ?>" />
+                                    <!-- <input type="hidden"  name="min" id="min" /> -->
+                                    <input type="hidden" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
+                                    <tr>
+                                        <td>
+                                        <label for="jumlah">Nominal yang ingin diajukan: </label>
+                                        <input type="text" name="jumlah" id="jumlah"   />
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" />
+                                        </td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </form>
                         </div>
                     </div>
                 </div>
@@ -273,53 +276,46 @@ include 'config.php';
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
     <script>
-            var uang = document.getElementById('money').value;
-            // var min_saldo = document.getElementById('minsaldo').value;
-            // var coba_saldo=uang-min_saldo
-          //1st way
-          var moneyFormatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 2
-          });
-          document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
-        //   document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
-        //   document.getElementById('min').value=coba_saldo ;
-     </script>
+        var uang = document.getElementById('money').value;
+        // var min_saldo = document.getElementById('minsaldo').value;
+        // var coba_saldo=uang-min_saldo
+        //1st way
+        var moneyFormatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 2
+        });
+        document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
+        // document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
+        // document.getElementById('min').value=coba_saldo ;
+    </script>
 
-<script>
-          $(document).ready(function() {
-               $('#submit').click(function() {
-                    
-                    
-                        var json = Object();
+    <script>
+        $(document).ready(function() {
+            $('#submit').click(function() {
+                var json = Object();
 
-                        var rowData = [];
-                        json["id_nasabah"] = $("#id_nasabah").val();
-                        json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
-                        json["jumlah"] = $("#jumlah").val();
-                        json["min"] = $("#money").val();
-                        
+                var rowData = [];
+                json["id_nasabah"] = $("#id_nasabah").val();
+                json["id_pengajuan"] = $("#id_pengajuan").val();
+                json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
+                json["jumlah"] = $("#jumlah").val();
+                json["min"] = $("#money").val();
 
-                        console.log(JSON.stringify(json));
-                        
-                        $.ajax({  
-                        url:"proses_pengajuan.php",  
-                        method:"POST",  
-                        data:JSON.stringify(json),  
-                        success:function(data)  
-                        {  
-                            alert(data);  
-                            window.location.assign("pengajuan.php") 
-                        }  
-                        });
-                    
-                        
-                    
-               });
-          });
-     </script>
-       
-
+                console.log(JSON.stringify(json));
+                
+                $.ajax({  
+                url:"proses_pengajuan.php",  
+                method:"POST",  
+                data:JSON.stringify(json),  
+                success:function(data)  
+                {  
+                    alert(data);  
+                    window.location.assign("pengajuan.php") 
+                }  
+                });
+            });
+        });
+    </script>
 </body>
 </html>

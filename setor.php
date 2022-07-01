@@ -9,7 +9,6 @@ die("Anda belum login");//jika belum login jangan lanjut..
 
 <?php
 include 'config.php';
-
 ?>
 
 <!DOCTYPE html>
@@ -224,6 +223,11 @@ include 'config.php';
                                     <td>: <input type="text" name="saldo" id="saldo"/></td>
                                     <td></td>
                                 </tr>
+                                <tr>
+                                    <td>Nama Nasabah</td>
+                                    <td>: <input type="text" name="nama" id="nama"/></td>
+                                    <td></td>
+                                </tr>
                             </table>
                         </div>
                         <div class="table-responsive" style="margin-top:30px">
@@ -283,14 +287,24 @@ include 'config.php';
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                <h4 class="modal-title">Pilih Penabung</h4>
+                                    <h4 class="modal-title">Pilih Penabung</h4>
                                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                     
                                 </div>
                                 <div>
-                                <input id="myInput" type="text" placeholder="Search.."> 
+                                    <input id="myInput" type="text" placeholder="Search.."
+                                        style="
+                                        margin-top: 20px;
+                                        margin-left: 18px;
+                                        border: 1px solid grey;
+                                        border-radius: 5px;
+                                        height: 35px;
+                                        padding: 2px 23px 2px 30px;
+                                        outline: 0;
+                                        background-color: #98AFC7;"
+                                    >
                                 </div>
                                 <div class="modal-body table-responsive">
                                     
@@ -405,134 +419,119 @@ include 'config.php';
     <script src="js/demo/chart-pie-demo.js"></script>
     
     <script>
-          $(document).ready(function() {
-               $(document).on('change', 'input[name="jumlah"]', function() {
-                    //Get parent row
-                    var parent = $(this).parent().parent();
-                    //get row ID
-                    var id = $(parent).attr("id").replace("row-", "");
-                    //Get amount
-                    var jumlah = $(parent).find('input[name="jumlah"]').val();
-                    //Get Price value
-                    var harga_nasabah = $(parent).find('input[name="harga_nasabah"]').val();
-                    var harga_pengepul = $(parent).find('input[name="harga_pengepul"]').val();
-                    //Calculate
-                    var credit = jumlah * harga_nasabah;
-                    var credit2 = jumlah * harga_pengepul;
-                    //Set into Total
-                    var hrg_nasabah = $(parent).find('input[name="hrg_nasabah"]');
-                    $(hrg_nasabah).val(credit);
-                    var hrg_pengepul = $(parent).find('input[name="hrg_pengepul"]');
-                    $(hrg_pengepul).val(credit2);
-               });
+        $(document).ready(function() {
+            $(document).on('change', 'input[name="jumlah"]', function() {
+                //Get parent row
+                var parent = $(this).parent().parent();
+                //get row ID
+                var id = $(parent).attr("id").replace("row-", "");
+                //Get amount
+                var jumlah = $(parent).find('input[name="jumlah"]').val();
+                //Get Price value
+                var harga_nasabah = $(parent).find('input[name="harga_nasabah"]').val();
+                var harga_pengepul = $(parent).find('input[name="harga_pengepul"]').val();
+                //Calculate
+                var credit = jumlah * harga_nasabah;
+                var credit2 = jumlah * harga_pengepul;
+                //Set into Total
+                var hrg_nasabah = $(parent).find('input[name="hrg_nasabah"]');
+                $(hrg_nasabah).val(credit);
+                var hrg_pengepul = $(parent).find('input[name="hrg_pengepul"]');
+                $(hrg_pengepul).val(credit2);
+            });
 
-               
-               $('#submit').click(function() {
-                    var id_nasabah=$('#id_nasabah').val();
-                    var tgl_setor = $('#tgl_setor').val();
-                    
-                    var test = tgl_setor.split("-");
-                    var hari2= test[0];
-                    
-                    var bulan2= test[1];
-                    
-                    var tahun2= test[2];
-                    
+            
+            $('#submit').click(function() {
+                var id_nasabah=$('#id_nasabah').val();
+                var tgl_setor = $('#tgl_setor').val();
+                
+                var test = tgl_setor.split("-");
+                var hari2 = test[0];
+                var bulan2 = test[1];
+                var tahun2 = test[2];
 
-                    var ke=id_nasabah+test[2] + test[1] + test[0];
-                    var json = Object();
+                var ke = id_nasabah + test[2] + test[1] + test[0];
+                var tgl = test[2] +"-"+ test[1] +"-"+ test[0];
+                var json = Object();
 
-                    var rowData = [];
-                    json["id_setoran"] = ke;
-                    json["tanggal_setor"] = $("#tgl_setor").val();
-                    json["id_nasabah"] = $("#id_nasabah").val();
-                    json["id_admin"] = $("#id_admin").val();
-                    json["saldo"] = $("#saldo").val();
+                var rowData = [];
+                json["id_setoran"] = ke;
+                // json["tanggal_setor"] = $("#tgl_setor").val();
+                json["tanggal_setor"] = tgl.val();
+                json["id_nasabah"] = $("#id_nasabah").val();
+                json["id_admin"] = $("#id_admin").val();
+                json["saldo"] = $("#saldo").val();
+                
+                var row = $('#dynamic_field > tbody > tr');
+                $.each(row, function(index, value) {  
+                        
+                        var id = $(value).attr("id").replace("row-", "");
+                        var sampah = $(value).find('input[name="sampah"]').val();
+                        var harga_nasabah = $(value).find('input[name="hrg_nasabah"]').val();
+                        var harga_pengepul = $(value).find('input[name="hrg_pengepul"]').val();
+                        var total = $(value).find('input[name="jumlah"]').val();
+                        var data = {
+                            id: id,
+                            sampah: sampah,
+                            harga_nasabah: harga_nasabah,
+                            harga_pengepul: harga_pengepul,
+                            total: total
+                        };
+                        rowData.push(data);
+                });
+                json["data"] = rowData;
 
-                    
-                    var row = $('#dynamic_field > tbody > tr');
-                    $.each(row, function(index, value) {  
-                         
-                         var id = $(value).attr("id").replace("row-", "");
-                         var sampah = $(value).find('input[name="sampah"]').val();
-                         var harga_nasabah = $(value).find('input[name="hrg_nasabah"]').val();
-                         var harga_pengepul = $(value).find('input[name="hrg_pengepul"]').val();
-                         var total = $(value).find('input[name="jumlah"]').val();
-                         var data = {
-                              id: id,
-                              sampah: sampah,
-                              harga_nasabah: harga_nasabah,
-                              harga_pengepul: harga_pengepul,
-                              total: total
-                         };
-                         rowData.push(data);
-                    });
-                    json["data"] = rowData;
-
-                    console.log(JSON.stringify(json));
-                    
-                    $.ajax({  
+                console.log(JSON.stringify(json));
+                
+                $.ajax({  
                     url:"proses_setor.php",  
                     method:"POST",  
                     data:JSON.stringify(json),  
                     success:function(data)  
                     {  
-                         alert(data);  
-                         window.location.assign("tabel_penabung.php")
-                         window.location.assign("ds.php?id_setor="+ke); 
+                        alert(data);  
+                        window.location.assign("tabel_penabung.php")
+                        window.location.assign("ds.php?id_setor="+ke); 
                     }  
-               });
-               });
-          });
-     </script>
-     <script>
-$(document).ready(function(){
+                });
+            });
+        });
+    </script>
+    <script>
+        $(document).ready(function(){  
+            $('.btnSelectMuzakki').click(function() {
+                console.log('hello pilih')
+                    var id = $(this).data('id');
+                    var nama = $(this).data('nama');
+                    var saldo = $(this).data('saldo');
                     
+                    $('#id_nasabah').val(id);
+                    $('#nama').val(nama);
+                    $('#saldo').val(saldo);
+                    $('#modal-item').modal('toggle');
+            });
+            
+            $("#myInput").on("keyup", function() {
+                var value = $(this).val().toLowerCase();
+                $("#myTable tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
 
-    $('.btnSelectMuzakki').click(function() {
-        console.log('hello pilih')
-			var id = $(this).data('id');
-			var nama = $(this).data('nama');
-			var saldo = $(this).data('saldo');
-			
-
-			$('#id_nasabah').val(id);
-			$('#nama').val(nama);
-			$('#saldo').val(saldo);
-			
-
-			$('#modal-item').modal('toggle');
-		});
-    
-  $("#myInput").on("keyup", function() {
-    var value = $(this).val().toLowerCase();
-    $("#myTable tr").filter(function() {
-      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-    });
-  });
-                $('#tgl_setor').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
-                $('#tgl_setor').datepicker('setDate', 'today');
-                
-                 
-                $(document).on('change', 'input[name="jumlah"]', function() {
+            $('#tgl_setor').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
+            $('#tgl_setor').datepicker('setDate', 'today');
+            
+            $(document).on('change', 'input[name="jumlah"]', function() {
                 var id_nasabah=$('#id_nasabah').val();
                 var tgl_setor = $('#tgl_setor').val();
                     
                     var test = tgl_setor.split("-");
                     var hari2= test[0];
-                    
                     var bulan2= test[1];
-                    
                     var tahun2= test[2];
-                    
-
                     var ke=id_nasabah+test[2] + test[1] + test[0];
-                
-                
                 $('#id_setoran').val(ke);
-                
-                });
-
-});
-</script>
+            });
+        });
+    </script>
 </body>
