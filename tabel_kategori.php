@@ -34,6 +34,9 @@ include 'config.php';
 
     <!-- Custom styles for this template-->
     <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    
+    <!-- Custom styles for this page -->
+    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -192,10 +195,7 @@ include 'config.php';
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi kategori sampah</h1>
-                    <div class="mb-4">
-                        <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#tambahKategori">Tambah Baru</button>
-                    </div>
+                    <h1 class="h3 mb-4 text-gray-800" align="center">Informasi Kategori Sampah</h1>
 
                     <div id="tambahKategori" class="modal fade" role="dialog">
                         <div class="modal-dialog">
@@ -220,117 +220,128 @@ include 'config.php';
                         </div>
                     </div>
 
-                    <div class="mb-4">
-                        <?php
-                        // Include config file
-                        require_once "config.php";
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3 d-flex justify-content-between">
+                            <h4 class="m-0 font-weight-bold text-primary">Data Kategori Sampah</h4>
+                            <button type="button" class="btn btn-success pull-right" data-toggle="modal" data-target="#tambahKategori">Tambah</button>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                            <?php
+                            // Include config file
+                            require_once "config.php";
 
-                        // Attempt select query execution
-                        $sql = "SELECT * FROM kategori";
-                        if($result = mysqli_query($db, $sql)){
-                            if(mysqli_num_rows($result) > 0){
-                                echo "<table class='table table-bordered table-striped'>";
-                                    echo "<thead>";
-                                        echo "<tr>";
-                                            echo "<th>id</th>";
-                                        
-                                            echo "<th>kategori</th>";
-                                            
-                                            echo "<th>Opsi</th>";
-                                        echo "</tr>";
-                                    echo "</thead>";
-                                    echo "<tbody>";
-                                    while($row = mysqli_fetch_array($result)){
-                                        ?>
-                                        <tr>
-                                            <td><?php echo $row['id_kategori']; ?></td>
-                                            <td><?php echo $row['deskripsi']; ?></td>
-                                            <td class='d-flex justify-content-around'>
-                                                <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_kategori']; ?>"><span class='fas fa-pencil-alt'></span></a>
-                                                <a href="#" data-toggle="modal" data-target="#deleteModal<?php echo $row['id_kategori']; ?>"><span class='fas fa-trash-alt'></span></a>
-                                            </td>
-                                        </tr>
+                            // Attempt select query execution
+                            $sql = "SELECT * FROM kategori";
+                            if($result = mysqli_query($db, $sql)){
+                                if(mysqli_num_rows($result) > 0){
+                                    echo "<table class='table table-bordered table-striped' id='dataTable' width='100%' cellspacing='0'>";
+                                        echo "<thead>";
+                                            echo "<tr>";
+                                                echo "<th>No</th>";
+                                                echo "<th>ID Kategori</th>";
+                                                echo "<th>Nama Kategori</th>";
+                                                echo "<th>Opsi</th>";
+                                            echo "</tr>";
+                                        echo "</thead>";
+                                        echo "<tbody>";
+                                        $no=0;
+                                        while($row = mysqli_fetch_array($result)){
+                                            $no++;
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $no; ?></td>
+                                                <td><?php echo $row['id_kategori']; ?></td>
+                                                <td><?php echo $row['deskripsi']; ?></td>
+                                                <td class='d-flex justify-content-around'>
+                                                    <a href="#" data-toggle="modal" data-target="#editModal<?php echo $row['id_kategori']; ?>"><span class='fas fa-pencil-alt'></span></a>
+                                                    <a href="#" data-toggle="modal" data-target="#deleteModal<?php echo $row['id_kategori']; ?>"><span class='fas fa-trash-alt'></span></a>
+                                                </td>
+                                            </tr>
 
-                                        <!-- MODAL edit kategori -->
-                                        <div id="editModal<?php echo $row['id_kategori']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog" role="document">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h4 class="modal-title" id="exampleModalLabel">Ubah kategori</h4>
-                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                                    </div>
-                                                    <form action="ubah_kategori.php" method="get">
-                                                        <?php
-                                                        include 'config.php';
-                                                        $id_kategori = $row['id_kategori'];
-                                                        $query_edit  = mysqli_query($db, "select * from kategori where id_kategori='$id_kategori'");
-                                                        while($data = mysqli_fetch_array($query_edit)){
-                                                        ?>
-                                                        <div class="modal-body">
-                                                            <input type="hidden" name="id_kategori" id="id_kategori" value="<?php echo $data['id_kategori']; ?>"/>
-                                                            <div class="form-group">
-                                                                <label class="control-label" for="deskripsi">deskripsi Kategori : </label>
-                                                                <input type="text" name="deskripsi" class="form-control" id="deskripsi" value="<?php echo $data['deskripsi']; ?>"/>
+                                            <!-- MODAL edit kategori -->
+                                            <div id="editModal<?php echo $row['id_kategori']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog" role="document">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h4 class="modal-title" id="exampleModalLabel">Ubah kategori</h4>
+                                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                        </div>
+                                                        <form action="ubah_kategori.php" method="get">
+                                                            <?php
+                                                            include 'config.php';
+                                                            $id_kategori = $row['id_kategori'];
+                                                            $query_edit  = mysqli_query($db, "select * from kategori where id_kategori='$id_kategori'");
+                                                            while($data = mysqli_fetch_array($query_edit)){
+                                                            ?>
+                                                            <div class="modal-body">
+                                                                <input type="hidden" name="id_kategori" id="id_kategori" value="<?php echo $data['id_kategori']; ?>"/>
+                                                                <div class="form-group">
+                                                                    <label class="control-label" for="deskripsi">deskripsi Kategori : </label>
+                                                                    <input type="text" name="deskripsi" class="form-control" id="deskripsi" value="<?php echo $data['deskripsi']; ?>"/>
+                                                                </div>
                                                             </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <input type="submit" value="Simpan" name="Simpan" class="btn btn-success"/>
-                                                        </div>
-                                                        <?php
-                                                        }
-                                                        ?>
-                                                    </form>
+                                                            <div class="modal-footer">
+                                                                <input type="submit" value="Simpan" name="Simpan" class="btn btn-success"/>
+                                                            </div>
+                                                            <?php
+                                                            }
+                                                            ?>
+                                                        </form>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
 
-                                        <!-- MODAL delete admin -->
-                                        <div id="deleteModal<?php echo $row['id_kategori']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                        <div class="modal-dialog" role="document">
-                                                            <div class="modal-content">
-                                                                <div class="modal-header">
-                                                                    <h4 class="modal-title" id="exampleModalLabel">Hapus Admin</h4>
-                                                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                            <!-- MODAL delete admin -->
+                                            <div id="deleteModal<?php echo $row['id_kategori']; ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="modal-content">
+                                                                    <div class="modal-header">
+                                                                        <h4 class="modal-title" id="exampleModalLabel">Hapus Admin</h4>
+                                                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                                                    </div>
+                                                                    <form action="hapus_kategori.php" method="get">
+                                                                        <?php
+                                                                        include 'config.php';
+                                                                        $id_kategori = $row['id_kategori'];
+                                                                        $query_delete  = mysqli_query($db, "select * from kategori where id_kategori='$id_kategori'");
+                                                                        while($data = mysqli_fetch_array($query_delete)){
+                                                                        ?>
+                                                                        <div class="modal-body">
+                                                                            <input type="hidden" name="id_kategori" id="id_kategori" value="<?php echo $data['id_kategori']; ?>"/>
+                                                                            <p> Apakah kamu yakin ingin menghapus data ini ??</p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <input type="submit" value="Ya" name="HapusData" class="btn btn-primary"/>
+                                                                        </div>
+                                                                        <?php
+                                                                        }
+                                                                        ?>
+                                                                    </form>
                                                                 </div>
-                                                                <form action="hapus_kategori.php" method="get">
-                                                                    <?php
-                                                                    include 'config.php';
-                                                                    $id_kategori = $row['id_kategori'];
-                                                                    $query_delete  = mysqli_query($db, "select * from kategori where id_kategori='$id_kategori'");
-                                                                    while($data = mysqli_fetch_array($query_delete)){
-                                                                    ?>
-                                                                    <div class="modal-body">
-                                                                        <input type="hidden" name="id_kategori" id="id_kategori" value="<?php echo $data['id_kategori']; ?>"/>
-                                                                        <p> Apakah kamu yakin ingin menghapus data ini ??</p>
-                                                                    </div>
-                                                                    <div class="modal-footer">
-                                                                        <input type="submit" value="Ya" name="HapusData" class="btn btn-primary"/>
-                                                                    </div>
-                                                                    <?php
-                                                                    }
-                                                                    ?>
-                                                                </form>
                                                             </div>
                                                         </div>
-                                                    </div>
-                                        <?php
-                                    }
-                                    echo "</tbody>";
-                                echo "</table>";
-                                // Free result set
-                                mysqli_free_result($result);
+                                            <?php
+                                        }
+                                        echo "</tbody>";
+                                    echo "</table>";
+                                    // Free result set
+                                    mysqli_free_result($result);
+                                } else{
+                                    echo "<tr>  
+                                                <td colspan='4'><p style='color:red'>Tidak ada data yang ditemukan.</p></td>  
+                                        </tr>";
+                                }
                             } else{
-                                echo "<p class='lead'><em>No records were found.</em></p>";
+                                echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
                             }
-                        } else{
-                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
-                        }
 
-                        // Close connection
-                        mysqli_close($db);
-                        ?>
+                            // Close connection
+                            mysqli_close($db);
+                            ?>
+                            </div>
+                        </div>
                     </div>
-
                 </div>
                 <!-- /.container-fluid -->
 
@@ -394,5 +405,12 @@ include 'config.php';
     <!-- Page level custom scripts -->
     <script src="js/demo/chart-area-demo.js"></script>
     <script src="js/demo/chart-pie-demo.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="js/demo/datatables-demo.js"></script>
 
 </body>
