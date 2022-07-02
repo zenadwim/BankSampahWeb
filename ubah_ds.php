@@ -214,7 +214,7 @@ if(!isset($_SESSION['id_admin'])){
                     ?>
                     <div class="card-body" style="margin-left: 150px; margin-right: 150px">
                         <div class="table-responsive">
-                            <table class="table table-bordered" id="dataTable" cellspacing="0">
+                            <table class="shadow table table-bordered" cellspacing="0">
                                 <form action="proses-ubahds.php" method="POST">
                                     <tr>
                                         <td>Nama Sampah </td>
@@ -222,7 +222,7 @@ if(!isset($_SESSION['id_admin'])){
                                     </tr>
                                     <tr>
                                         <td>Bobot </td>
-                                        <td><input type="text" name="jumlah" id="jumlah" value="<?php echo $row['total'] ?>" /></td>
+                                        <td><input type="number" name="jumlah" id="jumlah" value="<?php echo $row['total'] ?>" /></td>
                                     </tr>
                                     <tr>
                                         <td>Harga Nasabah: </td>

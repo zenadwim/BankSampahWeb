@@ -457,7 +457,7 @@ include 'config.php';
                 var rowData = [];
                 json["id_setoran"] = ke;
                 // json["tanggal_setor"] = $("#tgl_setor").val();
-                json["tanggal_setor"] = tgl.val();
+                json["tanggal_setor"] = tgl;
                 json["id_nasabah"] = $("#id_nasabah").val();
                 json["id_admin"] = $("#id_admin").val();
                 json["saldo"] = $("#saldo").val();

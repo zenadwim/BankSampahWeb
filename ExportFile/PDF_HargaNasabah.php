@@ -8,8 +8,8 @@ die("Anda belum login");//jika belum login jangan lanjut..
 ?>
 <?php
 //include connection file 
-include_once("config.php");
-include_once('libs/fpdf.php');
+include_once("../config.php");
+include_once('../libs/fpdf.php');
 
 $from_date = $_GET['from_date'];
 $coba = explode("-", $from_date);
@@ -30,11 +30,15 @@ $pdf = new FPDF();
 // membuat halaman baru
 $pdf->AddPage();
 // setting jenis font yang akan digunakan
-$pdf->SetFont('Arial','B',12);
+$pdf->SetFont('Arial','B',16);
 // mencetak string 
-$pdf->Cell(190,7,'Data Harga Untuk Nasabah',0,1,'C');
-$pdf->SetFont('Arial','B',12);
-$pdf->Cell(190,7, $dari . ' Sampai ' . $ke,0,1,'C');
+// logo atau gambar, 
+// 'logo.php' di bawah berarti path atau alamat gambar
+// dengan panjang posisi X = 10, Y = 6, dan panjang 30 
+// $pdf->Image('../assets/img/logo.jpeg',10,6,30);
+$pdf->Cell(10,7,$pdf->Image('../assets/img/logo.png',45,5,30),0,0,'C');
+$pdf->Cell(200,7,'Data Harga Untuk Nasabah',0,1,'C');
+$pdf->Cell(220,7, $dari . ' Sampai ' . $ke,0,1,'C');
 
 // Memberikan space kebawah agar tidak terlalu rapat
 $pdf->Cell(10,7,'',0,1);
@@ -43,8 +47,8 @@ $pdf->SetFont('Arial','B',10);
 $pdf->Cell(10,6,'No.',1,0);
 $pdf->Cell(35,6,'ID harga nasabah',1,0);
 $pdf->Cell(20,6,'ID sampah',1,0);
-$pdf->Cell(25,6,'harga lama',1,0);
-$pdf->Cell(27,6,'harga baru',1,0);
+$pdf->Cell(30,6,'harga lama',1,0);
+$pdf->Cell(30,6,'harga baru',1,0);
 $pdf->Cell(30,6,'tanggal',1,0);
 $pdf->Cell(30,6,'Admin',1,1);
 
@@ -59,8 +63,8 @@ while ($d = mysqli_fetch_array($data)){
     $pdf->Cell(10,6,$no++,1,0);
     $pdf->Cell(35,6,$d['id_hrgnasabah'],1,0);
     $pdf->Cell(20,6,$d['id_sampah'],1,0);
-    $pdf->Cell(25,6,$d['harga_lama'],1,0);
-    $pdf->Cell(27,6,$d['harga_baru'],1,0);
+    $pdf->Cell(30,6,$d['harga_lama'],1,0);
+    $pdf->Cell(30,6,$d['harga_baru'],1,0);
     $pdf->Cell(30,6,$for_date,1,0);
     $pdf->Cell(30,6,$d['nama'],1,1); 
 }

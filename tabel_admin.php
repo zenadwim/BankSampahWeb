@@ -253,6 +253,7 @@ require_once "config.php";
                                 <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
+                                            <th>No</th>
                                             <th>ID</th>
                                             <th>Nama</th>
                                             <th>No Handphone</th>
@@ -269,9 +270,12 @@ require_once "config.php";
                                         $sql = "SELECT * FROM admin";
                                         if($result = mysqli_query($db, $sql)){
                                             if(mysqli_num_rows($result) > 0){
+                                                $no=0;
                                                 while($row = mysqli_fetch_array($result)){
+                                                    $no++;
                                                     ?>
                                                     <tr>
+                                                        <td><?php echo $no; ?></td>
                                                         <td><?php echo $row['id_admin']; ?></td>
                                                         <td><?php echo $row['nama']; ?></td>
                                                         <td><?php echo $row['no_telepon']; ?></td>
@@ -361,7 +365,9 @@ require_once "config.php";
                                                 // Free result set
                                                 mysqli_free_result($result);
                                             } else{
-                                                echo "<p class='lead'><em>No records were found.</em></p>";
+                                                echo "<tr>  
+                                                            <td colspan='6'><p style='color:red'>Tidak ada data yang ditemukan.</p></td>  
+                                                    </tr>";
                                             }
                                         } else{
                                             echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
