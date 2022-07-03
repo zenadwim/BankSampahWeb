@@ -196,7 +196,7 @@ include 'config.php';
                      <table class="table table-bordered">  
                           <tr>  
                                <th>ID</th>  
-                               <th>tanggal Pengajuan</th>  
+                               <th>tanggal</th>  
                                <th>Admin</th>
                                <th>Jumlah</th>
                                <th>Status</th>
@@ -211,7 +211,7 @@ include 'config.php';
                      {  
                          $cr_date=date_create($row['tanggal_pengajuan']);
                          
-                         $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
+                         $for_date=strftime('%d-%B-%Y', $cr_date->getTimestamp());
                          
                      ?>  
                           <tr>
