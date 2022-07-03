@@ -166,6 +166,9 @@ include 'config.php';
                     $id_nasabah= $_SESSION['id_nasabah'];
                     $rekening  = mysqli_query($db, "select * from setoran where id_setor='$id_setor'");
                     $row        = mysqli_fetch_array($rekening);
+                    $id_admin=$row['id_admin'];
+                    $admin  = mysqli_query($db, "select * from admin where id_admin='$id_admin'");
+                    $adm        = mysqli_fetch_array($admin);
 
                     ?>
                     <br/>
@@ -175,7 +178,7 @@ include 'config.php';
                                 Nama Admin
                             </td>
                             <td style="width: 50%;">
-                            <?php echo $row['id_admin'] ?>
+                            <?php echo $adm['nama'] ?>
                             </td>
                         </tr>
                         <tr>
