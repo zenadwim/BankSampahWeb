@@ -12,11 +12,7 @@ if ($jumlah != "" && $jumlah <= $min) {
      $id_nasabah = $data['id_nasabah'];
      $id_pengajuan = $data['id_pengajuan'];
      
-
      $sql = "INSERT INTO pengajuan (id_pengajuan, jumlah, tanggal_pengajuan, status, id_nasabah) VALUE ('$id_pengajuan', '$jumlah', '$tanggal_pengajuan', 'Sedang diproses','$id_nasabah' )";
-
-     //$sql = "INSERT INTO pengajuan (id_pengajuan, jumlah, tanggal_pengajuan, status, id_nasabah) VALUE ('NULL', '$jumlah', '$tanggal_pengajuan', 'Sedang diproses','$id_nasabah' )";
-
      $query = mysqli_query($db, $sql);
 
      

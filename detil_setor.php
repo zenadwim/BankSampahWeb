@@ -61,6 +61,16 @@ include 'config.php';
                     <span>Dashboard</span></a>
             </li>
 
+            <!-- Nav Item - Profile -->
+            <li class="nav-item active">
+                <a class="nav-link" href="Nasabah/Profile_Nasabah.php">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span></a>
+            </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
@@ -84,7 +94,7 @@ include 'config.php';
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Pengajuan:</h6>
-                        <a class="collapse-item" href="#">Pengajuan</a>
+                        <a class="collapse-item" href="Pengajuan.php">Pengajuan</a>
                         <a class="collapse-item" href="#">Riwayat Pengajuan</a>
                     </div>
                 </div>
@@ -129,7 +139,7 @@ include 'config.php';
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profileModal">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
                                 </a>
@@ -267,6 +277,72 @@ include 'config.php';
     <a class="scroll-to-top rounded" href="#page-top">
         <i class="fas fa-angle-up"></i>
     </a>
+
+    <!-- Profile Modal -->
+    <div class="modal fade" id="profileModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Profile Anda </h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <?php
+                        // Include config file
+                        require_once "config.php";
+
+                        // Attempt select query execution
+                        $sql = "SELECT * FROM nasabah";
+                        if($result = mysqli_query($db, $sql)){
+                            if(mysqli_num_rows($result) > 0){
+                                $row = mysqli_fetch_array($result);
+                                ?>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Nama</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0"><?php echo $row['nama']; ?></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">No Handphone</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0"><?php echo $row['no_telepon']; ?></p>
+                                        </div>
+                                    </div>
+                                    <hr>
+                                    <div class="row">
+                                        <div class="col-sm-3">
+                                            <p class="mb-0">Alamat</p>
+                                        </div>
+                                        <div class="col-sm-9">
+                                            <p class="text-muted mb-0"><?php echo $row['alamat']; ?></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <?php
+                                mysqli_free_result($result);
+                            } else{
+                                echo "<p class='lead'><em>No records were found.</em></p>";
+                            }
+                        } else{
+                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+                        }
+                        // Close connection
+                        mysqli_close($db);
+                        ?>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Logout Modal-->
     <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"

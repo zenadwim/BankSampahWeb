@@ -201,12 +201,22 @@ include 'config.php';
 
                     <div class="mb-4">
                         <form name="setor" id="setor">
-                        <div class="table-responsive" align="center" style="margin-top:30px;">
+                        <div class="table-responsive" style="margin-top:30px;">
                             <table>
                                 <tr>
                                     <td>ID Nasabah</td>
                                     <td>: <input type="text" name="id_nasabah" id="id_nasabah"/></td>
                                     <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-item">Pilih</button></td>
+                                </tr>
+                                <tr>
+                                    <td>Nama Nasabah</td>
+                                    <td>: <input type="text" name="nama" id="nama"/></td>
+                                    <td></td>
+                                </tr>
+                                <tr>
+                                    <td>Saldo</td>
+                                    <td>: <input type="text" name="saldo" id="saldo"/></td>
+                                    <td></td>
                                 </tr>
                                 <tr>
                                     <td>Tanggal Setor</td>
@@ -216,16 +226,6 @@ include 'config.php';
                                 <tr>
                                     <td>ID Admin</td>
                                     <td>: <input type="text" name="id_admin" id="id_admin" value="<?php echo $_SESSION['id_admin'] ?>"/></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Saldo</td>
-                                    <td>: <input type="text" name="saldo" id="saldo"/></td>
-                                    <td></td>
-                                </tr>
-                                <tr>
-                                    <td>Nama Nasabah</td>
-                                    <td>: <input type="text" name="nama" id="nama"/></td>
                                     <td></td>
                                 </tr>
                             </table>

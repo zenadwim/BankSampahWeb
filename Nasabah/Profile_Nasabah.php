@@ -4,7 +4,6 @@ session_start();
 if(!isset($_SESSION['id_nasabah'])){
 die("Anda belum login");//jika belum login jangan lanjut..
 }
-include 'config.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,29 +17,70 @@ include 'config.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Nasabah | Tabungan</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
-          
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
+    <title>Nasabah | Dasboard</title>
     <!-- Favicons -->
-    
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/img/favicon.png" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-    <script type="text/javascript">
-        $(document).ready(function(){
-            $('[data-toggle="tooltip"]').tooltip();
-        });
-    </script>
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+
+    <!-- Custom styles for this page -->
+    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            background: rgb(99, 39, 120)
+        }
+
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #BA68C8
+        }
+
+        .profile-button {
+            background: rgb(99, 39, 120);
+            box-shadow: none;
+            border: none
+        }
+
+        .profile-button:hover {
+            background: #682773
+        }
+
+        .profile-button:focus {
+            background: #682773;
+            box-shadow: none
+        }
+
+        .profile-button:active {
+            background: #682773;
+            box-shadow: none
+        }
+
+        .back:hover {
+            color: #682773;
+            cursor: pointer
+        }
+
+        .labels {
+            font-size: 11px
+        }
+
+        .add-experience:hover {
+            background: #BA68C8;
+            color: #fff;
+            cursor: pointer;
+            border: solid 1px #BA68C8
+        }
+    </style>
+
 </head>
 
 <body id="page-top">
@@ -52,7 +92,7 @@ include 'config.php';
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="halaman_nasabah.php">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="../halaman_nasabah.php">
                 <div class="sidebar-brand-text mx-3">BSPBS</div>
             </a>
 
@@ -61,14 +101,17 @@ include 'config.php';
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="halaman_nasabah.php">
+                <a class="nav-link" href="../halaman_nasabah.php">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
 
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
             <!-- Nav Item - Profile -->
             <li class="nav-item active">
-                <a class="nav-link" href="Nasabah/Profile_Nasabah.php">
+                <a class="nav-link" href="Profile_Nasabah.php">
                     <i class="fas fa-user"></i>
                     <span>Profile</span></a>
             </li>
@@ -76,12 +119,9 @@ include 'config.php';
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
             <!-- Nav Item - Tabungan -->
             <li class="nav-item active">
-                <a class="nav-link" href="tabungan.php">
+                <a class="nav-link" href="../tabungan.php">
                     <i class="fas fa-user-cog"></i>
                     <span>Tabungan</span></a>
             </li>
@@ -99,8 +139,8 @@ include 'config.php';
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Pengajuan:</h6>
-                        <a class="collapse-item" href="pengajuan.php">Pengajuan</a>
-                        <a class="collapse-item" href="riwayat_pengajuan.php">Riwayat Pengajuan</a>
+                        <a class="collapse-item" href="../pengajuan.php">Pengajuan</a>
+                        <a class="collapse-item" href="#">Riwayat Pengajuan</a>
                     </div>
                 </div>
             </li>
@@ -139,7 +179,7 @@ include 'config.php';
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['id_nasabah']; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -173,77 +213,45 @@ include 'config.php';
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi Rekening Anda</h1>
-                    <div class="mb-4">
-                    <?php
-                    include 'config.php';
-                    $id_nasabah= $_SESSION['id_nasabah'];
-                    $rekening  = mysqli_query($db, "select * from tabungan where id_nasabah='$id_nasabah'");
-                    $row        = mysqli_fetch_array($rekening);
-                    ?>
-                    <input type="hidden" value="<?php echo $row['saldo']; ?>" name="money" id="money" />
-                    <p style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p>
-                    
-                    <div>
-                    <br/>
-                    <div class="container" style="width:100%;"> 
-                         <div class="d-flex justify-content-around"> 
-                              <div class="col-md-8">
-                                    <table>
-                                        <tr>
-                                        
-                                        <td>  <input type="text" name="from_date" id="from_date" class="form-control"  />  </td>
-
-                                        <td>  <input type="text" name="testin" id="testin" class="form-control"  />  </td>
-                                        
-                                        <td> <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  </td>
-                                        <td> <input type="button" name="reset" id="reset" value="reset" class="btn btn-info" />  </td>
-                                        
-                                        <td> <button type="button" id="generate_pdf" name="generate_pdf" class="btn btn-primary"><i class="fa fa-pdf" aria-hidden="true"></i>Generate PDF</button>  </td>
-                                        
-                                        </tr>
-                                    </table>
-                                </div>  
-                              
-                         </div> 
-                    <div style="clear:both"></div>                 
-                    <br />  
-                    <div id="order_table">  
-                     <table class="table table-bordered">  
-                          <tr>  
-                               <th>ID</th>  
-                               <th >tanggal setor</th>  
-                               <th>Admin</th>
-                               <th>Setor</th>
-                               <th>Aksi</th>  
-
-                          </tr>  
-                     <?php
-                     setlocale(LC_ALL, 'id-ID', 'id_ID');
-                     $query = "SELECT setoran.id_setor , setoran.tgl_setor,setoran.id_nasabah,setoran.id_admin, admin.nama,SUM(detil_setor.harga_nasabah) as harga FROM setoran RIGHT JOIN detil_setor ON setoran.id_setor = detil_setor.id_setor RIGHT JOIN admin ON setoran.id_admin = admin.id_admin  where id_nasabah='$id_nasabah' GROUP BY setoran.id_setor ORDER BY tgl_setor desc";  
-                     $result = mysqli_query($db, $query);  
-                     while($row = mysqli_fetch_array($result))  
-                     {  
-                         $cr_date=date_create($row['tgl_setor']);
-                         
-                         $for_date=strftime('%d-%B-%Y', $cr_date->getTimestamp());
-                         
-                     ?>  
-                          <tr>
-                                 
-                               <td><?php echo $row["id_setor"]; ?></td>  
-                               <td><?php echo $for_date; ?></td>  
-                               <td><?php echo $row["nama"]; ?></td>
-                               <td><?php echo $row["harga"]; ?></td>
-                              <?php echo " <td><a href='detil_setor.php?id_setor=".$row['id_setor']."' >Detil</a></td>";?>   
-                          </tr>  
-                     <?php  
-                     }  
-                     ?>  
-                     </table>  
-                    </div>  
-                    </div>  
+                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
                     </div>
+
+                    <!-- Content Row -->
+                    <div class="container rounded bg-white mt-5 mb-5">
+                        <?php
+                        // Include config file
+                        require_once "../config.php";
+
+                        // Attempt select query execution
+                        $sql = "SELECT * FROM nasabah";
+                        if($result = mysqli_query($db, $sql)){
+                            if(mysqli_num_rows($result) > 0){
+                                $row = mysqli_fetch_array($result);
+                        ?>
+                        <div class="row">
+                            <div class="col-md-3 border-right">
+                                <div class="d-flex flex-column align-items-center text-center p-3 py-5"><img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg"><span class="font-weight-bold"><?php echo $row['nama'] ?></span><span> </span></div>
+                            </div>
+                            <div class="p-3 py-5">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h4 class="text-right">Profile Nasabah</h4>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-md-12"><label class="labels">Nama Nasabah</label><input type="text" class="form-control" value="<?php echo $row['nama'] ?>" readonly></div>
+                                    <div class="col-md-12"><label class="labels">No Telepon</label><input type="text" class="form-control" value="<?php echo $row['no_telepon'] ?>" readonly></div>
+                                    <div class="col-md-12"><label class="labels">Alamat</label><input type="text" class="form-control" value="<?php echo $row['alamat'] ?>" readonly></div>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                            }else{
+                                echo "<p class='lead'><em>No records were found.</em></p>";
+                            }
+                        }else{
+                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+                        }
+                        ?>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -332,7 +340,7 @@ include 'config.php';
                         }
                         // Close connection
                         mysqli_close($db);
-                        ?>
+                    ?>
                 </div>
             </div>
         </div>
@@ -352,143 +360,36 @@ include 'config.php';
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="../logout.php">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
-    <script>
-          var calculation = document.getElementById('money').value;
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
 
-          //1st way
-          var moneyFormatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 2
-          });
-          document.getElementById('formattedMoney').innerText = moneyFormatter.format(calculation);
-     </script>
+    <!-- Page level plugins -->
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
-     <script>  
-          $(document).ready(function(){  
-               
-                var d = new Date();
-                var currMonth = d.getMonth();
-                var currYear = d.getFullYear();
-                var startDate = new Date(currYear, 0, 1);
-                var lastDate=new Date(currYear, currMonth + 1,0);
-                  
-
-                $('#from_date').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
-                $('#from_date').datepicker('setDate', startDate);
-                
-                // $('#dari').datepicker({ dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true }); // format to show
-                // $('#dari').datepicker('setDate', baru);
-                $('#testin').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
-                $('#testin').datepicker('setDate', lastDate); 
-                 
-               $('#filter').click(function(){  
-                    var from_date = $('#from_date').val();
-                    
-                    
-                    var from_date2 = new Date(from_date);
-                    var hari = from_date2.getDate();
-                    var bulan = from_date2.getMonth();
-                    var tahun = from_date2.getFullYear();
-                    function pad(n) {
-                    return n<10 ? '0'+n : n;
-                    }
-                    var baru = tahun + "-" + pad(hari) + "-" + pad(bulan + 1);
-                    var dari = baru;
-                    
-                      
-                    
-
-                    //
-                    var testin = $('#testin').val();
-                    
-                    var test = testin.split("-");
-                    var hari2= test[0];
-                    
-                    var bulan2= test[1];
-                    
-                    var tahun2= test[2];
-                    
-
-                    var ke=test[2] + "-" + test[1]+ "-" + test[0];
-                    
-                    // var from_date2 = new Date($('#from_date').val());
-                    // var hari = from_date2.getDate();
-                    // var bulan = from_date2.getMonth();
-                    // var tahun = from_date2.getFullYear();
-                    // function pad(n) {
-                    // return n<10 ? '0'+n : n;
-                    // }
-                    // var baru = tahun + "-" + pad(hari) + "-" + pad(bulan + 1);
-                    // var dari = baru;
-                    // console.log("dari2 = "+dari);
-                      
-                    
-                    
-                   
-                      
-                    if(dari != '' && ke != '')  
-                    {  
-                         $.ajax({  
-                              url:"filter_tabungan.php",  
-                              method:"POST",  
-                              data:{from_date:dari, to_date:ke},  
-                              success:function(data)  
-                              {  
-                                   $('#order_table').html(data);  
-                              }  
-                         });  
-                    }  
-                    else  
-                    {  
-                         alert("Please Select Date");  
-                    }  
-               });
-               //tombol reset 
-                $('#reset').click(function() {
-                location.reload();
-                });
-                //tombol pdf
-                $('#generate_pdf').click(function(){ 
-                var from_date = $('#from_date').val();
-        
-                var testin = $('#testin').val();
-               
-                
-                if(from_date != '' && testin != '')  
-                {    
-                    window.location.assign("generate_pdf.php?from_date="+from_date+"&testin="+testin);
-                    
-                }  
-                else{  
-                    alert("Please Select Date");  
-                }  
-            });
-
-          });  
-     </script>
+    <!-- Page level custom scripts -->
+    <script src="../js/demo/datatables-demo.js"></script>
 
 </body>
+
 </html>
