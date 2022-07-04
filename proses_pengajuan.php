@@ -5,7 +5,8 @@ $data = json_decode(file_get_contents('php://input'), true);
 $jumlah = $data['jumlah'];
 $min = $data['min'];
 
-if ($jumlah != "") {
+if ($jumlah != "" && $jumlah <= $min) {
+//if ($jumlah <= $min) {
      
      $tanggal_pengajuan = $data['tanggal_pengajuan'];
      $id_nasabah = $data['id_nasabah'];
@@ -16,9 +17,9 @@ if ($jumlah != "") {
 
      
 
-     echo "Data Inserted";
+     echo "Pengajuan Telah dikirim , segera beritahu petugas yang ada dibank sampah untuk memperoses pengajuan !!";
      
 } else {
-     echo "Masukan data dengan benar";
+     echo "Masukan data dengan benar , jumlah yang di masukan tidak boleh melebihi tabungan yang ada";
 }
 ?>

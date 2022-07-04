@@ -24,11 +24,11 @@ die("Anda belum login");//jika belum login jangan lanjut..
            <table class="table table-bordered">  
                  <tr>  
                                <th>ID</th>  
-                               <th >tanggal setor</th>  
+                               <th >tanggal</th>  
                                <th>Admin</th>
                                <th>Jumlah</th>
                                <th>Status</th>
-                               <th>Aksi</th>  
+                                 
 
                           </tr>  
       ';  
@@ -38,7 +38,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
            {  
                $cr_date=date_create($row['tanggal_pengajuan']);
                          
-               $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
+               $for_date=strftime('%d-%B-%Y', $cr_date->getTimestamp());
                 $output .= '  
                      <tr>  
                           <td>'. $row["id_pengajuan"] .'</td>  
@@ -46,7 +46,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
                           <td>'. $row["nama"] .'</td> 
                           <td>'. $row["jumlah"] .'</td> 
                           <td>'. $row["status"] .'</td>  
-                          <td><a href="detil_setor.php?id_pengajuan='.$row['id_pengajuan'].'" >Detil</a></td>
+                          
                      </tr>  
                 ';  
            }  

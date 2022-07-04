@@ -163,7 +163,7 @@ include 'config.php';
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi Rekening Anda</h1>
+                    <h1  class="h3 mb-2 text-gray-800" align="center">Riwayat Pengajuan</h1>
                     <div class="mb-4">
                     <?php
                     include 'config.php';
@@ -172,7 +172,7 @@ include 'config.php';
                     $row        = mysqli_fetch_array($rekening);
                     ?>
                     <input type="hidden" value="<?php echo $row['saldo']; ?>" name="money" id="money" />
-                    <p style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p>
+                    <p style="visibility: hidden;" style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p>
                     
                     <div>
                     <br/>
@@ -196,11 +196,11 @@ include 'config.php';
                      <table class="table table-bordered">  
                           <tr>  
                                <th>ID</th>  
-                               <th>tanggal Pengajuan</th>  
+                               <th>tanggal</th>  
                                <th>Admin</th>
                                <th>Jumlah</th>
                                <th>Status</th>
-                               <th>Aksi</th>  
+                                
 
                           </tr>  
                      <?php
@@ -211,7 +211,7 @@ include 'config.php';
                      {  
                          $cr_date=date_create($row['tanggal_pengajuan']);
                          
-                         $for_date=strftime('%B-%Y', $cr_date->getTimestamp());
+                         $for_date=strftime('%d-%B-%Y', $cr_date->getTimestamp());
                          
                      ?>  
                           <tr>
@@ -221,7 +221,7 @@ include 'config.php';
                                <td><?php echo $row["nama"]; ?></td>  
                                <td><?php echo $row["jumlah"]; ?></td>
                                <td><?php echo $row["status"]; ?></td>
-                              <?php echo " <td><a href='detil_pengajuan.php?id_pengajuan=".$row['id_pengajuan']."' >Detil</a></td>";?>   
+                                 
                           </tr>  
                      <?php  
                      }  
