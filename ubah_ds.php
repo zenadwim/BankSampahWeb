@@ -224,22 +224,11 @@ if(!isset($_SESSION['id_admin'])){
                                         <td>Bobot </td>
                                         <td><input type="number" name="jumlah" id="jumlah" value="<?php echo $row['total'] ?>" /></td>
                                     </tr>
-                                    <tr>
-                                        <td>Harga Nasabah: </td>
-                                        <td><input type="text" name="harga_nasabah" id="harga_nasabah" value="<?php echo $smp['harga_nasabah'] ?>" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Harga Pengepul: </td>
-                                        <td><input type="text" name="harga_pengepul" id="harga_pengepul" value="<?php echo $smp['harga_pengepul'] ?>" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total Harga Nasabah: </td>
-                                        <td><input type="text" name="hrg_nasabah" id="hrg_nasabah"  value="<?php $hrg_n=$row['total']*$smp['harga_nasabah']; echo $hrg_n ?>"  readonly="readonly" /></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Total Harga Pengepul: </td>
-                                        <td><input type="text" name="hrg_pengepul" id="hrg_pengepul"  value="<?php $hrg_p=$row['total']*$smp['harga_pengepul']; echo $hrg_p ?>"  readonly="readonly" /></td>
-                                    </tr>
+                                    <input type="hidden" name="harga_nasabah" id="harga_nasabah" value="<?php echo $smp['harga_nasabah'] ?>" />
+                                    <input type="hidden" name="harga_pengepul" id="harga_pengepul" value="<?php echo $smp['harga_pengepul'] ?>" />
+                                    <input type="hidden" name="hrg_nasabah" id="hrg_nasabah"  value="<?php $hrg_n=$row['total']*$smp['harga_nasabah']; echo $hrg_n ?>"  readonly="readonly" />
+                                    <input type="hidden" name="hrg_pengepul" id="hrg_pengepul"  value="<?php $hrg_p=$row['total']*$smp['harga_pengepul']; echo $hrg_p ?>"  readonly="readonly" /></td>
+                                    
                                     <p style="display:none">
                                         <input type="text" name="saldo" value="<?php echo $saldo_sekarang ?>" />
                                         <input type="text" name="id_nasabah" value="<?php echo $id_nasabah ?>" />
