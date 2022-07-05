@@ -5,16 +5,16 @@ if(!isset($_SESSION['id_nasabah'])){
 die("Anda belum login");//jika belum login jangan lanjut..
 }
 include 'config.php';
-$query = mysqli_query($db, "SELECT max(id_pengajuan) as idTerbesar FROM pengajuan");
-	$data = mysqli_fetch_array($query);
-	$idpengajuan = $data['idTerbesar'];
+// $query = mysqli_query($db, "SELECT max(id_pengajuan) as idTerbesar FROM pengajuan");
+// 	$data = mysqli_fetch_array($query);
+// 	$idpengajuan = $data['idTerbesar'];
  
-	$urutan = (int) substr($idpengajuan, 3, 3);
+// 	$urutan = (int) substr($idpengajuan, 3, 3);
  
-	$urutan++;
+// 	$urutan++;
  
-	$huruf = "TRN";
-	$idpengajuan = $huruf . sprintf("%03s", $urutan);
+// 	$huruf = "TRN";
+// 	$idpengajuan = $huruf . sprintf("%03s", $urutan);
 ?>
 
 <!DOCTYPE html>
@@ -202,7 +202,7 @@ $query = mysqli_query($db, "SELECT max(id_pengajuan) as idTerbesar FROM pengajua
                         <form name="pengajuan" id="pengajuan">
                             <div class="table-responsive">
                                 <table>
-                                    <input type="hidden" name="id_pengajuan" id="id_pengajuan" value="<?php echo $idpengajuan ?>"/>
+                              
                                     <input type="hidden" name="tanggal_pengajuan" id="tanggal_pengajuan" value="<?php echo date('Y-m-d'); ?>" />
                                     <!-- <input type="hidden"  name="min" id="min" /> -->
                                     <input type="hidden" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
@@ -369,11 +369,20 @@ $query = mysqli_query($db, "SELECT max(id_pengajuan) as idTerbesar FROM pengajua
     <script>
         $(document).ready(function() {
             $('#submit').click(function() {
+                var id_nasabah=$('#id_nasabah').val();
+                var tanggal_pengajuan=$('#tanggal_pengajuan').val();
+                var test = tanggal_pengajuan.split("-");
+                var tahun2 = test[0];
+                var bulan2 = test[1];
+                var hari2 = test[2];
+                var id_pengajuan = id_nasabah + test[0] + test[1] + test[2];
+                
                 var json = Object();
 
                 var rowData = [];
+                json["id_pengajuan"] = id_pengajuan;
                 json["id_nasabah"] = $("#id_nasabah").val();
-                json["id_pengajuan"] = $("#id_pengajuan").val();
+                
                 json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
                 json["jumlah"] = $("#jumlah").val();
                 json["min"] = $("#money").val();
