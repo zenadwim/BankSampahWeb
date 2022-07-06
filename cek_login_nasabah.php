@@ -28,7 +28,7 @@ if($cek > 0){
 
 		
 		// alihkan ke halaman dashboard nasabah
-		header("location:halaman_nasabah.php");
+		header("location:Nasabah/halaman_nasabah.php");
  
 	
 		

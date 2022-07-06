@@ -13,7 +13,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
  if(isset($_POST["from_date"], $_POST["to_date"]))  
  {  
      $id_nasabah= $_SESSION['id_nasabah'];
-    require_once "config.php";
+    require_once "../config.php";
     setlocale(LC_ALL, 'id-ID', 'id_ID');
       $output = '';  
       $query = "  

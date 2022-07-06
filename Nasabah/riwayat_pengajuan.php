@@ -4,7 +4,7 @@ session_start();
 if(!isset($_SESSION['id_nasabah'])){
 die("Anda belum login");//jika belum login jangan lanjut..
 }
-include 'config.php';
+include '../config.php';
 ?>
 
 <!DOCTYPE html>
@@ -18,19 +18,24 @@ include 'config.php';
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Nasabah | Tabungan</title>
+    <title>Nasabah | Pengajuan</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <link href="../assets/img/favicon.png" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
+        
+    <!-- Custom styles for this page -->
+    <link href="../vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -63,7 +68,7 @@ include 'config.php';
 
             <!-- Nav Item - Profile -->
             <li class="nav-item active">
-                <a class="nav-link" href="Nasabah/Profile_Nasabah.php">
+                <a class="nav-link" href="profile_nasabah.php">
                     <i class="fas fa-user"></i>
                     <span>Profile</span></a>
             </li>
@@ -94,8 +99,8 @@ include 'config.php';
                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Pengajuan:</h6>
-                        <a class="collapse-item" href="Pengajuan.php">Pengajuan</a>
-                        <a class="collapse-item" href="#">Riwayat Pengajuan</a>
+                        <a class="collapse-item" href="pengajuan.php">Pengajuan</a>
+                        <a class="collapse-item" href="riwayat_pengajuan.php">Riwayat Pengajuan</a>
                     </div>
                 </div>
             </li>
@@ -134,7 +139,7 @@ include 'config.php';
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['id_nasabah']; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -142,14 +147,6 @@ include 'config.php';
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profileModal">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -168,87 +165,64 @@ include 'config.php';
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Detil Transaksi</h1>
-                    <div class="mb-4">
+                    <h1 class="h3 mb-4 text-gray-800" align="center">Riwayat Pengajuan</h1>
                     <?php
-                    include 'config.php';
-                    $id_setor= $_GET['id_setor'];
-                    $id_nasabah= $_SESSION['id_nasabah'];
-                    $rekening  = mysqli_query($db, "select * from setoran where id_setor='$id_setor'");
-                    $row        = mysqli_fetch_array($rekening);
-                    $id_admin=$row['id_admin'];
-                    $admin  = mysqli_query($db, "select * from admin where id_admin='$id_admin'");
-                    $adm        = mysqli_fetch_array($admin);
-
-                    ?>
-                    <br/>
-                    <table class="table table-bordered">
-                        <tr>
-                            <td style="width: 50%;">
-                                Nama Admin
-                            </td>
-                            <td style="width: 50%;">
-                            <?php echo $adm['nama'] ?>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td style="width: 50%;">
-                                Tanggal
-                            </td>
-                            <td style="width: 50%;">
-                            <?php echo $row['tgl_setor'] ?>
-                            </td>
-                        </tr>
-                        </table>  
-
-                            
-                        <div>
-                        
-                        <div class="container" style="width:100%;">  
-                        <h3>Daftar Sampah</h3>          
-                 
-                        <div style="clear:both"></div>                 
-                        
-                        <div id="order_table">  
-                            <table class="table table-bordered">  
-                                <tr>  
-                                    <th>ID</th>  
-                                    <th>Sampah</th>  
-                                    <th>harga_nasabah</th>
-                                        
-
-                                </tr>  
-                            <?php
-                            $query = "SELECT * FROM detil_setor where id_setor='$id_setor'";  
-                            $result = mysqli_query($db, $query);
-                            $x=0;  
-                            while($row = mysqli_fetch_array($result))  
-                            {
-                                
-                                $x= $x + $row["harga_nasabah"];
-                            ?>  
-                                <tr>  
-                                    <td><?php echo $row["id_setor"]; ?></td>  
-                                    <td><?php echo $row["id_sampah"]; ?></td>  
-                                    <td><?php echo $row["harga_nasabah"]; ?></td>
-                                        
-                                </tr>  
-                            <?php  
-                            }  
-                            ?>  
-                            </table>
-                            <table class="table table-bordered">
-                            <tr>
-                                <td style="width: 50%;">
-                                    Total
-                                </td>
-                                <td style="width: 50%;">
-                                    <?php echo $x ?>
-                                </td>
-                            </tr>
-                            </table>  
-                        </div>  
-                        </div>  
+                        include '../config.php';
+                        $id_nasabah= $_SESSION['id_nasabah'];
+                        $rekening  = mysqli_query($db, "select * from tabungan where id_nasabah='$id_nasabah'");
+                        $row        = mysqli_fetch_array($rekening);
+                        ?>
+                        <input type="hidden" value="<?php echo $row['saldo']; ?>" name="money" id="money" />
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h4 class="m-0 font-weight-bold text-primary">Data Transaksi Penarikan</h4>
+                            <h7 class="m-0 font-weight-bold">Total Tabungan Anda: <span id="formattedMoney"></span></h7>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>No</th>
+                                            <th>ID Pengajuan</th>
+                                            <th>Tanggal</th>
+                                            <th>Jumlah Nominal</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        // Attempt select query execution
+                                        $sql = "SELECT * FROM pengajuan WHERE id_nasabah='$id_nasabah'";
+                                        if($result = mysqli_query($db, $sql)){
+                                            if(mysqli_num_rows($result) > 0){
+                                                $no=0;
+                                                while($row = mysqli_fetch_array($result)){
+                                                    $no++;
+                                                    ?>
+                                                    <tr>
+                                                        <td><?php echo $no; ?></td>
+                                                        <td><?php echo $row['id_pengajuan']; ?></td>
+                                                        <td><?php echo $row['tanggal_pengajuan']; ?></td>
+                                                        <td><?php echo $row['jumlah']; ?></td>
+                                                        <td><?php echo $row['status']; ?></td>
+                                                    </tr>
+                                                    <?php
+                                                }
+                                                // Free result set
+                                                mysqli_free_result($result);
+                                            } else{
+                                                echo "<tr>  
+                                                            <td colspan='5'><p style='color:red'>Tidak ada data yang ditemukan.</p></td>  
+                                                    </tr>";
+                                            }
+                                        } else{
+                                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
+                                        }
+                                        ?>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -292,7 +266,7 @@ include 'config.php';
                 <div class="modal-body">
                     <?php
                         // Include config file
-                        require_once "config.php";
+                        require_once "../config.php";
 
                         // Attempt select query execution
                         $sql = "SELECT * FROM nasabah";
@@ -358,71 +332,43 @@ include 'config.php';
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="../logout.php">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
+
+    <!-- Page level plugins -->
+    <script src="../vendor/datatables/jquery.dataTables.min.js"></script>
+    <script src="../vendor/datatables/dataTables.bootstrap4.min.js"></script>
+
+    <!-- Page level custom scripts -->
+    <script src="../js/demo/datatables-demo.js"></script>
+
     <script>
-          var calculation = document.getElementById('money').value;
-
-          //1st way
-          var moneyFormatter = new Intl.NumberFormat('id-ID', {
-          style: 'currency',
-          currency: 'IDR',
-          minimumFractionDigits: 2
-          });
-          document.getElementById('formattedMoney').innerText = moneyFormatter.format(calculation);
-     </script>
-
-     <script>  
-          $(document).ready(function(){  
-               $.datepicker.setDefaults({  
-                    dateFormat: 'yy-mm-dd'   
-               });  
-               $(function(){  
-                    $("#from_date").datepicker();  
-                    $("#to_date").datepicker();  
-               });  
-               $('#filter').click(function(){  
-                    var from_date = $('#from_date').val();  
-                    var to_date = $('#to_date').val();  
-                    if(from_date != '' && to_date != '')  
-                    {  
-                         $.ajax({  
-                              url:"filter_tabungan.php",  
-                              method:"POST",  
-                              data:{from_date:from_date, to_date:to_date},  
-                              success:function(data)  
-                              {  
-                                   $('#order_table').html(data);  
-                              }  
-                         });  
-                    }  
-                    else  
-                    {  
-                         alert("Please Select Date");  
-                    }  
-               });  
-          });  
-     </script>
-
+        var uang = document.getElementById('money').value;
+        var moneyFormatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 2
+        });
+        document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
+    </script>
 </body>
 </html>

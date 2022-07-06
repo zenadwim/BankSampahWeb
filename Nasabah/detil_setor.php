@@ -4,7 +4,7 @@ session_start();
 if(!isset($_SESSION['id_nasabah'])){
 die("Anda belum login");//jika belum login jangan lanjut..
 }
-include 'config.php';
+include '../config.php';
 ?>
 
 <!DOCTYPE html>
@@ -19,23 +19,18 @@ include 'config.php';
     <meta name="author" content="">
 
     <title>Nasabah | Tabungan</title>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
-          
-        <script src="http://code.jquery.com/ui/1.10.3/jquery-ui.js"></script>  
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">  
     <!-- Favicons -->
-    
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    <link href="../assets/img/favicon.png" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
@@ -68,7 +63,7 @@ include 'config.php';
 
             <!-- Nav Item - Profile -->
             <li class="nav-item active">
-                <a class="nav-link" href="Nasabah/Profile_Nasabah.php">
+                <a class="nav-link" href="profile_nasabah.php">
                     <i class="fas fa-user"></i>
                     <span>Profile</span></a>
             </li>
@@ -139,7 +134,7 @@ include 'config.php';
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['id_nasabah']; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -147,14 +142,6 @@ include 'config.php';
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profileModal">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -173,77 +160,88 @@ include 'config.php';
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <h1 class="h3 mb-2 text-gray-800" align="center">Informasi Rekening Anda</h1>
+                    <h1 class="h3 mb-2 text-gray-800" align="center">Detil Transaksi</h1>
                     <div class="mb-4">
                     <?php
-                    include 'config.php';
+                    include '../config.php';
+                    $id_setor= $_GET['id_setor'];
                     $id_nasabah= $_SESSION['id_nasabah'];
-                    $rekening  = mysqli_query($db, "select * from tabungan where id_nasabah='$id_nasabah'");
+                    $rekening  = mysqli_query($db, "select * from setoran where id_setor='$id_setor'");
                     $row        = mysqli_fetch_array($rekening);
+                    $id_admin=$row['id_admin'];
+                    $admin  = mysqli_query($db, "select * from admin where id_admin='$id_admin'");
+                    $adm        = mysqli_fetch_array($admin);
+
                     ?>
-                    <input type="hidden" value="<?php echo $row['saldo']; ?>" name="money" id="money" />
-                    <p style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p>
-                    
-                    <div>
                     <br/>
-                    <div class="container" style="width:100%;"> 
-                         <div class="d-flex justify-content-around"> 
-                              <div class="col-md-8">
-                                    <table>
-                                        <tr>
-                                        
-                                        <td>  <input type="text" name="from_date" id="from_date" class="form-control"  />  </td>
+                    <table class="table table-bordered">
+                        <tr>
+                            <td style="width: 50%;">
+                                Nama Admin
+                            </td>
+                            <td style="width: 50%;">
+                            <?php echo $adm['nama'] ?>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="width: 50%;">
+                                Tanggal
+                            </td>
+                            <td style="width: 50%;">
+                            <?php echo $row['tgl_setor'] ?>
+                            </td>
+                        </tr>
+                        </table>  
 
-                                        <td>  <input type="text" name="testin" id="testin" class="form-control"  />  </td>
+                            
+                        <div>
+                        
+                        <div class="container" style="width:100%;">  
+                        <h3>Daftar Sampah</h3>          
+                 
+                        <div style="clear:both"></div>                 
+                        
+                        <div id="order_table">  
+                            <table class="table table-bordered">  
+                                <tr>  
+                                    <th>ID</th>  
+                                    <th>Sampah</th>  
+                                    <th>harga_nasabah</th>
                                         
-                                        <td> <input type="button" name="filter" id="filter" value="Filter" class="btn btn-info" />  </td>
-                                        <td> <input type="button" name="reset" id="reset" value="reset" class="btn btn-info" />  </td>
-                                        
-                                        <td> <button type="button" id="generate_pdf" name="generate_pdf" class="btn btn-primary"><i class="fa fa-pdf" aria-hidden="true"></i>Generate PDF</button>  </td>
-                                        
-                                        </tr>
-                                    </table>
-                                </div>  
-                              
-                         </div> 
-                    <div style="clear:both"></div>                 
-                    <br />  
-                    <div id="order_table">  
-                     <table class="table table-bordered">  
-                          <tr>  
-                               <th>ID</th>  
-                               <th >tanggal setor</th>  
-                               <th>Admin</th>
-                               <th>Setor</th>
-                               <th>Aksi</th>  
 
-                          </tr>  
-                     <?php
-                     setlocale(LC_ALL, 'id-ID', 'id_ID');
-                     $query = "SELECT setoran.id_setor , setoran.tgl_setor,setoran.id_nasabah,setoran.id_admin, admin.nama,SUM(detil_setor.harga_nasabah) as harga FROM setoran RIGHT JOIN detil_setor ON setoran.id_setor = detil_setor.id_setor RIGHT JOIN admin ON setoran.id_admin = admin.id_admin  where id_nasabah='$id_nasabah' GROUP BY setoran.id_setor ORDER BY tgl_setor desc";  
-                     $result = mysqli_query($db, $query);  
-                     while($row = mysqli_fetch_array($result))  
-                     {  
-                         $cr_date=date_create($row['tgl_setor']);
-                         
-                         $for_date=strftime('%d-%B-%Y', $cr_date->getTimestamp());
-                         
-                     ?>  
-                          <tr>
-                                 
-                               <td><?php echo $row["id_setor"]; ?></td>  
-                               <td><?php echo $for_date; ?></td>  
-                               <td><?php echo $row["nama"]; ?></td>
-                               <td><?php echo $row["harga"]; ?></td>
-                              <?php echo " <td><a href='detil_setor.php?id_setor=".$row['id_setor']."' >Detil</a></td>";?>   
-                          </tr>  
-                     <?php  
-                     }  
-                     ?>  
-                     </table>  
-                    </div>  
-                    </div>  
-                    </div>
+                                </tr>  
+                            <?php
+                            $query = "SELECT * FROM detil_setor where id_setor='$id_setor'";  
+                            $result = mysqli_query($db, $query);
+                            $x=0;  
+                            while($row = mysqli_fetch_array($result))  
+                            {
+                                
+                                $x= $x + $row["harga_nasabah"];
+                            ?>  
+                                <tr>  
+                                    <td><?php echo $row["id_setor"]; ?></td>  
+                                    <td><?php echo $row["id_sampah"]; ?></td>  
+                                    <td><?php echo $row["harga_nasabah"]; ?></td>
+                                        
+                                </tr>  
+                            <?php  
+                            }  
+                            ?>  
+                            </table>
+                            <table class="table table-bordered">
+                            <tr>
+                                <td style="width: 50%;">
+                                    Total
+                                </td>
+                                <td style="width: 50%;">
+                                    <?php echo $x ?>
+                                </td>
+                            </tr>
+                            </table>  
+                        </div>  
+                        </div>  
+                        </div>
                     </div>
                 </div>
                 <!-- /.container-fluid -->
@@ -286,7 +284,7 @@ include 'config.php';
                 <div class="modal-body">
                     <?php
                         // Include config file
-                        require_once "config.php";
+                        require_once "../config.php";
 
                         // Attempt select query execution
                         $sql = "SELECT * FROM nasabah";
@@ -352,28 +350,28 @@ include 'config.php';
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="../logout.php">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../vendor/jquery/jquery.min.js"></script>
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
     <script>
           var calculation = document.getElementById('money').value;
 
@@ -388,73 +386,22 @@ include 'config.php';
 
      <script>  
           $(document).ready(function(){  
-               
-                var d = new Date();
-                var currMonth = d.getMonth();
-                var currYear = d.getFullYear();
-                var startDate = new Date(currYear, 0, 1);
-                var lastDate=new Date(currYear, currMonth + 1,0);
-                  
-
-                $('#from_date').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
-                $('#from_date').datepicker('setDate', startDate);
-                
-                // $('#dari').datepicker({ dateFormat: 'yy-mm-dd',changeMonth: true,changeYear: true }); // format to show
-                // $('#dari').datepicker('setDate', baru);
-                $('#testin').datepicker({ dateFormat: 'dd-mm-yy',changeMonth: true,changeYear: true }); // format to show
-                $('#testin').datepicker('setDate', lastDate); 
-                 
+               $.datepicker.setDefaults({  
+                    dateFormat: 'yy-mm-dd'   
+               });  
+               $(function(){  
+                    $("#from_date").datepicker();  
+                    $("#to_date").datepicker();  
+               });  
                $('#filter').click(function(){  
-                    var from_date = $('#from_date').val();
-                    
-                    
-                    var from_date2 = new Date(from_date);
-                    var hari = from_date2.getDate();
-                    var bulan = from_date2.getMonth();
-                    var tahun = from_date2.getFullYear();
-                    function pad(n) {
-                    return n<10 ? '0'+n : n;
-                    }
-                    var baru = tahun + "-" + pad(hari) + "-" + pad(bulan + 1);
-                    var dari = baru;
-                    
-                      
-                    
-
-                    //
-                    var testin = $('#testin').val();
-                    
-                    var test = testin.split("-");
-                    var hari2= test[0];
-                    
-                    var bulan2= test[1];
-                    
-                    var tahun2= test[2];
-                    
-
-                    var ke=test[2] + "-" + test[1]+ "-" + test[0];
-                    
-                    // var from_date2 = new Date($('#from_date').val());
-                    // var hari = from_date2.getDate();
-                    // var bulan = from_date2.getMonth();
-                    // var tahun = from_date2.getFullYear();
-                    // function pad(n) {
-                    // return n<10 ? '0'+n : n;
-                    // }
-                    // var baru = tahun + "-" + pad(hari) + "-" + pad(bulan + 1);
-                    // var dari = baru;
-                    // console.log("dari2 = "+dari);
-                      
-                    
-                    
-                   
-                      
-                    if(dari != '' && ke != '')  
+                    var from_date = $('#from_date').val();  
+                    var to_date = $('#to_date').val();  
+                    if(from_date != '' && to_date != '')  
                     {  
                          $.ajax({  
                               url:"filter_tabungan.php",  
                               method:"POST",  
-                              data:{from_date:dari, to_date:ke},  
+                              data:{from_date:from_date, to_date:to_date},  
                               success:function(data)  
                               {  
                                    $('#order_table').html(data);  
@@ -465,28 +412,7 @@ include 'config.php';
                     {  
                          alert("Please Select Date");  
                     }  
-               });
-               //tombol reset 
-                $('#reset').click(function() {
-                location.reload();
-                });
-                //tombol pdf
-                $('#generate_pdf').click(function(){ 
-                var from_date = $('#from_date').val();
-        
-                var testin = $('#testin').val();
-               
-                
-                if(from_date != '' && testin != '')  
-                {    
-                    window.location.assign("generate_pdf.php?from_date="+from_date+"&testin="+testin);
-                    
-                }  
-                else{  
-                    alert("Please Select Date");  
-                }  
-            });
-
+               });  
           });  
      </script>
 

@@ -4,6 +4,7 @@ session_start();
 if(!isset($_SESSION['id_nasabah'])){
 die("Anda belum login");//jika belum login jangan lanjut..
 }
+include '../config.php';
 ?>
 
 <!DOCTYPE html>
@@ -17,29 +18,26 @@ die("Anda belum login");//jika belum login jangan lanjut..
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Nasabah | Dasboard</title>
+    <title>Nasabah | Pengajuan</title>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>  
     <!-- Favicons -->
-    <link href="assets/img/favicon.png" rel="icon">
-    <link href="assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+    
+    <link href="../assets/img/favicon.png" rel="icon">
+    <link href="../assets/img/apple-touch-icon.png" rel="apple-touch-icon">
 
     <!-- Custom fonts for this template-->
-    <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="../vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
         rel="stylesheet">
 
     <!-- Custom styles for this template-->
-    <link href="css/sb-admin-2.min.css" rel="stylesheet">
-
-    <!-- Custom styles for this page -->
-    <link href="vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-
+    <link href="../css/sb-admin-2.min.css" rel="stylesheet">
     <script type="text/javascript">
         $(document).ready(function(){
             $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
-
 </head>
 
 <body id="page-top">
@@ -65,15 +63,15 @@ die("Anda belum login");//jika belum login jangan lanjut..
                     <span>Dashboard</span></a>
             </li>
 
-            <!-- Divider -->
-            <hr class="sidebar-divider my-0">
-
             <!-- Nav Item - Profile -->
             <li class="nav-item active">
-                <a class="nav-link" href="Nasabah/Profile_Nasabah.php">
+                <a class="nav-link" href="profile_nasabah.php">
                     <i class="fas fa-user"></i>
                     <span>Profile</span></a>
             </li>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
 
             <!-- Divider -->
             <hr class="sidebar-divider my-0">
@@ -99,7 +97,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
                     <div class="bg-white py-2 collapse-inner rounded">
                         <h6 class="collapse-header">Menu Pengajuan:</h6>
                         <a class="collapse-item" href="pengajuan.php">Pengajuan</a>
-                        <a class="collapse-item" href="#">Riwayat Pengajuan</a>
+                        <a class="collapse-item" href="riwayat_pengajuan.php">Riwayat Pengajuan</a>
                     </div>
                 </div>
             </li>
@@ -138,7 +136,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['id_nasabah']; ?></span>
                                 <img class="img-profile rounded-circle"
-                                    src="img/undraw_profile.svg">
+                                    src="../img/undraw_profile.svg">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -146,14 +144,6 @@ die("Anda belum login");//jika belum login jangan lanjut..
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#profileModal">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Profile
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
-                                    <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Activity Log
                                 </a>
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
@@ -172,68 +162,43 @@ die("Anda belum login");//jika belum login jangan lanjut..
                 <div class="container-fluid">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                    </div>
+                    <h1 class="h3 mb-2 text-gray-800" align="center">Form Pengajuan</h1>
+                    <div class="mb-4">
+                    <?php
+                    include '../config.php';
+                    $id_nasabah= $_SESSION['id_nasabah'];
+                    $rekening  = mysqli_query($db, "select * from tabungan where id_nasabah='$id_nasabah'");
+                    $row        = mysqli_fetch_array($rekening);
+                    // $min  = mysqli_query($db, "select * from min_saldo ");
+                    // $row_min        = mysqli_fetch_array($min);
 
-                    <!-- Content Row -->
-                    <div class="row">
-                    </div>
-
-                    <!-- DataTables Sampah -->
-                    <div class="card shadow mb-4">
-                        <div class="card-header py-3">
-                            <h4 class="m-0 font-weight-bold text-primary">Data Sampah</h4>
-                            <h7 class="m-0 font-weight-bold">data dapat berubah kapan saja</h7>
-                        </div>
-                        <div class="card-body">
+                    ?>
+                    <input type="hidden" value="<?php echo $row['saldo']; ?>" name="money" id="money" />
+                    <!-- <input type="text" value="<?php echo $row_min['saldo']; ?>" name="minsaldo" id="minsaldo" /> -->
+                    
+                    <!-- <p style="text-align: center;">Total Uang Direkening anda sebesar : <span id="formattedMoney"></span></p> -->
+                    <!-- <p style="text-align: center;">Jumlah Uang Yang Bisa Ditarik Direkening Anda Sebesar : <span id="bisaditarik"></span></p> -->
+                    
+                        <div class="card-body" style="margin-left: 150px; margin-right: 150px">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                                    <thead>
+                                <table class="shadow table table-bordered" cellspacing="0">
+                                    <form name="pengajuan" id="pengajuan">
+                                        <input type="hidden" name="tanggal_pengajuan" id="tanggal_pengajuan" value="<?php echo date('Y-m-d'); ?>" />
+                                        <!-- <input type="hidden"  name="min" id="min" /> -->
+                                        <input type="hidden" name="id_nasabah" id="id_nasabah"value="<?php echo $row['id_nasabah'] ?>"  />
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Kategori</th>
-                                            <th>Nama Sampah</th>
-                                            <th>Harga</th>
+                                            <td><label for="formattedMoney">Saldo anda sebesar</label></td>
+                                            <td><span id="formattedMoney"></span></td>
                                         </tr>
-                                    </thead>
-                                    <tfoot>
                                         <tr>
-                                            <th>ID</th>
-                                            <th>Kategori</th>
-                                            <th>Nama Sampah</th>
-                                            <th>Harga</th>
+                                            <td><label for="jumlah">Nominal yang ingin diajukan</label></td>
+                                            <td><input type="text" name="jumlah" id="jumlah" style="width: 100%"/></td>
                                         </tr>
-                                    </tfoot>
-                                    <tbody>
-                                        <?php
-                                        // Include config file
-                                        require_once "config.php";
-
-                                        // Attempt select query execution
-                                        $sql = "SELECT * FROM sampah INNER JOIN kategori ON sampah.id_kategori=kategori.id_kategori;";
-                                        if($result = mysqli_query($db, $sql)){
-                                            if(mysqli_num_rows($result) > 0){
-                                                    while($row = mysqli_fetch_array($result)){
-                                                        ?>
-                                                        <tr>
-                                                            <td><?php echo $row['id_sampah']?></td>
-                                                            <td><?php echo $row['deskripsi']?></td>
-                                                            <td><?php echo $row['nama_sampah']?> / <?php echo $row['satuan']?> </td>
-                                                            <td><?php echo $row['harga_nasabah']?></td>    
-                                                        </tr>
-                                                        <?php
-                                                    }
-                                                // Free result set
-                                                mysqli_free_result($result);
-                                            } else{
-                                                echo "<p class='lead'><em>No records were found.</em></p>";
-                                            }
-                                        } else{
-                                            echo "ERROR: Could not able to execute $sql. " . mysqli_error($db);
-                                        }
-                                        ?>
-                                    </tbody>
+                                        <tr>
+                                            <td></td>
+                                            <td><input type="button" name="submit" id="submit" class="btn btn-info" value="Submit" /></td>
+                                        </tr>
+                                    </form>
                                 </table>
                             </div>
                         </div>
@@ -279,7 +244,7 @@ die("Anda belum login");//jika belum login jangan lanjut..
                 <div class="modal-body">
                     <?php
                         // Include config file
-                        require_once "config.php";
+                        require_once "../config.php";
 
                         // Attempt select query execution
                         $sql = "SELECT * FROM nasabah";
@@ -345,36 +310,78 @@ die("Anda belum login");//jika belum login jangan lanjut..
                 <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
                 <div class="modal-footer">
                     <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                    <a class="btn btn-primary" href="logout.php">Logout</a>
+                    <a class="btn btn-primary" href="../logout.php">Logout</a>
                 </div>
             </div>
         </div>
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="vendor/jquery/jquery.min.js"></script>
-    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    
+    <script src="../vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+    <script src="../vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="js/sb-admin-2.min.js"></script>
+    <script src="../js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="vendor/chart.js/Chart.min.js"></script>
+    <script src="../vendor/chart.js/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="js/demo/chart-area-demo.js"></script>
-    <script src="js/demo/chart-pie-demo.js"></script>
+    <script src="../js/demo/chart-area-demo.js"></script>
+    <script src="../js/demo/chart-pie-demo.js"></script>
+    <script>
+        var uang = document.getElementById('money').value;
+        // var min_saldo = document.getElementById('minsaldo').value;
+        // var coba_saldo=uang-min_saldo
+        //1st way
+        var moneyFormatter = new Intl.NumberFormat('id-ID', {
+            style: 'currency',
+            currency: 'IDR',
+            minimumFractionDigits: 2
+        });
+        document.getElementById('formattedMoney').innerText = moneyFormatter.format(uang);
+        // document.getElementById('bisaditarik').innerText = moneyFormatter.format(coba_saldo);
+        // document.getElementById('min').value=coba_saldo ;
+    </script>
 
-    <!-- Page level plugins -->
-    <script src="vendor/datatables/jquery.dataTables.min.js"></script>
-    <script src="vendor/datatables/dataTables.bootstrap4.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#submit').click(function() {
+                var id_nasabah=$('#id_nasabah').val();
+                var tanggal_pengajuan=$('#tanggal_pengajuan').val();
+                var test = tanggal_pengajuan.split("-");
+                var tahun2 = test[0];
+                var bulan2 = test[1];
+                var hari2 = test[2];
+                var id_pengajuan = id_nasabah + test[0] + test[1] + test[2];
+                
+                var json = Object();
 
-    <!-- Page level custom scripts -->
-    <script src="js/demo/datatables-demo.js"></script>
+                var rowData = [];
+                json["id_pengajuan"] = id_pengajuan;
+                json["id_nasabah"] = $("#id_nasabah").val();
+                
+                json["tanggal_pengajuan"] = $("#tanggal_pengajuan").val();
+                json["jumlah"] = $("#jumlah").val();
+                json["min"] = $("#money").val();
 
+                console.log(JSON.stringify(json));
+                
+                $.ajax({  
+                url:"proses_pengajuan.php",  
+                method:"POST",  
+                data:JSON.stringify(json),  
+                success:function(data)  
+                {  
+                    alert(data);  
+                    window.location.assign("pengajuan.php") 
+                }  
+                });
+            });
+        });
+    </script>
 </body>
-
 </html>
